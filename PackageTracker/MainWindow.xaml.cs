@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using FedExWebService;
 
 namespace PackageTracker
 {
@@ -21,7 +22,8 @@ namespace PackageTracker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TrackerContext _context = new TrackerContext(); 
+        private TrackerContext _context = new TrackerContext();
+        private TrackingControl _control = new TrackingControl();
 
         public MainWindow()
         {
@@ -62,18 +64,20 @@ namespace PackageTracker
             //Need something to show user button was pressed
             Progress.Visibility = System.Windows.Visibility.Visible;
 
-            //Call on new class to get tracking info from FedEx servers (later add USPS, UPS)
-
-
+            //Create list from DB
+            var CurrentDBList = _context.Packages.ToList();
 
             //Delete any entry via entity state whose box is checked
-            foreach(TrackerData package in _context.Packages.ToList())
+            foreach (TrackerData package in CurrentDBList)
             {
                 if(package.DeleteMe == true)
                 {
                     _context.Entry(package).State = EntityState.Deleted;
                 }
             }
+
+            //Pass in Tracking List to Tracking Control for Web Service updating
+            _control.UpdateTrackingInformation(CurrentDBList);
 
             //Commit changes to DB
             _context.SaveChanges();

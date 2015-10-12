@@ -1,0 +1,6 @@
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Debug\FedExWebService.dll.config
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Debug\FedExWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Debug\FedExWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Debug\FedExWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Debug\FedExWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Debug\FedExWebService.pdb

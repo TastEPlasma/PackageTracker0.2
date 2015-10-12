@@ -16,3 +16,5 @@ c:\users\johnsnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 c:\users\johnsnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\EntityFramework.xml
 c:\users\johnsnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\EntityFramework.SqlServer.xml
 c:\users\johnsnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker_MarkupCompile.lref
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\FedExWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\FedExWebService.pdb

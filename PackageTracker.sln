@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageTracker", "PackageTracker\PackageTracker.csproj", "{157A6CDB-12A5-430E-B35F-AB74BAA78F07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedExWebService", "FedExWebService\FedExWebService.csproj", "{7A0677C3-D8DF-43C3-A423-436FC32787FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{157A6CDB-12A5-430E-B35F-AB74BAA78F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{157A6CDB-12A5-430E-B35F-AB74BAA78F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{157A6CDB-12A5-430E-B35F-AB74BAA78F07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

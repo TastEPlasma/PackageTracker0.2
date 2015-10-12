@@ -29,7 +29,9 @@ namespace PackageTracker
         NotShipped,
         Shipped,
         OutForDelivery,
-        Delivered
+        Delivered,
+        Returned,
+        Other
     }
 
     enum ParcelService

@@ -1,7 +1,7 @@
 ﻿PackageTracker
 
 
-winexe
+exe
 C#
 .cs
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\
@@ -12,8 +12,8 @@ DEBUG;TRACE
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\App.xaml
 11151548125
 
-11-1777369558
-15989483194
+12-438777267
+172045328686
 MainWindow.xaml;
 
 False
