@@ -13,11 +13,15 @@ namespace PackageTracker
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //This allowd EF to ignore the "IsDirty" property regardless of
+            //This allowd EF to ignore the "DeleteMe" and "StatusOfPackage" property regardless of
             //where it is found, and to never include it in its data model
             //or push it in updates
             modelBuilder.Types().
                 Configure(c => c.Ignore("DeleteMe"));
+            modelBuilder.Types().
+                Configure(c => c.Ignore("StatusOfPackage"));
+            modelBuilder.Types().
+                Configure(c => c.Ignore("CarrierCode"));
             base.OnModelCreating(modelBuilder);
         }
     }

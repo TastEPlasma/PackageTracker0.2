@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,6 +68,12 @@ namespace PackageTracker
             //Need something to show user button was pressed
             Progress.Visibility = System.Windows.Visibility.Visible;
 
+            //Lock down datagrid while updating
+            trackerDataDataGrid.IsReadOnly = true;
+
+            //Add in new tracking number entries, delete entries marked for deletion by user
+            UpdateLocalDBWithUserInput();
+
             //Spawn a background thread for DB work so that the GUI thread can continue to update
             BackgroundWorker DBUpdater = new BackgroundWorker();
 
@@ -76,9 +83,6 @@ namespace PackageTracker
             //what to do in background thread
             DBUpdater.DoWork += new DoWorkEventHandler(delegate(object o, DoWorkEventArgs args)
             {
-                //Add in new tracking number entries, delete entries marked for deletion by user
-                UpdateLocalDBWithUserInput();
-
                 //Checks tracking numbers via web service, updates local DB
                 UpdateDBFromWebServices();
 
@@ -93,6 +97,9 @@ namespace PackageTracker
                 //Remove progress bar after actions are completed
                 //Might want to delay this action by 500ms or so, to insure the progress bar blips up
                 ProgressBarVisibilityDelay();
+
+                //Release datagrid back to editable state
+                trackerDataDataGrid.IsReadOnly = false;
             });
 
             //start worker tasks
@@ -137,6 +144,45 @@ namespace PackageTracker
         {
             await Task.Delay(500);
             Progress.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+
+        private void trackerDataDataGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Lookup for the source to be DataGridCell
+            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+            {
+                // Starts the Edit on the row;
+                DataGrid grd = (DataGrid)sender;
+                grd.BeginEdit(e);
+
+                Control control = GetFirstChildByType<Control>(e.OriginalSource as DataGridCell);
+                if (control != null)
+                {
+                    control.Focus();
+                }
+            }
+        }
+         
+
+        private T GetFirstChildByType<T>(DependencyObject prop) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(prop); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild((prop), i) as DependencyObject;
+                if (child == null)
+                    continue;
+
+                T castedProp = child as T;
+                if (castedProp != null)
+                    return castedProp;
+
+                castedProp = GetFirstChildByType<T>(child);
+
+                if (castedProp != null)
+                    return castedProp;
+            }
+            return null;
         }
     }
 }

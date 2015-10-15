@@ -25,8 +25,7 @@ namespace PackageTracker
         //Send request to webservices, receive raw data
         private void SendRequestToWebService(TrackerData Entry)
         {
-            //open webservice
-            //pass in tracking number
+            //open webservice, pass in tracking number
             TrackRequest request = FedEx.CreateTrackRequest(Entry.TrackingNumber);
             
             TrackService service = new TrackService();
@@ -35,11 +34,12 @@ namespace PackageTracker
             {
                 // Call the Track web service passing in a TrackRequest and returning a TrackReply
                 TrackReply reply = service.track(request);
-                if(reply.HighestSeverity != NotificationSeverityType.ERROR || reply.HighestSeverity != NotificationSeverityType.FAILURE)
+                if(reply.HighestSeverity != NotificationSeverityType.ERROR && reply.HighestSeverity != NotificationSeverityType.FAILURE)
                 {
-                    Console.WriteLine(reply.HighestSeverity);
                     //For debugging purposes
+                    Console.WriteLine(reply.HighestSeverity);
                     FedEx.ShowTrackReply(reply);
+
                     //Parse raw data here
                     ParseRawDataIntoList(Entry, reply);
                 }
