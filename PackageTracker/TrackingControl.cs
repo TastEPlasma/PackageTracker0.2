@@ -12,15 +12,10 @@ namespace PackageTracker
 {
     class TrackingControl
     {
-        List<TrackerData> TrackingData;
-
-
-        public void UpdateTrackingInformation(List<TrackerData> CurrentData)
+        
+        public void UpdateTrackingInformation(List<TrackerData> TrackingData)
         {
-            //A list of objects is passed by reference
-            TrackingData = CurrentData;
-
-            //Take list of package data, parse out tracking numbers
+            //Take list of package data, parse out tracking numbers, run each through web service
             foreach(TrackerData Entry in TrackingData)
             {
                 SendRequestToWebService(Entry);
@@ -33,12 +28,8 @@ namespace PackageTracker
             //open webservice
             //pass in tracking number
             TrackRequest request = FedEx.CreateTrackRequest(Entry.TrackingNumber);
-            //
+            
             TrackService service = new TrackService();
-            if (FedEx.usePropertyFile())
-            {
-                service.Url = FedEx.getProperty("endpoint");
-            }
 
             try
             {
@@ -55,16 +46,17 @@ namespace PackageTracker
                 else
                 {
                     //ERROR HANDLING STATE HERE
+                    Console.WriteLine("AN ERROR OR FAILURE OCCURED!");
                 }
                 
             }
             catch (SoapException e)
             {
-                //Console.WriteLine(e.Detail.InnerText);
+                Console.WriteLine(e.Detail.InnerText);
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
             
         }
@@ -76,6 +68,7 @@ namespace PackageTracker
             {
                 foreach(TrackDetail trackDetail in completedTrackDetail.TrackDetails)
                 {
+                    //Check for error, likely from invalid tracking number
                     if(trackDetail.Notification.Severity == NotificationSeverityType.ERROR)
                     {
                         Entry.Location = "INVALID TRACKING NUMBER";
@@ -83,22 +76,41 @@ namespace PackageTracker
                     }
                     else
                     {
-                        Entry.Location = trackDetail.StatusDetail.Location.City + ", " +
-                            trackDetail.StatusDetail.Location.StateOrProvinceCode;
+                        //check for error-less state of no record found by web service
+                        if (trackDetail.StatusDetail != null)
+                        {
+                            //Input city state location as single string
+                            Entry.Location = trackDetail.StatusDetail.Location.City + ", " +
+                                trackDetail.StatusDetail.Location.StateOrProvinceCode;
+                        }
+                        else
+                        {
+                            Entry.Location = "NO CURRENT LOCATION FOUND";
+                        }
+                        
 
                         Entry.Service = ParcelService.FedEx;
-                        switch (trackDetail.StatusDetail.Code)
+                        //check for error-less state of no record found by web service
+                        if(trackDetail.StatusDetail != null)
                         {
-                            case "DL": Entry.Status = PackageStatus.Delivered; break;
-                            case "OD": Entry.Status = PackageStatus.OutForDelivery; break;
-                            case "ED": Entry.Status = PackageStatus.OutForDelivery; break;
-                            case "RS": Entry.Status = PackageStatus.Returned; break;
-                            case "IT": Entry.Status = PackageStatus.Shipped; break;
-                            case "PU": Entry.Status = PackageStatus.Shipped; break;
-                            case "DP": Entry.Status = PackageStatus.Shipped; break;
-                            case "AP": Entry.Status = PackageStatus.NotShipped; break;
-                            case "OF": Entry.Status = PackageStatus.NotShipped; break;
-                            default: Entry.Status = PackageStatus.Other; break;
+                            //a small sample of the package status codes, mapped to PackageStatus ENUM
+                            switch (trackDetail.StatusDetail.Code)
+                            {
+                                case "DL": Entry.Status = PackageStatus.Delivered; break;
+                                case "OD": Entry.Status = PackageStatus.OutForDelivery; break;
+                                case "ED": Entry.Status = PackageStatus.OutForDelivery; break;
+                                case "RS": Entry.Status = PackageStatus.Returned; break;
+                                case "IT": Entry.Status = PackageStatus.Shipped; break;
+                                case "PU": Entry.Status = PackageStatus.Shipped; break;
+                                case "DP": Entry.Status = PackageStatus.Shipped; break;
+                                case "AP": Entry.Status = PackageStatus.NotShipped; break;
+                                case "OF": Entry.Status = PackageStatus.NotShipped; break;
+                                default: Entry.Status = PackageStatus.Other; break;
+                            }
+                        }
+                        else
+                        {
+                            Entry.Status = PackageStatus.NotFound;
                         }
                     }  
                 }

@@ -71,22 +71,22 @@ namespace FedExWebService
             request.WebAuthenticationDetail.ParentCredential = new WebAuthenticationCredential();
             request.WebAuthenticationDetail.ParentCredential.Key = "XXX"; // Replace "XXX" with the Key
             request.WebAuthenticationDetail.ParentCredential.Password = "XXX"; // Replace "XXX"
-            if (usePropertyFile()) //Set values from a file for testing purposes
-            {
-                request.WebAuthenticationDetail.UserCredential.Key = getProperty("key");
-                request.WebAuthenticationDetail.UserCredential.Password = getProperty("password");
-                request.WebAuthenticationDetail.ParentCredential.Key = getProperty("parentkey");
-                request.WebAuthenticationDetail.ParentCredential.Password = getProperty("parentpassword");
-            }
+            //if (usePropertyFile()) //Set values from a file for testing purposes
+            //{
+            //    request.WebAuthenticationDetail.UserCredential.Key = getProperty("key");
+            //    request.WebAuthenticationDetail.UserCredential.Password = getProperty("password");
+            //    request.WebAuthenticationDetail.ParentCredential.Key = getProperty("parentkey");
+            //    request.WebAuthenticationDetail.ParentCredential.Password = getProperty("parentpassword");
+            //}
             //
             request.ClientDetail = new ClientDetail();
             request.ClientDetail.AccountNumber = AccountInfo.AccountNumber; // Replace "XXX" with the client's account number
             request.ClientDetail.MeterNumber = AccountInfo.MeterNumber; // Replace "XXX" with the client's meter number
-            if (usePropertyFile()) //Set values from a file for testing purposes
-            {
-                request.ClientDetail.AccountNumber = getProperty("accountnumber");
-                request.ClientDetail.MeterNumber = getProperty("meternumber");
-            }
+            //if (usePropertyFile()) //Set values from a file for testing purposes
+            //{
+            //    request.ClientDetail.AccountNumber = getProperty("accountnumber");
+            //    request.ClientDetail.MeterNumber = getProperty("meternumber");
+            //}
             //
             request.TransactionDetail = new TransactionDetail();
             request.TransactionDetail.CustomerTransactionId = AccountInfo.TransactionID;  //This is a reference field for the customer.  Any value can be used and will be provided in the response.
@@ -97,10 +97,10 @@ namespace FedExWebService
             request.SelectionDetails = new TrackSelectionDetail[1] { new TrackSelectionDetail() };
             request.SelectionDetails[0].PackageIdentifier = new TrackPackageIdentifier();
             request.SelectionDetails[0].PackageIdentifier.Value = AccountInfo.TrackingNumber; // Replace "XXX" with tracking number or door tag
-            if (usePropertyFile()) //Set values from a file for testing purposes
-            {
-                request.SelectionDetails[0].PackageIdentifier.Value = getProperty("trackingnumber");
-            }
+            //if (usePropertyFile()) //Set values from a file for testing purposes
+            //{
+            //    request.SelectionDetails[0].PackageIdentifier.Value = getProperty("trackingnumber");
+            //}
             request.SelectionDetails[0].PackageIdentifier.Type = TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG;
             //
             // Date range is optional.
@@ -129,7 +129,10 @@ namespace FedExWebService
                     ShowNotification(trackDetail.Notification);
                     Console.WriteLine("Tracking number: {0}", trackDetail.TrackingNumber);
                     Console.WriteLine("Tracking number unique identifier: {0}", trackDetail.TrackingNumberUniqueIdentifier);
-                    Console.WriteLine("Track Status: {0} ({1})", trackDetail.StatusDetail.Description, trackDetail.StatusDetail.Code);
+                    if(trackDetail.StatusDetail != null)
+                    {
+                        Console.WriteLine("Track Status: {0} {1}", trackDetail.StatusDetail.Description, trackDetail.StatusDetail.Code);
+                    }
                     Console.WriteLine("Carrier code: {0}", trackDetail.CarrierCode);
 
                     if (trackDetail.OtherIdentifiers != null)
@@ -224,7 +227,7 @@ namespace FedExWebService
         }
         public static bool usePropertyFile() //Set to true for common properties to be set with getProperty function.
         {
-            return getProperty("usefile").Equals("True");
+            return getProperty("usefile").Equals("true");
         }
         public static String getProperty(String propertyname) //Sets common properties for testing purposes.
         {

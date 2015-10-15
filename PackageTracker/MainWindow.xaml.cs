@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.ComponentModel;
 using FedExWebService;
 
 namespace PackageTracker
@@ -30,11 +31,13 @@ namespace PackageTracker
             InitializeComponent();
         }
 
+
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
             this._context.Dispose();
         }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -56,37 +59,83 @@ namespace PackageTracker
             // After the data is loaded call the DbSet<T>.Local property  
             // to use the DbSet<T> as a binding source. 
             trackerDataViewSource.Source = _context.Packages.Local;
-            
         }
+
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
             //Need something to show user button was pressed
             Progress.Visibility = System.Windows.Visibility.Visible;
 
+            //Spawn a background thread for DB work so that the GUI thread can continue to update
+            BackgroundWorker DBUpdater = new BackgroundWorker();
+
+            //allow worker to report progress during work
+            DBUpdater.WorkerReportsProgress = true;
+
+            //what to do in background thread
+            DBUpdater.DoWork += new DoWorkEventHandler(delegate(object o, DoWorkEventArgs args)
+            {
+                //Add in new tracking number entries, delete entries marked for deletion by user
+                UpdateLocalDBWithUserInput();
+
+                //Checks tracking numbers via web service, updates local DB
+                UpdateDBFromWebServices();
+
+            });
+
+            //what to do when worker is done
+            DBUpdater.RunWorkerCompleted += new RunWorkerCompletedEventHandler(delegate(object o, RunWorkerCompletedEventArgs args)
+            {
+                //Refresh view so changes to DB are confirmed and seen
+                this.trackerDataDataGrid.Items.Refresh();
+
+                //Remove progress bar after actions are completed
+                //Might want to delay this action by 500ms or so, to insure the progress bar blips up
+                ProgressBarVisibilityDelay();
+            });
+
+            //start worker tasks
+            DBUpdater.RunWorkerAsync();
+        }
+
+
+        private void UpdateLocalDBWithUserInput()
+        {
             //Create list from DB
             var CurrentDBList = _context.Packages.ToList();
 
             //Delete any entry via entity state whose box is checked
             foreach (TrackerData package in CurrentDBList)
             {
-                if(package.DeleteMe == true)
+                if (package.DeleteMe == true)
                 {
                     _context.Entry(package).State = EntityState.Deleted;
                 }
             }
+
+            //save add/delete changes
+            _context.SaveChanges();
+        }
+
+
+        private void UpdateDBFromWebServices()
+        {
+            Console.WriteLine("Begin update DB");
+            //Create list from DB
+            var CurrentDBList = _context.Packages.ToList();
 
             //Pass in Tracking List to Tracking Control for Web Service updating
             _control.UpdateTrackingInformation(CurrentDBList);
 
             //Commit changes to DB
             _context.SaveChanges();
+        }
 
-            //Refresh view so changes to DB are confirmed and seen
-            this.trackerDataDataGrid.Items.Refresh();
 
-            //Remove progress bar after actions are completed
-            //Might want to delay this action by 500ms or so, to insure the progress bar blips up
+        private async void ProgressBarVisibilityDelay()
+        {
+            await Task.Delay(500);
             Progress.Visibility = System.Windows.Visibility.Hidden;
         }
     }
