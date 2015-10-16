@@ -45,8 +45,8 @@ namespace PackageTracker
                 }
                 else
                 {
-                    //ERROR HANDLING STATE HERE
-                    Console.WriteLine("AN ERROR OR FAILURE OCCURED!");
+                    //error handling for blank or incomplete tracking numbers
+                    Entry.Location = "ERROR";
                 }
                 
             }
