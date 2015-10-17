@@ -11,12 +11,7 @@ namespace FedExWebService
 {
     static class AccountInfo
     {
-        public static string UserKey = "1CK3fnM8LhfQWteN";
-        public static string UserPassword = "vh6rTNPVog2PAXKRh44SiJznk";
-        public static string AccountNumber = "510087186";
-        public static string MeterNumber = "118691686";
-        public static string TransactionID = "TEST";
-        public static string TrackingNumber;
+        
     }
 
     public static class FedEx

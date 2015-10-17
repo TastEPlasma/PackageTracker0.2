@@ -39,6 +39,7 @@ namespace PackageTracker
                     }
 
                         //TODO: USPS
+                        //Create and add XML based service
 
                     else
                     {
@@ -64,9 +65,6 @@ namespace PackageTracker
             {
                 //convert tracking number to array of individual digits
                 int[] numberArray = (number.ToString().Select(o => Convert.ToInt32(o - 48)).ToArray());
-
-                //debug
-                //DisplayArrayResults(numberArray);
 
                 //Algorythm to generate and check against check digit
                 int arrayLength = numberArray.Length;
@@ -111,15 +109,8 @@ namespace PackageTracker
             return false;
         }
 
-        private void DisplayArrayResults(int[] numberArray)
-        {
-            int length = numberArray.Count();
-            for(int i = 0; i < length; i++)
-            {
-                Console.WriteLine(numberArray[i]);
-            }
-        }
 
+        //Largely UPS's code
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
             try
