@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageTracker", "PackageTr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedExWebService", "FedExWebService\FedExWebService.csproj", "{7A0677C3-D8DF-43C3-A423-436FC32787FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UPSWebService", "UPSWebService\UPSWebService.csproj", "{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A0677C3-D8DF-43C3-A423-436FC32787FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

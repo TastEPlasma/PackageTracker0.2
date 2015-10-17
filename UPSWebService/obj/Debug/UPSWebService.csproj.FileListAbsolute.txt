@@ -1,0 +1,6 @@
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Debug\UPSWebService.dll.config
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Debug\UPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Debug\UPSWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Debug\UPSWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Debug\UPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Debug\UPSWebService.pdb

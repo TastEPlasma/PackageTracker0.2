@@ -33,6 +33,7 @@ namespace PackageTracker
                     case PackageStatus.OutForDelivery: return "OutForDelivery";
                     case PackageStatus.Returned: return "Returned";
                     case PackageStatus.Shipped: return "Shipped";
+                    case PackageStatus.PickUp: return "ReadyForPickUp";
                     default: return "Other";
                 }
             }
@@ -51,6 +52,7 @@ namespace PackageTracker
                     case ParcelService.FedEx: return "FedEx";
                     case ParcelService.UPS: return "UPS";
                     case ParcelService.USPS: return "USPS";
+                    case ParcelService.None: return "None";
                     default: return "Other";
                 }
             }
@@ -69,13 +71,15 @@ namespace PackageTracker
         OutForDelivery,
         Delivered,
         Returned,
-        Other
+        Other,
+        PickUp
     }
 
     enum ParcelService
     {
         FedEx,
         UPS,
-        USPS
+        USPS,
+        None
     }
 }

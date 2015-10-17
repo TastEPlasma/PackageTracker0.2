@@ -48,6 +48,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -118,6 +119,10 @@
     <ProjectReference Include="..\FedExWebService\FedExWebService.csproj">
       <Project>{7a0677c3-d8df-43c3-a423-436fc32787fa}</Project>
       <Name>FedExWebService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UPSWebService\UPSWebService.csproj">
+      <Project>{fcb13df0-57a6-45e3-9491-d2f76e77daea}</Project>
+      <Name>UPSWebService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
