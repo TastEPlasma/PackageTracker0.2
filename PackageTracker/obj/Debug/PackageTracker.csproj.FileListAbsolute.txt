@@ -20,3 +20,4 @@ C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\FedExWebService.pdb
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\UPSWebService.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\UPSWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\CustomResourceDictionary.baml

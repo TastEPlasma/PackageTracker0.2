@@ -31,7 +31,7 @@ namespace PackageTracker
                 switch(Status)
                 {
                     case PackageStatus.Delivered: return "Delivered";
-                    case PackageStatus.NotFound: return "Not Found";
+                    case PackageStatus.NotFound: return "NotFound";
                     case PackageStatus.NotShipped: return "NotShipped";
                     case PackageStatus.Other: return "Other";
                     case PackageStatus.OutForDelivery: return "OutForDelivery";

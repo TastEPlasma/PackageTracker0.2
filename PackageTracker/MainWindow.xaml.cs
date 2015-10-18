@@ -29,24 +29,10 @@ namespace PackageTracker
         private TrackerContext _context = new TrackerContext();
         private TrackingControl _control = new TrackingControl();
 
-        Image i = new Image();
-
         public MainWindow()
         {
             InitializeComponent();
         }
-
-        private void LoadImageFiles()
-        {
-            BitmapImage src = new BitmapImage();
-            src.BeginInit();
-            src.UriSource = new Uri("glo_ups_brandmark.gif", UriKind.Relative);
-            src.CacheOption = BitmapCacheOption.OnLoad;
-            src.EndInit();
-            i.Source = src;
-            i.Stretch = Stretch.Uniform;
-        }
-
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
@@ -76,7 +62,6 @@ namespace PackageTracker
             // to use the DbSet<T> as a binding source. 
             trackerDataViewSource.Source = _context.Packages.Local;
         }
-
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {

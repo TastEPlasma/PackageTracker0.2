@@ -7,6 +7,11 @@
         <CollectionViewSource x:Key="trackerContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerContext}, CreateList=True}"/>
         <CollectionViewSource x:Key="trackerContextPackagesViewSource" Source="{Binding Packages, Source={StaticResource trackerContextViewSource}}"/>
         <CollectionViewSource x:Key="trackerDataViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerData}, CreateList=True}"/>
+        <ResourceDictionary x:Key="BackgroundColors">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CustomResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid DataContext="{StaticResource trackerContextPackagesViewSource}" Margin="-4,0,-40,0" HorizontalAlignment="Left" Width="572">
         <Grid.ColumnDefinitions>
@@ -14,6 +19,37 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="Update" Content="Update" HorizontalAlignment="Center" Margin="232,283,219,0" VerticalAlignment="Top" Width="75" Click="Update_Click" Height="20"/>
         <DataGrid x:Name="trackerDataDataGrid"  AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource trackerDataViewSource}}" Margin="40,10,0,77" RowDetailsVisibilityMode="Visible"  Background="White" HorizontalAlignment="Left" Width="522">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" Resources="{StaticResource BackgroundColors}">
+                    <Setter Property="Background" Value="{StaticResource Other}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="Delivered" >
+                            <Setter Property="Background" Value="{StaticResource Delivered}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="NotFound">
+                            <Setter Property="Background" Value="{StaticResource NotFound}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="NotShipped">
+                            <Setter Property="Background" Value="{StaticResource NotShipped}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="Other">
+                            <Setter Property="Background" Value="{StaticResource Other}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="OutForDelivery">
+                            <Setter Property="Background" Value="{StaticResource OutForDelivery}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="Returned">
+                            <Setter Property="Background" Value="{StaticResource Returned}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="Shipped">
+                            <Setter Property="Background" Value="{StaticResource Shipped}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="PickUp">
+                            <Setter Property="Background" Value="{StaticResource PickUp}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn x:Name="deleteme" Binding="{Binding DeleteMe}" Header="Delete" Width="45"/>
                 <DataGridTextColumn x:Name="trackingNumberColumn" Binding="{Binding TrackingNumber}" Header="Tracking Number" Width="130"/>
@@ -29,8 +65,9 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            
         </DataGrid>
-        <ProgressBar Name ="Progress" Visibility="Hidden" IsIndeterminate="True" HorizontalAlignment="Left" Height="10" Margin="207,283,0,0" VerticalAlignment="Top" Width="100"/>
+        <ProgressBar Name ="Progress" Visibility="Hidden"  IsIndeterminate="True" HorizontalAlignment="Left" Height="10" Margin="243,263,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

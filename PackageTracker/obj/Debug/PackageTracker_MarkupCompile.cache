@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\App.xaml
-11151548125
+2-515460671
 
 81019515687
 20-1228898520
-MainWindow.xaml;
+CustomResourceDictionary.xaml;MainWindow.xaml;
 
 False
 
