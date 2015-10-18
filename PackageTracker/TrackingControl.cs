@@ -38,11 +38,11 @@ namespace PackageTracker
                         SendRequestToFedExWebService(Entry);
                     }
 
+                    else
+                    {
                         //TODO: USPS
                         //Create and add XML based service
 
-                    else
-                    {
                         Entry.Location = "Invalid Tracking Number";
                         Entry.Service = ParcelService.None;
                         Entry.Status = PackageStatus.NotFound;

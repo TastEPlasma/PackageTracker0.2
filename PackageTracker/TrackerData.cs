@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Drawing;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace PackageTracker
 {
@@ -43,17 +47,17 @@ namespace PackageTracker
             }
         }
 
-        public string CarrierCode
+        public BitmapImage CarrierCode
         {
             get
             {
                 switch (Service)
                 {
-                    case ParcelService.FedEx: return "FedEx";
-                    case ParcelService.UPS: return "UPS";
-                    case ParcelService.USPS: return "USPS";
-                    case ParcelService.None: return "None";
-                    default: return "Other";
+                    case ParcelService.FedEx: return ImageHolding.FedEx;
+                    case ParcelService.UPS: return ImageHolding.UPS;
+                    case ParcelService.USPS: return ImageHolding.USPS;
+                    case ParcelService.None: return ImageHolding.Unknown;
+                    default: return ImageHolding.Unknown;
                 }
             }
             set
@@ -62,6 +66,7 @@ namespace PackageTracker
             }
         }
     }
+
 
     enum PackageStatus
     {
@@ -81,5 +86,58 @@ namespace PackageTracker
         UPS,
         USPS,
         None
+    }
+
+
+    static class ImageHolding
+    { 
+        static ImageHolding()
+        {
+            var path = Path.Combine(Environment.CurrentDirectory, "FedExCarrier.GIF");
+            var uri = new Uri(path);
+            FedExbitmap = new BitmapImage(uri);
+
+            path = Path.Combine(Environment.CurrentDirectory, "UPSCarrier.GIF");
+            uri = new Uri(path);
+            UPSbitmap = new BitmapImage(uri);
+
+            path = Path.Combine(Environment.CurrentDirectory, "USPSCarrier.GIF");
+            uri = new Uri(path);
+            USPSbitmap = new BitmapImage(uri); 
+
+            path = Path.Combine(Environment.CurrentDirectory, "UnknownCarrier.GIF");
+            uri = new Uri(path);
+            Unknownbitmap = new BitmapImage(uri);
+        }
+
+        static BitmapImage FedExbitmap;
+        static BitmapImage UPSbitmap;
+        static BitmapImage USPSbitmap;
+        static BitmapImage Unknownbitmap;
+
+
+        public static BitmapImage FedEx
+        {
+            get { return FedExbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage UPS 
+        {
+            get { return UPSbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage USPS
+        {
+            get { return USPSbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage Unknown
+        {
+            get { return Unknownbitmap; }
+            set { /*Do Nothing*/ }
+        }
     }
 }

@@ -11,44 +11,16 @@ namespace FedExWebService
 {
     static class AccountInfo
     {
-        
+        public static string UserKey = "1CK3fnM8LhfQWteN";
+        public static string UserPassword = "vh6rTNPVog2PAXKRh44SiJznk";
+        public static string AccountNumber = "510087186";
+        public static string MeterNumber = "118691686";
+        public static string TransactionID = "TEST";
+        public static string TrackingNumber;
     }
 
     public static class FedEx
     {
-        //Useful for checking that code compiles and executes sans exceptions
-        /*public void ExampleCodeDONOTUSE()
-        {
-            TrackRequest request = CreateTrackRequest();
-            //
-            TrackService service = new TrackService();
-			if (usePropertyFile())
-            {
-                service.Url = getProperty("endpoint");
-            }
-            //
-            try
-            {
-                // Call the Track web service passing in a TrackRequest and returning a TrackReply
-                TrackReply reply = service.track(request);
-                if (reply.HighestSeverity == NotificationSeverityType.SUCCESS || reply.HighestSeverity == NotificationSeverityType.NOTE || reply.HighestSeverity == NotificationSeverityType.WARNING)
-                {
-                    ShowTrackReply(reply);
-                }
-                ShowNotifications(reply);
-            }
-            catch (SoapException e)
-            {
-                Console.WriteLine(e.Detail.InnerText);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            Console.WriteLine("Press any key to quit!");
-            //Console.ReadKey();
-        }*/
-
         public static TrackRequest CreateTrackRequest(string TrackingNumber)
         {
             //create credentials object
@@ -65,23 +37,9 @@ namespace FedExWebService
             request.WebAuthenticationDetail.ParentCredential = new WebAuthenticationCredential();
             request.WebAuthenticationDetail.ParentCredential.Key = "XXX"; // Replace "XXX" with the Key
             request.WebAuthenticationDetail.ParentCredential.Password = "XXX"; // Replace "XXX"
-            //if (usePropertyFile()) //Set values from a file for testing purposes
-            //{
-            //    request.WebAuthenticationDetail.UserCredential.Key = getProperty("key");
-            //    request.WebAuthenticationDetail.UserCredential.Password = getProperty("password");
-            //    request.WebAuthenticationDetail.ParentCredential.Key = getProperty("parentkey");
-            //    request.WebAuthenticationDetail.ParentCredential.Password = getProperty("parentpassword");
-            //}
-            //
             request.ClientDetail = new ClientDetail();
             request.ClientDetail.AccountNumber = AccountInfo.AccountNumber; // Replace "XXX" with the client's account number
             request.ClientDetail.MeterNumber = AccountInfo.MeterNumber; // Replace "XXX" with the client's meter number
-            //if (usePropertyFile()) //Set values from a file for testing purposes
-            //{
-            //    request.ClientDetail.AccountNumber = getProperty("accountnumber");
-            //    request.ClientDetail.MeterNumber = getProperty("meternumber");
-            //}
-            //
             request.TransactionDetail = new TransactionDetail();
             request.TransactionDetail.CustomerTransactionId = AccountInfo.TransactionID;  //This is a reference field for the customer.  Any value can be used and will be provided in the response.
             //
@@ -91,10 +49,6 @@ namespace FedExWebService
             request.SelectionDetails = new TrackSelectionDetail[1] { new TrackSelectionDetail() };
             request.SelectionDetails[0].PackageIdentifier = new TrackPackageIdentifier();
             request.SelectionDetails[0].PackageIdentifier.Value = AccountInfo.TrackingNumber; // Replace "XXX" with tracking number or door tag
-            //if (usePropertyFile()) //Set values from a file for testing purposes
-            //{
-            //    request.SelectionDetails[0].PackageIdentifier.Value = getProperty("trackingnumber");
-            //}
             request.SelectionDetails[0].PackageIdentifier.Type = TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG;
             //
             // Date range is optional.

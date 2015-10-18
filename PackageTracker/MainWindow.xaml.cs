@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Windows.Forms;
 using System.Data.Entity;
 using System.ComponentModel;
 using FedExWebService;
@@ -27,10 +29,22 @@ namespace PackageTracker
         private TrackerContext _context = new TrackerContext();
         private TrackingControl _control = new TrackingControl();
 
+        Image i = new Image();
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void LoadImageFiles()
+        {
+            BitmapImage src = new BitmapImage();
+            src.BeginInit();
+            src.UriSource = new Uri("glo_ups_brandmark.gif", UriKind.Relative);
+            src.CacheOption = BitmapCacheOption.OnLoad;
+            src.EndInit();
+            i.Source = src;
+            i.Stretch = Stretch.Uniform;
         }
 
 
@@ -129,7 +143,6 @@ namespace PackageTracker
 
         private void UpdateDBFromWebServices()
         {
-            Console.WriteLine("Begin update DB");
             //Create list from DB
             var CurrentDBList = _context.Packages.ToList();
 
@@ -143,6 +156,8 @@ namespace PackageTracker
 
         private async void ProgressBarVisibilityDelay()
         {
+            //prevent hidding the progress bar for half a second,
+            //so user knows that button press was registered 
             await Task.Delay(500);
             Progress.Visibility = System.Windows.Visibility.Hidden;
         }
