@@ -21,3 +21,7 @@ C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\UPSWebService.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\UPSWebService.pdb
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\CustomResourceDictionary.baml
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker.Migrations.InitialCreate.resources
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker.Migrations.AddCustomNameToPackages.resources
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\USPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\USPSWebService.pdb

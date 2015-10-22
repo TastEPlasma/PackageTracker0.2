@@ -1,0 +1,5 @@
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\bin\Debug\USPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\bin\Debug\USPSWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\USPSWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\USPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\USPSWebService.pdb

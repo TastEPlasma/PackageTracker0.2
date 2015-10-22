@@ -10,6 +10,7 @@ using System.Web.Services.Protocols;
 using TrackWSSample;
 using UPSWebService.UPSWebReference;
 using System.ServiceModel;
+using USPSWebService;
 
 namespace PackageTracker
 {
@@ -43,9 +44,9 @@ namespace PackageTracker
                         //TODO: USPS
                         //Create and add XML based service
 
-                        Entry.Location = "Invalid Tracking Number";
-                        Entry.Service = ParcelService.None;
-                        Entry.Status = PackageStatus.NotFound;
+                        USPS.CreateXMLRequest(Entry.TrackingNumber);
+
+                        
                     }
                 }
                 else
@@ -91,8 +92,8 @@ namespace PackageTracker
                 }
 
                 //debug
-                Console.WriteLine("Remainder is {0}", Remainder);
-                Console.WriteLine("CheckDigit is {0}", CheckDigit);
+                //Console.WriteLine("Remainder is {0}", Remainder);
+                //Console.WriteLine("CheckDigit is {0}", CheckDigit);
                 
                 //if Check digit is valid, return true and try fedex web service
                 if(Remainder == CheckDigit)
@@ -103,7 +104,7 @@ namespace PackageTracker
             }
             else
             {
-                Console.WriteLine("Tracking Number was not conveted into an integer number");
+                Console.WriteLine("Tracking Number was not converted into an integer number");
             }
 
             return false;
@@ -115,6 +116,7 @@ namespace PackageTracker
         {
             try
             {
+                //THIS DATA SHOULD PROBABLY BE MOVED TO UPSCODE
                 UPSWebService.UPSWebReference.TrackService track = new UPSWebService.UPSWebReference.TrackService();
                 UPSWebService.UPSWebReference.TrackRequest tr = new UPSWebService.UPSWebReference.TrackRequest();
                 UPSSecurity upss = new UPSSecurity();

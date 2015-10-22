@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Data.Entity;
@@ -26,12 +28,32 @@ namespace PackageTracker
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Required context for Entity Framework to build DB
         private TrackerContext _context = new TrackerContext();
+
+        //Primary internal inteface to 3rd party web service providers
         private TrackingControl _control = new TrackingControl();
+
+        //Internal timer for Auto-Updates CheckBox
+        private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
+            InitializeTimer();
+        }
+
+        private void InitializeTimer()
+        {
+            UpdateTimer.Tick += new EventHandler(UpdateDatabase);
+            //set interval to 1 hour
+            UpdateTimer.Interval = new TimeSpan(1, 0, 0);
+            UpdateTimer.IsEnabled = false;
+        }
+
+        private void UpdateDatabase(object sender, EventArgs e)
+        {
+            UpdateDatabase();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -64,6 +86,11 @@ namespace PackageTracker
         }
 
         private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateDatabase();
+        }
+
+        private void UpdateDatabase()
         {
             //Need something to show user button was pressed
             Progress.Visibility = System.Windows.Visibility.Visible;
@@ -141,12 +168,23 @@ namespace PackageTracker
 
         private async void ProgressBarVisibilityDelay()
         {
-            //prevent hidding the progress bar for half a second,
-            //so user knows that button press was registered 
+            //prevent hiding the progress bar for half a second,
+            //so user knows that button press was registered
+            //Even if no events happen
             await Task.Delay(500);
             Progress.Visibility = System.Windows.Visibility.Hidden;
         }
 
-
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if(HourlyUpdatesBox.IsChecked == true)
+            {
+                UpdateTimer.IsEnabled = true;
+            }
+            else
+            {
+                UpdateTimer.IsEnabled = false;
+            }
+        }
     }
 }

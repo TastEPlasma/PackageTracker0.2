@@ -68,6 +68,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Migrations\201510072153061_InitialCreate.cs" />
+    <Compile Include="Migrations\201510072153061_InitialCreate.Designer.cs">
+      <DependentUpon>201510072153061_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510182011449_AddCustomNameToPackages.cs" />
+    <Compile Include="Migrations\201510182011449_AddCustomNameToPackages.Designer.cs">
+      <DependentUpon>201510182011449_AddCustomNameToPackages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TrackerData.cs" />
     <Compile Include="TrackingControl.cs" />
     <Page Include="CustomResourceDictionary.xaml">
@@ -102,6 +111,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201510072153061_InitialCreate.resx">
+      <DependentUpon>201510072153061_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510182011449_AddCustomNameToPackages.resx">
+      <DependentUpon>201510182011449_AddCustomNameToPackages.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -128,6 +143,10 @@
     <ProjectReference Include="..\UPSWebService\UPSWebService.csproj">
       <Project>{fcb13df0-57a6-45e3-9491-d2f76e77daea}</Project>
       <Name>UPSWebService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\USPSWebService\USPSWebService.csproj">
+      <Project>{29368fce-6503-443a-9350-2f338874ac9b}</Project>
+      <Name>USPSWebService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -18,6 +18,7 @@ namespace PackageTracker
         }
 
         public int ID { get; set; }
+        public string CustomName { get; set; }
         public string TrackingNumber { get; set; }
         public string Location { get; set; }
         public PackageStatus Status { get; set; }
