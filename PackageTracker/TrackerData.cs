@@ -15,6 +15,8 @@ namespace PackageTracker
         public TrackerData()
         {
             DeleteMe = false;
+            Service = ParcelService.None;
+            Status = PackageStatus.NotFound;
         }
 
         public int ID { get; set; }

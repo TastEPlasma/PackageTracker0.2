@@ -10,53 +10,62 @@ using System.Web.Services.Protocols;
 using TrackWSSample;
 using UPSWebService.UPSWebReference;
 using System.ServiceModel;
-using USPSWebService;
+using MAX.USPS;
 
 namespace PackageTracker
 {
     class TrackingControl
     {
+
+        USPSManager USPS; 
+
+        public TrackingControl()
+        {
+            USPS = new USPSManager();
+        }
         
         public void UpdateTrackingInformation(List<TrackerData> TrackingData)
         {
             //Take list of package data, parse out tracking numbers, run each through web service
             foreach(TrackerData Entry in TrackingData)
             {
-                //Check for reasonable length tracking number
-                int TNlength = Entry.TrackingNumber.Length;
-                if(TNlength > 6 && TNlength < 23)
+                if(Entry.TrackingNumber != "")
                 {
-                    //Check for UPS header characters in Tracking Number
-                    char[] TNArray = Entry.TrackingNumber.ToArray();
-                    if (TNArray[0] == '1' && TNArray[1] == 'Z')
+                    //Check for reasonable length tracking number
+                    int TNlength = Entry.TrackingNumber.Length;
+                    if (TNlength > 6 && TNlength < 27)
                     {
-                        SendRequestToUPSWebService(Entry);
-                    }
+                        //Check for UPS header characters in Tracking Number
+                        char[] TNArray = Entry.TrackingNumber.ToArray();
+                        if (TNArray[0] == '1' && TNArray[1] == 'Z')
+                        {
+                            SendRequestToUPSWebService(Entry);
+                        }
 
-                    //Check for sum digit to verify FedEx Tracking Number
-                    else if (CheckFedExNumber(Entry.TrackingNumber))
-                    {
-                        SendRequestToFedExWebService(Entry);
-                    }
+                        //Check for sum digit to verify FedEx Tracking Number
+                        else if (CheckFedExNumber(Entry.TrackingNumber))
+                        {
+                            SendRequestToFedExWebService(Entry);
+                        }
 
+                        else
+                        {
+                            SendRequestToUSPSWebService(Entry);
+
+
+                        }
+                    }
                     else
                     {
-                        //TODO: USPS
-                        //Create and add XML based service
-
-                        USPS.CreateXMLRequest(Entry.TrackingNumber);
-
-                        
+                        Entry.Location = "Invalid Number Length";
+                        Entry.Service = ParcelService.None;
+                        Entry.Status = PackageStatus.NotFound;
                     }
-                }
-                else
-                {
-                    Entry.Location = "Invalid Number Length";
-                    Entry.Service = ParcelService.None;
-                    Entry.Status = PackageStatus.NotFound;
                 }
             }
         }
+
+        
 
         private bool CheckFedExNumber(string TrackingNumber)
         {
@@ -108,6 +117,38 @@ namespace PackageTracker
             }
 
             return false;
+        }
+
+
+        private void SendRequestToUSPSWebService(TrackerData Entry)
+        {
+            TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
+            
+            ParseUSPSRawDataIntoList(Entry, Reply);
+            
+        }
+
+        private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
+        {
+            //TrackingInfo contains a list of strings, "Details"
+            //There is also a Deails.Summary that may be useful
+            Console.WriteLine("Summary contains: {0}", Reply.Summary);
+            int counter = 0;
+            foreach(string track in Reply.Details)
+            {
+                Console.WriteLine("Track number {0} contains: {1}", counter, track);
+                //check for error, parse error code else
+
+                    //set carrier to USPS
+
+                    //check for status with key words like delivered, shipped, etc
+                    //set package status
+                
+                    //if shipped look for address and parse
+                    //set package location
+
+                
+            }
         }
 
 
