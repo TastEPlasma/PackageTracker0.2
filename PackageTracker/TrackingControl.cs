@@ -18,10 +18,13 @@ namespace PackageTracker
     {
 
         USPSManager USPS; 
+        //FedExManager FedEx;
+        UPSManager UPS;
 
         public TrackingControl()
         {
             USPS = new USPSManager();
+            UPS = new UPSManager();
         }
         
         public void UpdateTrackingInformation(List<TrackerData> TrackingData)
@@ -51,8 +54,6 @@ namespace PackageTracker
                         else
                         {
                             SendRequestToUSPSWebService(Entry);
-
-
                         }
                     }
                     else
@@ -65,179 +66,101 @@ namespace PackageTracker
             }
         }
 
-        
-
-        private bool CheckFedExNumber(string TrackingNumber)
-        {
-            long number;
-            //Determine if the tracking number is all numbers and no letters;
-            if(long.TryParse(TrackingNumber, out number))
-            {
-                //convert tracking number to array of individual digits
-                int[] numberArray = (number.ToString().Select(o => Convert.ToInt32(o - 48)).ToArray());
-
-                //Algorythm to generate and check against check digit
-                int arrayLength = numberArray.Length;
-                int CheckDigit = numberArray[arrayLength - 1];
-                int SumOfModifiedDigits = 0;
-                int Multiplier = 1;
-                for(int i = (arrayLength - 2); i > -1; i--)
-                {
-                    SumOfModifiedDigits += (Multiplier * numberArray[i]);
-
-                    switch(Multiplier)
-                    {
-                        case 1: Multiplier = 3; break;
-                        case 3: Multiplier = 7; break;
-                        case 7: Multiplier = 1; break;
-                    }
-                }
-
-                //Divide by 11 and get remainder
-                int Remainder = SumOfModifiedDigits % 11;
-                if(Remainder == 10)
-                {
-                    Remainder = 0;
-                }
-
-                //debug
-                //Console.WriteLine("Remainder is {0}", Remainder);
-                //Console.WriteLine("CheckDigit is {0}", CheckDigit);
-                
-                //if Check digit is valid, return true and try fedex web service
-                if(Remainder == CheckDigit)
-                {
-                    return true;
-                }
-
-            }
-            else
-            {
-                Console.WriteLine("Tracking Number was not converted into an integer number");
-            }
-
-            return false;
-        }
-
-
+        #region USPS
         private void SendRequestToUSPSWebService(TrackerData Entry)
         {
             TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
             
             ParseUSPSRawDataIntoList(Entry, Reply);
-            
         }
 
         private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
         {
-            //TrackingInfo contains a list of strings, "Details"
-            //There is also a Deails.Summary that may be useful
-            Console.WriteLine("Summary contains: {0}", Reply.Summary);
-            int counter = 0;
-            foreach(string track in Reply.Details)
+            //Only need the information in Reply.Summary
+            if (Reply.Summary.Contains("delivered"))
             {
-                Console.WriteLine("Track number {0} contains: {1}", counter, track);
-                //check for error, parse error code else
-
-                    //set carrier to USPS
-
-                    //check for status with key words like delivered, shipped, etc
-                    //set package status
-                
-                    //if shipped look for address and parse
-                    //set package location
-
-                
+                Entry.Status = PackageStatus.Delivered;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
             }
+            else if (Reply.Summary.Contains("departed"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("picked up"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("arrived"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("error"))
+            {
+                Entry.Status = PackageStatus.NotFound;
+                Entry.Location = "Not Found";
+            }
+            else
+            {
+                Entry.Status = PackageStatus.Other;
+                Entry.Location = "Error";
+            }  
         }
 
+        private string ExtractAddressFromString(string source)
+        {
+            //The return object
+            string address = "";
 
+            //the char coordinates inside the stirng of the address
+            int[] Range = new int[2];
+            Range[0] = 0; Range[1] = 0;
+
+            //reverse loop to traverse array from back to front
+            char[] addressArray = source.ToCharArray();
+            int sourceSize = addressArray.Length;
+            for (int i = sourceSize - 1; i > 0; i--)
+            {
+                //looking for commas as markers of useful data
+                if(addressArray[i] == ',')
+                {
+                    if(Range[1] == 0)
+                    {
+                        //The extra 4 characters will contain a space and the state abbreviation
+                        Range[1] = i + 4;
+                    }
+                    else
+                    {
+                        //the plus ten here is to not capture the comma, year, or spaces
+                        Range[0] = i + 10;
+
+                        //escape the for loop
+                        i = -1;
+                    }
+                }
+            }
+
+            //calculate length of found address, extract
+            int sizeOfActualAddress = Range[1] - Range[0];
+            address = source.Substring(Range[0], sizeOfActualAddress);
+
+            return address;
+        }
+        #endregion
+
+        #region UPS
         //Largely UPS's code
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
-            try
-            {
-                //THIS DATA SHOULD PROBABLY BE MOVED TO UPSCODE
-                UPSWebService.UPSWebReference.TrackService track = new UPSWebService.UPSWebReference.TrackService();
-                UPSWebService.UPSWebReference.TrackRequest tr = new UPSWebService.UPSWebReference.TrackRequest();
-                UPSSecurity upss = new UPSSecurity();
-                UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
-                upssSvcAccessToken.AccessLicenseNumber = "4CFB51344FD8E476";
-                upss.ServiceAccessToken = upssSvcAccessToken;
-                UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
-                upssUsrNameToken.Username = "TastEPlasma";
-                upssUsrNameToken.Password = "Firebolt5";
-                upss.UsernameToken = upssUsrNameToken;
-                track.UPSSecurityValue = upss;
-                RequestType request = new RequestType();
-                String[] requestOption = { "15" };
-                request.RequestOption = requestOption;
-                tr.Request = request;
-                tr.InquiryNumber = Entry.TrackingNumber;
-                System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
-                TrackResponse trackResponse = track.ProcessTrack(tr);
+            
 
-                //Check for error state, if not begin editing entry
-                if (trackResponse.Response.ResponseStatus.Code == "1")
-                {
-                    ParseRawUPSDataIntoList(Entry, trackResponse);
-                }
-                else
-                {
-                    Entry.Location = "UPS ERROR";
-                    Entry.Service = ParcelService.UPS;
-                    Console.WriteLine("UPS ERROR");
-                }
-                
-
-                //Debug
-                Console.WriteLine("The transaction was a " + trackResponse.Response.ResponseStatus.Description);
-                Console.WriteLine("Shipment Service " + trackResponse.Shipment[0].Service.Description);
-                Console.WriteLine("Location is " + trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.City);
-            }
-            catch (System.Web.Services.Protocols.SoapException ex)
-            {
-                if (ex.Detail.LastChild.InnerText == "Hard151018Invalid tracking number")
-                {
-                    Entry.Location = "INVALID TRACKING NUMBER";
-                    Entry.Service = ParcelService.UPS;
-                }
-
-                //Debug
-                Console.WriteLine("");
-                Console.WriteLine("---------Track Web Service returns error----------------");
-                Console.WriteLine("---------\"Hard\" is user error \"Transient\" is system error----------------");
-                Console.WriteLine("SoapException Message= " + ex.Message);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException Category:Code:Message= " + ex.Detail.LastChild.InnerText);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException XML String for all= " + ex.Detail.LastChild.OuterXml);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("");
-            }
-            catch (System.ServiceModel.CommunicationException ex)
-            {
-                //Debug
-                Console.WriteLine("");
-                Console.WriteLine("--------------------");
-                Console.WriteLine("CommunicationException= " + ex.Message);
-                Console.WriteLine("CommunicationException-StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("");
-
-            }
-            catch (Exception ex)
-            {
-                //Debug
-                Console.WriteLine("");
-                Console.WriteLine("-------------------------");
-                Console.WriteLine(" General Exception= " + ex.Message);
-                Console.WriteLine(" General Exception-StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-
-            }
+            
         }
 
         //Process raw UPS data, update entry via list
@@ -254,7 +177,61 @@ namespace PackageTracker
                 default: Entry.Status = PackageStatus.Other; break;
             }
         }
+        #endregion
 
+        #region FedEx
+        //Checks trackingnumber against the check digit to id FedEx number
+        private bool CheckFedExNumber(string TrackingNumber)
+        {
+            long number;
+            //Determine if the tracking number is all numbers and no letters;
+            if (long.TryParse(TrackingNumber, out number))
+            {
+                //convert tracking number to array of individual digits
+                int[] numberArray = (number.ToString().Select(o => Convert.ToInt32(o - 48)).ToArray());
+
+                //Algorythm to generate and check against check digit
+                int arrayLength = numberArray.Length;
+                int CheckDigit = numberArray[arrayLength - 1];
+                int SumOfModifiedDigits = 0;
+                int Multiplier = 1;
+                for (int i = (arrayLength - 2); i > -1; i--)
+                {
+                    SumOfModifiedDigits += (Multiplier * numberArray[i]);
+
+                    switch (Multiplier)
+                    {
+                        case 1: Multiplier = 3; break;
+                        case 3: Multiplier = 7; break;
+                        case 7: Multiplier = 1; break;
+                    }
+                }
+
+                //Divide by 11 and get remainder
+                int Remainder = SumOfModifiedDigits % 11;
+                if (Remainder == 10)
+                {
+                    Remainder = 0;
+                }
+
+                //debug
+                //Console.WriteLine("Remainder is {0}", Remainder);
+                //Console.WriteLine("CheckDigit is {0}", CheckDigit);
+
+                //if Check digit is valid, return true and try fedex web service
+                if (Remainder == CheckDigit)
+                {
+                    return true;
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Tracking Number was not converted into an integer number");
+            }
+
+            return false;
+        }
 
         //Send request to FEDEX webservices, receive raw data
         private void SendRequestToFedExWebService(TrackerData Entry)
@@ -348,7 +325,8 @@ namespace PackageTracker
                         }
                     }  
                 }
-            }           
+            }
         }
+        #endregion
     }
 }

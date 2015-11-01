@@ -6,8 +6,12 @@ using System.ServiceModel;
 
 namespace TrackWSSample
 {
-    public class TrackWSClient
+    public class UPSManager
     {
+
+        
+        
+
       public static void TestCode()
         {
             try
