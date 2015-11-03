@@ -9,7 +9,29 @@ namespace TrackWSSample
     public class UPSManager
     {
 
-        
+        public TrackResponse GetTrackingInfo(string TrackingNumber)
+        {
+            TrackService track = new TrackService();
+            TrackRequest tr = new TrackRequest();
+            UPSSecurity upss = new UPSSecurity();
+            UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
+            upssSvcAccessToken.AccessLicenseNumber = "4CFB51344FD8E476";
+            upss.ServiceAccessToken = upssSvcAccessToken;
+            UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
+            upssUsrNameToken.Username = "TastEPlasma";
+            upssUsrNameToken.Password = "Firebolt5";
+            upss.UsernameToken = upssUsrNameToken;
+            track.UPSSecurityValue = upss;
+            RequestType request = new RequestType();
+            String[] requestOption = { "15" };
+            request.RequestOption = requestOption;
+            tr.Request = request;
+            tr.InquiryNumber = "1Z12345E0205271688";
+            System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
+            TrackResponse Results = track.ProcessTrack(tr);
+
+            return Results;
+        }
         
 
       public static void TestCode()

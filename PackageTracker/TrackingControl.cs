@@ -16,17 +16,21 @@ namespace PackageTracker
 {
     class TrackingControl
     {
-
-        USPSManager USPS; 
+        #region Declarations
+        USPSManager POSTAL; 
         //FedExManager FedEx;
         UPSManager UPS;
+        #endregion
 
+        #region Constructors
         public TrackingControl()
         {
-            USPS = new USPSManager();
+            POSTAL = new USPSManager();
             UPS = new UPSManager();
         }
-        
+        #endregion
+
+        #region Public Interface
         public void UpdateTrackingInformation(List<TrackerData> TrackingData)
         {
             //Take list of package data, parse out tracking numbers, run each through web service
@@ -48,7 +52,9 @@ namespace PackageTracker
                         //Check for sum digit to verify FedEx Tracking Number
                         else if (CheckFedExNumber(Entry.TrackingNumber))
                         {
-                            SendRequestToFedExWebService(Entry);
+                            //FedEX support removed due to lack of legitimate access
+                            //SendRequestToFedExWebService(Entry);
+                            FedExNotSupported(Entry);
                         }
 
                         else
@@ -65,11 +71,12 @@ namespace PackageTracker
                 }
             }
         }
+        #endregion
 
-        #region USPS
+        #region POSTAL
         private void SendRequestToUSPSWebService(TrackerData Entry)
         {
-            TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
+            TrackingInfo Reply = POSTAL.GetTrackingInfo(Entry.TrackingNumber);
             
             ParseUSPSRawDataIntoList(Entry, Reply);
         }
@@ -113,6 +120,7 @@ namespace PackageTracker
             }  
         }
 
+        //USPS returns strings, only need a substring for address
         private string ExtractAddressFromString(string source)
         {
             //The return object
@@ -155,15 +163,13 @@ namespace PackageTracker
         #endregion
 
         #region UPS
-        //Largely UPS's code
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
-            
+            TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
 
-            
+            ParseRawUPSDataIntoList(Entry, Response);
         }
 
-        //Process raw UPS data, update entry via list
         private void ParseRawUPSDataIntoList(TrackerData Entry, TrackResponse trackResponse)
         {
             Entry.Location = (trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.City + ", " + trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.StateProvinceCode);
@@ -214,10 +220,6 @@ namespace PackageTracker
                     Remainder = 0;
                 }
 
-                //debug
-                //Console.WriteLine("Remainder is {0}", Remainder);
-                //Console.WriteLine("CheckDigit is {0}", CheckDigit);
-
                 //if Check digit is valid, return true and try fedex web service
                 if (Remainder == CheckDigit)
                 {
@@ -227,10 +229,19 @@ namespace PackageTracker
             }
             else
             {
-                Console.WriteLine("Tracking Number was not converted into an integer number");
+                //DEBUG
+                //Console.WriteLine("Tracking Number was not converted into an integer number");
             }
 
             return false;
+        }
+
+        //Method to return error state when a FedEx number is detected
+        private void FedExNotSupported(TrackerData Entry)
+        {
+            Entry.Service = ParcelService.FedEx;
+            Entry.Status = PackageStatus.Other;
+            Entry.Location = "FedEx not supported";
         }
 
         //Send request to FEDEX webservices, receive raw data
