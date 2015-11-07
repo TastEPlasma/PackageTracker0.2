@@ -4,37 +4,53 @@ using System.Text;
 using UPSWebService.UPSWebReference;
 using System.ServiceModel;
 
-namespace TrackWSSample
+namespace MAX.UPS
 {
     public class UPSManager
     {
+        #region Private Members
+        private string username = "TastEPlasma";
+        private string password = "Firebolt5";
+        private string accessLicenseNumber = "4CFB51344FD8E476";
+        #endregion
 
+        #region Constructors
+        //Using Default
+        #endregion
+
+        #region Tracking Method
         public TrackResponse GetTrackingInfo(string TrackingNumber)
         {
+            //Construct objects
             TrackService track = new TrackService();
             TrackRequest tr = new TrackRequest();
             UPSSecurity upss = new UPSSecurity();
             UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
-            upssSvcAccessToken.AccessLicenseNumber = "4CFB51344FD8E476";
+
+            //Assign parameters
+            upssSvcAccessToken.AccessLicenseNumber = accessLicenseNumber;
             upss.ServiceAccessToken = upssSvcAccessToken;
             UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
-            upssUsrNameToken.Username = "TastEPlasma";
-            upssUsrNameToken.Password = "Firebolt5";
+            upssUsrNameToken.Username = username;
+            upssUsrNameToken.Password = password;
             upss.UsernameToken = upssUsrNameToken;
             track.UPSSecurityValue = upss;
             RequestType request = new RequestType();
             String[] requestOption = { "15" };
             request.RequestOption = requestOption;
             tr.Request = request;
-            tr.InquiryNumber = "1Z12345E0205271688";
+            tr.InquiryNumber = TrackingNumber;
             System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
+
+            //Send request and receive results
             TrackResponse Results = track.ProcessTrack(tr);
 
             return Results;
         }
-        
+        #endregion
 
-      public static void TestCode()
+        #region UPS Example Code
+        public static void TestCode()
         {
             try
             {
@@ -42,18 +58,18 @@ namespace TrackWSSample
                 TrackRequest tr = new TrackRequest();
                 UPSSecurity upss = new UPSSecurity();
                 UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
-                upssSvcAccessToken.AccessLicenseNumber = "4CFB51344FD8E476";
+                upssSvcAccessToken.AccessLicenseNumber = "";
                 upss.ServiceAccessToken = upssSvcAccessToken;
                 UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
-                upssUsrNameToken.Username = "TastEPlasma";
-                upssUsrNameToken.Password = "Firebolt5";
+                upssUsrNameToken.Username = "";
+                upssUsrNameToken.Password = "";
                 upss.UsernameToken = upssUsrNameToken;
                 track.UPSSecurityValue = upss;
                 RequestType request = new RequestType();
                 String[] requestOption = { "15" };
                 request.RequestOption = requestOption;
                 tr.Request = request;
-                tr.InquiryNumber = "1Z12345E0205271688";
+                tr.InquiryNumber = "";
                 System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
                 TrackResponse trackResponse = track.ProcessTrack(tr);
                 Console.WriteLine("The transaction was a " + trackResponse.Response.ResponseStatus.Description);
@@ -94,6 +110,7 @@ namespace TrackWSSample
                 Console.WriteLine("-------------------------");
 
             }
-       }
+        }
+        #endregion
     }
 }

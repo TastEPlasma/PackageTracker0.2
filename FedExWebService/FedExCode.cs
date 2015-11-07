@@ -9,46 +9,46 @@ using FedExWebService.FedExWebReference;
 
 namespace FedExWebService
 {
-    static class AccountInfo
-    {
-        public static string UserKey = "";
-        public static string UserPassword = "";
-        public static string AccountNumber = "";
-        public static string MeterNumber = "";
-        public static string TransactionID = "";
-        public static string TrackingNumber;
-    }
-
     public static class FedEx
     {
-        public static TrackRequest CreateTrackRequest(string TrackingNumber)
+        #region Private Members
+        private static string UserKey = "";
+        private static string UserPassword = "";
+        private static string AccountNumber = "";
+        private static string MeterNumber = "";
+        private static string TransactionID = "";
+        private static string TrackingNumber;
+        #endregion
+
+        #region Track Methods
+        public static TrackRequest CreateTrackRequest(string TrackNumber)
         {
             //create credentials object
             //AccountInfo Credentials = new AccountInfo();
-            AccountInfo.TrackingNumber = TrackingNumber;
+            TrackingNumber = TrackNumber;
 
             // Build the TrackRequest
             TrackRequest request = new TrackRequest();
             //
             request.WebAuthenticationDetail = new WebAuthenticationDetail();
             request.WebAuthenticationDetail.UserCredential = new WebAuthenticationCredential();
-            request.WebAuthenticationDetail.UserCredential.Key = AccountInfo.UserKey; // Replace "XXX" with the Key
-            request.WebAuthenticationDetail.UserCredential.Password = AccountInfo.UserPassword; // Replace "XXX" with the Password
+            request.WebAuthenticationDetail.UserCredential.Key = UserKey; // Replace "XXX" with the Key
+            request.WebAuthenticationDetail.UserCredential.Password = UserPassword; // Replace "XXX" with the Password
             request.WebAuthenticationDetail.ParentCredential = new WebAuthenticationCredential();
             request.WebAuthenticationDetail.ParentCredential.Key = "XXX"; // Replace "XXX" with the Key
             request.WebAuthenticationDetail.ParentCredential.Password = "XXX"; // Replace "XXX"
             request.ClientDetail = new ClientDetail();
-            request.ClientDetail.AccountNumber = AccountInfo.AccountNumber; // Replace "XXX" with the client's account number
-            request.ClientDetail.MeterNumber = AccountInfo.MeterNumber; // Replace "XXX" with the client's meter number
+            request.ClientDetail.AccountNumber = AccountNumber; // Replace "XXX" with the client's account number
+            request.ClientDetail.MeterNumber = MeterNumber; // Replace "XXX" with the client's meter number
             request.TransactionDetail = new TransactionDetail();
-            request.TransactionDetail.CustomerTransactionId = AccountInfo.TransactionID;  //This is a reference field for the customer.  Any value can be used and will be provided in the response.
+            request.TransactionDetail.CustomerTransactionId = TransactionID;  //This is a reference field for the customer.  Any value can be used and will be provided in the response.
             //
             request.Version = new VersionId();
             //
             // Tracking information
             request.SelectionDetails = new TrackSelectionDetail[1] { new TrackSelectionDetail() };
             request.SelectionDetails[0].PackageIdentifier = new TrackPackageIdentifier();
-            request.SelectionDetails[0].PackageIdentifier.Value = AccountInfo.TrackingNumber; // Replace "XXX" with tracking number or door tag
+            request.SelectionDetails[0].PackageIdentifier.Value = TrackingNumber; // Replace "XXX" with tracking number or door tag
             request.SelectionDetails[0].PackageIdentifier.Type = TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG;
             //
             // Date range is optional.
@@ -64,7 +64,9 @@ namespace FedExWebService
             request.ProcessingOptions[0] = TrackRequestProcessingOptionType.INCLUDE_DETAILED_SCANS;
             return request;
         }
+        #endregion
 
+        #region FedEx Example Code
         public static void ShowTrackReply(TrackReply reply)
         {
             // Track details for each package
@@ -204,6 +206,7 @@ namespace FedExWebService
                 return "XXX";
             }
         }
+        #endregion
     }
 }
 

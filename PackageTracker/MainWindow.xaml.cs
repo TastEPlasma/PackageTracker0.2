@@ -23,11 +23,9 @@ using FedExWebService;
 
 namespace PackageTracker
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        #region Private Members
         //Required context for Entity Framework to build DB
         private TrackerContext _context = new TrackerContext();
 
@@ -36,7 +34,9 @@ namespace PackageTracker
 
         //Internal timer for Auto-Updates CheckBox
         private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
+        #endregion
 
+        #region Constructors And Initializers
         public MainWindow()
         {
             InitializeComponent();
@@ -51,17 +51,11 @@ namespace PackageTracker
             UpdateTimer.IsEnabled = false;
         }
 
-        private void UpdateDatabase(object sender, EventArgs e)
-        {
-            UpdateDatabase();
-        }
-
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
             this._context.Dispose();
         }
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -84,8 +78,10 @@ namespace PackageTracker
             // to use the DbSet<T> as a binding source. 
             trackerDataViewSource.Source = _context.Packages.Local;
         }
+        #endregion
 
-        private void Update_Click(object sender, RoutedEventArgs e)
+        #region Database Methods
+        private void UpdateDatabase(object sender, EventArgs e)
         {
             UpdateDatabase();
         }
@@ -133,7 +129,6 @@ namespace PackageTracker
             DBUpdater.RunWorkerAsync();
         }
 
-
         private void UpdateLocalDBWithUserInput()
         {
             //Create list from DB
@@ -152,7 +147,6 @@ namespace PackageTracker
             _context.SaveChanges();
         }
 
-
         private void UpdateDBFromWebServices()
         {
             //Create list from DB
@@ -164,7 +158,13 @@ namespace PackageTracker
             //Commit changes to DB
             _context.SaveChanges();
         }
+        #endregion
 
+        #region GUI Methods
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateDatabase();
+        }
 
         private async void ProgressBarVisibilityDelay()
         {
@@ -186,5 +186,6 @@ namespace PackageTracker
                 UpdateTimer.IsEnabled = false;
             }
         }
+        #endregion
     }
 }

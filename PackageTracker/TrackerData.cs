@@ -10,15 +10,31 @@ using System.Windows.Media.Imaging;
 
 namespace PackageTracker
 {
+    #region Namespace Enumerations
+    enum PackageStatus
+    {
+        NotFound,
+        NotShipped,
+        Shipped,
+        OutForDelivery,
+        Delivered,
+        Returned,
+        Other,
+        PickUp
+    }
+
+    enum ParcelService
+    {
+        FedEx,
+        UPS,
+        USPS,
+        None
+    }
+    #endregion
+
     class TrackerData
     {
-        public TrackerData()
-        {
-            DeleteMe = false;
-            Service = ParcelService.None;
-            Status = PackageStatus.NotFound;
-        }
-
+        #region Properties
         public int ID { get; set; }
         public string CustomName { get; set; }
         public string TrackingNumber { get; set; }
@@ -31,7 +47,7 @@ namespace PackageTracker
         {
             get
             {
-                switch(Status)
+                switch (Status)
                 {
                     case PackageStatus.Delivered: return "Delivered";
                     case PackageStatus.NotFound: return "NotFound";
@@ -56,11 +72,11 @@ namespace PackageTracker
             {
                 switch (Service)
                 {
-                    case ParcelService.FedEx: return ImageHolding.FedEx;
-                    case ParcelService.UPS: return ImageHolding.UPS;
-                    case ParcelService.USPS: return ImageHolding.USPS;
-                    case ParcelService.None: return ImageHolding.Unknown;
-                    default: return ImageHolding.Unknown;
+                    case ParcelService.FedEx: return ImageLoadingAndHolding.FedEx;
+                    case ParcelService.UPS: return ImageLoadingAndHolding.UPS;
+                    case ParcelService.USPS: return ImageLoadingAndHolding.USPS;
+                    case ParcelService.None: return ImageLoadingAndHolding.Unknown;
+                    default: return ImageLoadingAndHolding.Unknown;
                 }
             }
             set
@@ -68,33 +84,29 @@ namespace PackageTracker
 
             }
         }
+        #endregion
+
+        #region Constructors
+        public TrackerData()
+        {
+            DeleteMe = false;
+            Service = ParcelService.None;
+            Status = PackageStatus.NotFound;
+        }
+        #endregion
     }
 
-
-    enum PackageStatus
+    static class ImageLoadingAndHolding
     {
-        NotFound,
-        NotShipped,
-        Shipped,
-        OutForDelivery,
-        Delivered,
-        Returned,
-        Other,
-        PickUp
-    }
+        #region Private Members
+        static BitmapImage FedExbitmap;
+        static BitmapImage UPSbitmap;
+        static BitmapImage USPSbitmap;
+        static BitmapImage Unknownbitmap;
+        #endregion
 
-    enum ParcelService
-    {
-        FedEx,
-        UPS,
-        USPS,
-        None
-    }
-
-
-    static class ImageHolding
-    { 
-        static ImageHolding()
+        #region Constructors
+        static ImageLoadingAndHolding()
         {
             var path = Path.Combine(Environment.CurrentDirectory, "FedExCarrier.GIF");
             var uri = new Uri(path);
@@ -112,13 +124,9 @@ namespace PackageTracker
             uri = new Uri(path);
             Unknownbitmap = new BitmapImage(uri);
         }
+        #endregion
 
-        static BitmapImage FedExbitmap;
-        static BitmapImage UPSbitmap;
-        static BitmapImage USPSbitmap;
-        static BitmapImage Unknownbitmap;
-
-
+        #region Properties
         public static BitmapImage FedEx
         {
             get { return FedExbitmap; }
@@ -142,5 +150,6 @@ namespace PackageTracker
             get { return Unknownbitmap; }
             set { /*Do Nothing*/ }
         }
+        #endregion
     }
 }

@@ -11,10 +11,11 @@ namespace PackageTracker
     {
         public DbSet<TrackerData> Packages { get; set; }
 
+        //exclude unnecessary data bits from being entered into database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //This allowd EF to ignore the "DeleteMe" and "StatusOfPackage" property regardless of
-            //where it is found, and to never include it in its data model
+            //This allows EF to ignore the "DeleteMe", "StatusOfPackage" and "CarrierCode" 
+            //property regardless of where it is found, and to never include it in its data model
             //or push it in updates
             modelBuilder.Types().
                 Configure(c => c.Ignore("DeleteMe"));

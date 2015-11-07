@@ -4,7 +4,7 @@ using System.Text;
 using System.Net;
 
 
-namespace TrackWSSample
+namespace MAX
 {
     public class TrustAllCertificatePolicy : System.Net.ICertificatePolicy
     {

@@ -7,7 +7,7 @@ using System.Web.Services;
 using FedExWebService.FedExWebReference;
 using FedExWebService;
 using System.Web.Services.Protocols;
-using TrackWSSample;
+using MAX.UPS;
 using UPSWebService.UPSWebReference;
 using System.ServiceModel;
 using MAX.USPS;
