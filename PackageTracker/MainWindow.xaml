@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PackageTracker" mc:Ignorable="d" x:Class="PackageTracker.MainWindow"
-        Title="MainWindow" Height="390" Width="650" Loaded="Window_Loaded">
+        Title="Package Tracker" Height="390" Width="650" Loaded="Window_Loaded"
+        x:Name="_this">
     <Window.Resources>
         <CollectionViewSource x:Key="trackerContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerContext}, CreateList=True}"/>
         <CollectionViewSource x:Key="trackerContextPackagesViewSource" Source="{Binding Packages, Source={StaticResource trackerContextViewSource}}"/>
@@ -15,8 +16,8 @@
     </Window.Resources>
     <Grid DataContext="{StaticResource trackerContextPackagesViewSource}" Margin="-4,0,-40,0" HorizontalAlignment="Center" Width="763">
 
-        <Button x:Name="Update" Content="Update" HorizontalAlignment="Center" Margin="323,0,364,10" VerticalAlignment="Bottom" Width="76" Click="Update_Click" Height="20" RenderTransformOrigin="0.227,-0.9"/>
-        <DataGrid x:Name="trackerDataDataGrid"  AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource trackerDataViewSource}}" Margin="44,10,81,81" RowDetailsVisibilityMode="Visible"  Background="White" HorizontalAlignment="Center" Width="auto">
+        <Button x:Name="Update" Content="Update" HorizontalAlignment="Center" Margin="323,0,364,40" VerticalAlignment="Bottom" Width="76" Click="Update_Click" Height="20" RenderTransformOrigin="0.227,-0.9"/>
+        <DataGrid x:Name="trackerDataDataGrid"  AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource trackerDataViewSource}}" Margin="44,16,81,81" RowDetailsVisibilityMode="Visible"  Background="White" HorizontalAlignment="Center" Width="auto">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" Resources="{StaticResource BackgroundColors}">
                     <Setter Property="Background" Value="{StaticResource Other}"/>
@@ -66,8 +67,49 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <ProgressBar Name ="Progress" Visibility="Hidden"  IsIndeterminate="True" HorizontalAlignment="Center" Height="10" Margin="310,283,353,0" VerticalAlignment="Top" Width="100"/>
-        <CheckBox Name ="HourlyUpdatesBox" Content="Hourly Auto-Update?" HorizontalAlignment="Center" Margin="540,0,90,10" VerticalAlignment="Bottom" Checked="CheckBox_Checked"/>
+        <ProgressBar Name ="Progress" Visibility="Hidden"  IsIndeterminate="True" HorizontalAlignment="Center" Height="10" Margin="310,0,353,65" VerticalAlignment="Bottom" Width="100"/>
+        <TextBlock Text="Auto-updates is " Height="20" Width="auto" HorizontalAlignment="Left" Margin="222,0,0,0" 
+                 VerticalAlignment="Bottom"></TextBlock>
+        <TextBlock Name="displayUpdateToggle"  Text="OFF" Height="20" Width="auto" HorizontalAlignment="Left" Margin="323,0,0,0" 
+                 VerticalAlignment="Bottom"></TextBlock>
+        <TextBlock Text="and is set to every " Height="20" Width="auto" HorizontalAlignment="Left" Margin="355,0,0,0" 
+                 VerticalAlignment="Bottom"></TextBlock>
+        <TextBlock Name="delayLength" Text="1" Height="20" Width="auto" HorizontalAlignment="Left" Margin="460,0,0,0" 
+                 VerticalAlignment="Bottom"></TextBlock>
+        <TextBlock Text=" hours. " Height="20" Width="auto" HorizontalAlignment="Left" Margin="471,0,0,0" 
+                 VerticalAlignment="Bottom"></TextBlock>
 
+
+        <Menu HorizontalAlignment="Left" Height="18" Margin="44,0,0,0" VerticalAlignment="Top" Width="638">
+            <MenuItem Header="File" Visibility="Visible" Name="menuFile" >
+                <MenuItem Header="Update" Click="Update_Click"></MenuItem>
+                <MenuItem Header="Quit" Click="Quit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Options">
+                <MenuItem Header="Set Account Information" Click="Account_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Name="HourlyUpdatesBox" Header="Toggle Auto Update" IsCheckable="True" Checked="CheckBox_Checked"></MenuItem>
+                <MenuItem Header="Set Auto-Update Delay" Click="Delay_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+
+        <Popup Name="DelayAdjuster" Placement="Center"
+            Width="110" Height="110" IsOpen="False">
+            <StackPanel>
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.191"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <TextBlock x:Name="delayHeader" Background="#FFD8D8D8" Width="110" HorizontalAlignment="Center"><Run Text="     Delay In Hours"/></TextBlock>
+                <Slider x:Name="delaySlider" Width="100" Value="1" Orientation="Horizontal" HorizontalAlignment="Center"
+            		IsSnapToTickEnabled="True" Minimum="1" Maximum="24" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight"
+            		TickPlacement="BottomRight" TickFrequency="1" Margin="0,5" />
+                <Button Height="30" Width="70" x:Name="updateDelayAmountButton" Content="Save" Click="delayButtonClose_Click" Margin="15,20" />
+            </StackPanel>
+        </Popup>
     </Grid>
+
 </Window>

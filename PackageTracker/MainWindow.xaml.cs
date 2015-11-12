@@ -34,6 +34,21 @@ namespace PackageTracker
 
         //Internal timer for Auto-Updates CheckBox
         private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
+        private TimeSpan DelayTime = new TimeSpan(1, 0, 0);
+        #endregion
+
+        #region Properties
+        public string DelayInHours
+        {
+            get { return DelayTime.Hours.ToString(); }
+            set { /*Do Nothing*/ }
+        }
+
+        public string TimerEnabled
+        {
+            get { return UpdateTimer.IsEnabled == true ? "ON" : "OFF"; }
+            set { /* Do Nothing */ }
+        }
         #endregion
 
         #region Constructors And Initializers
@@ -47,7 +62,7 @@ namespace PackageTracker
         {
             UpdateTimer.Tick += new EventHandler(UpdateDatabase);
             //set interval to 1 hour
-            UpdateTimer.Interval = new TimeSpan(1, 0, 0);
+            UpdateTimer.Interval = DelayTime;
             UpdateTimer.IsEnabled = false;
         }
 
@@ -180,12 +195,39 @@ namespace PackageTracker
             if(HourlyUpdatesBox.IsChecked == true)
             {
                 UpdateTimer.IsEnabled = true;
+                displayUpdateToggle.Text = "ON";
             }
             else
             {
                 UpdateTimer.IsEnabled = false;
+                displayUpdateToggle.Text = "OFF";
             }
         }
         #endregion
+
+        private void Quit_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void Account_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void Delay_Click(object sender, RoutedEventArgs e)
+        {
+            DelayAdjuster.IsOpen = true;
+        }
+
+        private void delayButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            delayLength.Text = delaySlider.Value.ToString();
+            TimeSpan tempSpan = new TimeSpan(Convert.ToInt32(delaySlider.Value), 0, 0);
+            DelayTime = tempSpan;
+            UpdateTimer.Interval = DelayTime;
+            DelayAdjuster.IsOpen = false;
+            Console.WriteLine(delaySlider.Value);
+        }
     }
 }

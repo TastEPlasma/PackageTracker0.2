@@ -73,7 +73,7 @@ namespace PackageTracker
         }
         #endregion
 
-        #region POSTAL
+        #region POSTAL Methods
         private void SendRequestToUSPSWebService(TrackerData Entry)
         {
             TrackingInfo Reply = POSTAL.GetTrackingInfo(Entry.TrackingNumber);
@@ -162,7 +162,7 @@ namespace PackageTracker
         }
         #endregion
 
-        #region UPS
+        #region UPS Methods
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
             TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
@@ -185,7 +185,7 @@ namespace PackageTracker
         }
         #endregion
 
-        #region FedEx
+        #region FedEx Methods
         //Checks trackingnumber against the check digit to id FedEx number
         private bool CheckFedExNumber(string TrackingNumber)
         {
