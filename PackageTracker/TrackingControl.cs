@@ -18,7 +18,7 @@ namespace PackageTracker
     {
         #region Declarations
         USPSManager POSTAL; 
-        //FedExManager FedEx;
+        FedExManager FedEx;
         UPSManager UPS;
         #endregion
 
@@ -27,6 +27,7 @@ namespace PackageTracker
         {
             POSTAL = new USPSManager();
             UPS = new UPSManager();
+            FedEx = new FedExManager();
         }
         #endregion
 
@@ -53,8 +54,8 @@ namespace PackageTracker
                         else if (CheckFedExNumber(Entry.TrackingNumber))
                         {
                             //FedEX support removed due to lack of legitimate access
-                            //SendRequestToFedExWebService(Entry);
-                            FedExNotSupported(Entry);
+                            SendRequestToFedExWebService(Entry);
+                            //FedExNotSupported(Entry);
                         }
 
                         else
@@ -69,6 +70,42 @@ namespace PackageTracker
                         Entry.Status = PackageStatus.NotFound;
                     }
                 }
+            }
+        }
+        public void UpdateCredentialInformation(List<string> NewCredentials, ParcelService Carrier)
+        {
+            //due to differences in each web service, 
+            //a seperate methodology was applied for changing the credentials
+
+            //Array out of bounds should not happen, since this is being called from a single function
+            if(Carrier == ParcelService.FedEx)
+            {
+                if(NewCredentials[0] != "")
+                {
+                    FedEx.SetUserKey = NewCredentials[0];
+                }
+                if(NewCredentials[1] != "")
+                {
+                    FedEx.SetUserPassword = NewCredentials[1];
+                }
+                if(NewCredentials[2] != "")
+                {
+                    FedEx.SetAccountNumber = NewCredentials[2];
+                }
+                if(NewCredentials[3] != "")
+                {
+                    FedEx.SetMeterNumber = NewCredentials[3];
+                }   
+            }
+
+            if(Carrier == ParcelService.UPS)
+            {
+
+            }
+
+            if(Carrier == ParcelService.USPS)
+            {
+
             }
         }
         #endregion
@@ -269,6 +306,8 @@ namespace PackageTracker
                 {
                     //error handling for blank or incomplete tracking numbers
                     Entry.Location = "ERROR";
+                    //Console.WriteLine(reply.HighestSeverity);
+                    //FedEx.ShowTrackReply(reply);
                 }
                 
             }

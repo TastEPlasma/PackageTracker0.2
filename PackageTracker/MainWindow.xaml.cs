@@ -203,14 +203,8 @@ namespace PackageTracker
                 displayUpdateToggle.Text = "OFF";
             }
         }
-        #endregion
 
         private void Quit_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Application.Current.Shutdown();
-        }
-
-        private void Account_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }
@@ -229,5 +223,34 @@ namespace PackageTracker
             DelayAdjuster.IsOpen = false;
             Console.WriteLine(delaySlider.Value);
         }
+
+        private void FedExAccountUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: Add check box for resetting to default values
+            List<string> UpdatedInfo = new List<string>();
+            UpdatedInfo.Add(FedExUserKEY.Text);
+            UpdatedInfo.Add(FedExUserPASSWORD.Text);
+            UpdatedInfo.Add(FedExUserACCOUNTNUMBER.Text);
+            UpdatedInfo.Add(FedExUserMETERNUMBER.Text);
+
+            _control.UpdateCredentialInformation(UpdatedInfo , ParcelService.FedEx);
+        }
+
+        private void UPSAccountUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void USPSAccountUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+        #endregion
+
+        
+
+        
+
+        
     }
 }

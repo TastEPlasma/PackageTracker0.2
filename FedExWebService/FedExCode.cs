@@ -9,19 +9,42 @@ using FedExWebService.FedExWebReference;
 
 namespace FedExWebService
 {
-    public static class FedEx
+    public class FedExManager
     {
         #region Private Members
-        private static string UserKey = "";
-        private static string UserPassword = "";
-        private static string AccountNumber = "";
-        private static string MeterNumber = "";
-        private static string TransactionID = "";
-        private static string TrackingNumber;
+        private string UserKey = "1CK3fnM8LhfQWteN";
+        private string UserPassword = "vh6rTNPVog2PAXKRh44SiJznk";
+        private string AccountNumber = "510087186";
+        private string MeterNumber = "118691686";
+        private string TransactionID = "TRACK";
+        private string TrackingNumber;
+        #endregion
+
+        #region Properties
+        public string SetUserKey 
+        {
+            get { return "no access"; }
+            set { UserKey = value;}
+        }
+        public string SetUserPassword 
+        {
+            get { return "no access"; }
+            set { UserPassword = value; } 
+        }
+        public string  SetAccountNumber 
+        {
+            get { return "no access"; }
+            set { AccountNumber = value; } 
+        }
+        public string SetMeterNumber 
+        {
+            get { return "no access"; }
+            set { MeterNumber = value; }
+        }
         #endregion
 
         #region Track Methods
-        public static TrackRequest CreateTrackRequest(string TrackNumber)
+        public TrackRequest CreateTrackRequest(string TrackNumber)
         {
             //create credentials object
             //AccountInfo Credentials = new AccountInfo();

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PackageTracker" mc:Ignorable="d" x:Class="PackageTracker.MainWindow"
         Title="Package Tracker" Height="390" Width="650" Loaded="Window_Loaded"
-        x:Name="_this">
+        >
     <Window.Resources>
         <CollectionViewSource x:Key="trackerContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerContext}, CreateList=True}"/>
         <CollectionViewSource x:Key="trackerContextPackagesViewSource" Source="{Binding Packages, Source={StaticResource trackerContextViewSource}}"/>
@@ -86,12 +86,36 @@
                 <MenuItem Header="Quit" Click="Quit_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Options">
-                <MenuItem Header="Set Account Information" Click="Account_Click"></MenuItem>
+                <MenuItem Header="Configure Credentials">
+                    <MenuItem Header="FedEx"></MenuItem>
+                    <MenuItem Header="UPS"></MenuItem>
+                    <MenuItem Header="USPS"></MenuItem>
+                </MenuItem>
+
                 <Separator></Separator>
                 <MenuItem Name="HourlyUpdatesBox" Header="Toggle Auto Update" IsCheckable="True" Checked="CheckBox_Checked"></MenuItem>
                 <MenuItem Header="Set Auto-Update Delay" Click="Delay_Click"></MenuItem>
             </MenuItem>
         </Menu>
+
+        <Popup Name="CredentialEntry" Placement="Center" Width="300" Height="200" IsOpen="False">
+            <StackPanel Background="BlanchedAlmond"  Margin="-250,-150,250,150">
+                <TextBlock Background="AntiqueWhite" Width="500" HorizontalAlignment="Center"><Run Text="                                    Enter Custom Credentials For FedEx Web Services"/></TextBlock>
+                
+                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
+                <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
+
+                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
+                <TextBox x:Name="FedExUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
+
+                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Account: "/></TextBlock>
+                <TextBox x:Name="FedExUserACCOUNTNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+
+                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: "/></TextBlock>
+                <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+
+            </StackPanel>
+        </Popup>
 
 
         <Popup Name="DelayAdjuster" Placement="Center"
@@ -110,6 +134,8 @@
                 <Button Height="30" Width="70" x:Name="updateDelayAmountButton" Content="Save" Click="delayButtonClose_Click" Margin="15,20" />
             </StackPanel>
         </Popup>
+
+
     </Grid>
 
 </Window>
