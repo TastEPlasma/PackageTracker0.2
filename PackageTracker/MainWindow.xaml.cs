@@ -224,16 +224,32 @@ namespace PackageTracker
             Console.WriteLine(delaySlider.Value);
         }
 
+        private void OpenFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            FedExCredentialEntry.IsOpen = true;
+        }
+
         private void FedExAccountUpdate_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Add check box for resetting to default values
             List<string> UpdatedInfo = new List<string>();
-            UpdatedInfo.Add(FedExUserKEY.Text);
-            UpdatedInfo.Add(FedExUserPASSWORD.Text);
-            UpdatedInfo.Add(FedExUserACCOUNTNUMBER.Text);
-            UpdatedInfo.Add(FedExUserMETERNUMBER.Text);
+            if(UpdateFedExToDefaults_CheckBox.IsChecked == false)
+            {
+                
+                UpdatedInfo.Add(FedExUserKEY.Text);
+                UpdatedInfo.Add(FedExUserPASSWORD.Text);
+                UpdatedInfo.Add(FedExUserACCOUNTNUMBER.Text);
+                UpdatedInfo.Add(FedExUserMETERNUMBER.Text);
 
-            _control.UpdateCredentialInformation(UpdatedInfo , ParcelService.FedEx);
+                FedExCredentialEntry.IsOpen = false;
+
+                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+            }
+            else
+            {
+                UpdatedInfo.Add("ResetToDefaults");
+                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+            }
+            
         }
 
         private void UPSAccountUpdate_Click(object sender, RoutedEventArgs e)

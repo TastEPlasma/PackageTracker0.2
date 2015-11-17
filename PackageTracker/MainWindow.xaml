@@ -87,7 +87,7 @@
             </MenuItem>
             <MenuItem Header="Options">
                 <MenuItem Header="Configure Credentials">
-                    <MenuItem Header="FedEx"></MenuItem>
+                    <MenuItem Header="FedEx" Click="OpenFedExCredentialsMenu_Click"></MenuItem>
                     <MenuItem Header="UPS"></MenuItem>
                     <MenuItem Header="USPS"></MenuItem>
                 </MenuItem>
@@ -98,9 +98,10 @@
             </MenuItem>
         </Menu>
 
-        <Popup Name="CredentialEntry" Placement="Center" Width="300" Height="200" IsOpen="False">
-            <StackPanel Background="BlanchedAlmond"  Margin="-250,-150,250,150">
-                <TextBlock Background="AntiqueWhite" Width="500" HorizontalAlignment="Center"><Run Text="                                    Enter Custom Credentials For FedEx Web Services"/></TextBlock>
+        <Popup Name="FedExCredentialEntry"  Placement="Center"
+               Width="300" Height="200" IsOpen="False">
+            <StackPanel Background="BlanchedAlmond"  >
+                <TextBlock Background="AntiqueWhite" Width="300" HorizontalAlignment="Center"><Run Text="      Enter Custom Credentials For FedEx Web Services"/></TextBlock>
                 
                 <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
                 <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
@@ -113,6 +114,10 @@
 
                 <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: "/></TextBlock>
                 <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                
+                <Button Width="110" Height="25" Content="Update Credentials" Background="Aquamarine" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="FedExAccountUpdate_Click"/>
+                
+                <CheckBox Name="UpdateFedExToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
 
             </StackPanel>
         </Popup>

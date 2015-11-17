@@ -80,22 +80,29 @@ namespace PackageTracker
             //Array out of bounds should not happen, since this is being called from a single function
             if(Carrier == ParcelService.FedEx)
             {
-                if(NewCredentials[0] != "")
+                if(NewCredentials[0] != "ResetToDefaults")
                 {
-                    FedEx.SetUserKey = NewCredentials[0];
+                    if (NewCredentials[0] != "")
+                    {
+                        FedEx.SetUserKey = NewCredentials[0];
+                    }
+                    if (NewCredentials[1] != "")
+                    {
+                        FedEx.SetUserPassword = NewCredentials[1];
+                    }
+                    if (NewCredentials[2] != "")
+                    {
+                        FedEx.SetAccountNumber = NewCredentials[2];
+                    }
+                    if (NewCredentials[3] != "")
+                    {
+                        FedEx.SetMeterNumber = NewCredentials[3];
+                    }
                 }
-                if(NewCredentials[1] != "")
+                else
                 {
-                    FedEx.SetUserPassword = NewCredentials[1];
-                }
-                if(NewCredentials[2] != "")
-                {
-                    FedEx.SetAccountNumber = NewCredentials[2];
-                }
-                if(NewCredentials[3] != "")
-                {
-                    FedEx.SetMeterNumber = NewCredentials[3];
-                }   
+                    FedEx.ResetCredentialsToDefaults();
+                }    
             }
 
             if(Carrier == ParcelService.UPS)
@@ -304,8 +311,9 @@ namespace PackageTracker
                 }
                 else
                 {
-                    //error handling for blank or incomplete tracking numbers
+                    //error handling for blank and incomplete tracking numbers, or invalid requests due to faulty credentials
                     Entry.Location = "ERROR";
+                    Entry.Status = PackageStatus.Other;
                     //Console.WriteLine(reply.HighestSeverity);
                     //FedEx.ShowTrackReply(reply);
                 }
