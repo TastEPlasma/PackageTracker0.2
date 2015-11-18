@@ -14,11 +14,29 @@ namespace MAX.UPS
         private string accessLicenseNumber = "4CFB51344FD8E476";
         #endregion
 
+        #region Properties
+        public string SetUsername 
+        {
+            get { return "no access"; }
+            set { username = value; }
+        }
+        public string SetPassword 
+        {
+            get { return "no access"; }
+            set { password = value; }
+        }
+        public string SetLicenseNumber 
+        {
+            get { return "no access"; }
+            set { accessLicenseNumber = value; }
+        }
+        #endregion
+
         #region Constructors
         //Using Default
         #endregion
 
-        #region Tracking Method
+        #region Public Interface
         public TrackResponse GetTrackingInfo(string TrackingNumber)
         {
             //Construct objects
@@ -43,9 +61,22 @@ namespace MAX.UPS
             System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
 
             //Send request and receive results
-            TrackResponse Results = track.ProcessTrack(tr);
+            try
+            {
+                TrackResponse Results = track.ProcessTrack(tr);
+                return Results;
+            }
+            catch(System.Web.Services.Protocols.SoapException ex)
+            {
+                throw new Exception(ex.Message);
+            }    
+        }
 
-            return Results;
+        public void ResetCredentialsToDefaultValues()
+        {
+            username = "TastEPlasma";
+            password = "Firebolt5";
+            accessLicenseNumber = "4CFB51344FD8E476";
         }
         #endregion
 

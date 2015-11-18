@@ -107,12 +107,40 @@ namespace PackageTracker
 
             if(Carrier == ParcelService.UPS)
             {
-
+                if(NewCredentials[0] != "ResetToDefaults")
+                {
+                    if (NewCredentials[0] != "")
+                    {
+                        UPS.SetUsername = NewCredentials[0];
+                    }
+                    if (NewCredentials[1] != "")
+                    {
+                        UPS.SetPassword = NewCredentials[1];
+                    }
+                    if(NewCredentials[2] != "")
+                    {
+                        UPS.SetLicenseNumber = NewCredentials[2];
+                    }
+                }
+                else
+                {
+                    UPS.ResetCredentialsToDefaultValues();
+                }
             }
 
             if(Carrier == ParcelService.USPS)
             {
-
+                if(NewCredentials[0] != "ResetToDefaults")
+                {
+                    if(NewCredentials[0] != "")
+                    {
+                        POSTAL.setUserID = NewCredentials[0];
+                    }
+                }
+                else
+                {
+                    POSTAL.ResetResetCredentialsToDefaults();
+                }
             }
         }
         #endregion
@@ -120,9 +148,24 @@ namespace PackageTracker
         #region POSTAL Methods
         private void SendRequestToUSPSWebService(TrackerData Entry)
         {
-            TrackingInfo Reply = POSTAL.GetTrackingInfo(Entry.TrackingNumber);
-            
-            ParseUSPSRawDataIntoList(Entry, Reply);
+            try
+            {
+                TrackingInfo Reply = POSTAL.GetTrackingInfo(Entry.TrackingNumber);
+                ParseUSPSRawDataIntoList(Entry, Reply);
+            }
+            catch(USPSManagerException ex)
+            {
+                if(ex.Message == "Unable to connect to remote server")
+                {
+                    Entry.Location = "ERROR: No Connection";
+                    Entry.Status = PackageStatus.Other;
+                }
+                else
+                {
+                    Entry.Location = "ERROR";
+                    Entry.Status = PackageStatus.Other;
+                }
+            }   
         }
 
         private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
@@ -209,9 +252,24 @@ namespace PackageTracker
         #region UPS Methods
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
-            TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
-
-            ParseRawUPSDataIntoList(Entry, Response);
+            try
+            {
+                TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
+                ParseRawUPSDataIntoList(Entry, Response);
+            }
+            catch(Exception ex)
+            {
+                if(ex.Message == "An exception has been raised as a result of client data.")
+                {
+                    Entry.Location = "ERROR: Bad Credentials";
+                    Entry.Status = PackageStatus.Other;
+                }
+                else
+                {
+                    Entry.Location = "ERROR";
+                    Entry.Status = PackageStatus.Other;
+                }
+            }
         }
 
         private void ParseRawUPSDataIntoList(TrackerData Entry, TrackResponse trackResponse)
@@ -314,6 +372,8 @@ namespace PackageTracker
                     //error handling for blank and incomplete tracking numbers, or invalid requests due to faulty credentials
                     Entry.Location = "ERROR";
                     Entry.Status = PackageStatus.Other;
+
+                    //For debugging
                     //Console.WriteLine(reply.HighestSeverity);
                     //FedEx.ShowTrackReply(reply);
                 }

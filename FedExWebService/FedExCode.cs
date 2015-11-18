@@ -43,16 +43,11 @@ namespace FedExWebService
         }
         #endregion
 
-        public void ResetCredentialsToDefaults()
-        {
-            UserKey = "1CK3fnM8LhfQWteN";
-            UserPassword = "vh6rTNPVog2PAXKRh44SiJznk";
-            AccountNumber = "510087186";
-            MeterNumber = "118691686";
-            TransactionID = "TRACK";
-        }
+        #region Constructors
+        //Using default
+        #endregion
 
-        #region Track Methods
+        #region Public Interface
         public TrackRequest CreateTrackRequest(string TrackNumber)
         {
             //create credentials object
@@ -95,6 +90,14 @@ namespace FedExWebService
             request.ProcessingOptions = new TrackRequestProcessingOptionType[1];
             request.ProcessingOptions[0] = TrackRequestProcessingOptionType.INCLUDE_DETAILED_SCANS;
             return request;
+        }
+        public void ResetCredentialsToDefaults()
+        {
+            UserKey = "1CK3fnM8LhfQWteN";
+            UserPassword = "vh6rTNPVog2PAXKRh44SiJznk";
+            AccountNumber = "510087186";
+            MeterNumber = "118691686";
+            TransactionID = "TRACK";
         }
         #endregion
 
