@@ -96,6 +96,10 @@
                 <MenuItem Name="HourlyUpdatesBox" Header="Toggle Auto Update" IsCheckable="True" Checked="CheckBox_Checked"></MenuItem>
                 <MenuItem Header="Set Auto-Update Delay" Click="Delay_Click"></MenuItem>
             </MenuItem>
+            <MenuItem Name="Info_Menu" Header="Info">
+                <MenuItem Name="About_Menu" Header="About" Click="OpenAboutPopup_Click"/>
+                <MenuItem Name="Usage_Menu" Header="Usage" Click="Quit_Click"/>
+            </MenuItem>
         </Menu>
 
         <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center"
@@ -175,6 +179,33 @@
             		IsSnapToTickEnabled="True" Minimum="1" Maximum="24" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight"
             		TickPlacement="BottomRight" TickFrequency="1" Margin="0,5" />
                 <Button Height="30" Width="70" x:Name="updateDelayAmountButton" Content="Save" Click="delayButtonClose_Click" Margin="15,20" />
+            </StackPanel>
+        </Popup>
+        
+        <Popup Name="About_Popup" Placement="Center" IsOpen="False">
+            <StackPanel Background="AliceBlue" Width="350" Height="240">
+                <TextBlock Background="AntiqueWhite">About Multi-Package Tracker by Erick R. Webster </TextBlock>
+                <Separator></Separator>
+                <TextBlock TextWrapping="Wrap">
+                    <Run Text="   This program was written with the small package distrubtor in mind, such as an EBay or Etsy seller.  It was designed to allow them to check the status of their shipments at just a glace."/>
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Run Text="   It was not designed for the end user who occasionally receives a package, although it can certainly be used in that manner."/>
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Run Text="   This program was constructed in Visual Studio 2013 Pro in C#, and utilizes Enitity Framework 6.0 to store data in a local SQL database.  It also utilizes WPF/XAML for the GUI."/>
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Run Text="   This program was constructed for a work portfolio, but is free to use for any reason, commercial or private.  Where noted internal code is the property of the original author or company.  All other rights reserved."/>
+                </TextBlock>
+                
+                <Button Content="OK" Height="20" Width="70" Background="White" Click="CloseAboutPopup_Click" Margin="0,0,0,0"/>
+            </StackPanel>
+        </Popup>
+
+        <Popup Name="Usage_Popup" Placement="Center" IsOpen="False">
+            <StackPanel Background="WhiteSmoke"  Width="200" Height="200">
+
             </StackPanel>
         </Popup>
 

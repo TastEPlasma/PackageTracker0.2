@@ -225,6 +225,16 @@ namespace PackageTracker
             Console.WriteLine(delaySlider.Value);
         }
 
+        private void OpenAboutPopup_Click(object sender, RoutedEventArgs e)
+        {
+            About_Popup.IsOpen = true;
+        }
+
+        private void CloseAboutPopup_Click(object sender, RoutedEventArgs e)
+        {
+            About_Popup.IsOpen = false;
+        }
+
         #region Webservice specific methods
         //FEDEX
         private void OpenFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
