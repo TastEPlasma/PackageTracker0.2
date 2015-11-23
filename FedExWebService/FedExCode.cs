@@ -23,23 +23,23 @@ namespace FedExWebService
         #region Properties
         public string SetUserKey 
         {
-            get { return "no access"; }
-            set { UserKey = value;}
+            get { return UserKey; }
+            set { UserKey = value; }
         }
         public string SetUserPassword 
         {
-            get { return "no access"; }
-            set { UserPassword = value; } 
+            get { return UserPassword; }
+            set { UserPassword = value; }
         }
-        public string  SetAccountNumber 
+        public string SetAccountNumber 
         {
-            get { return "no access"; }
-            set { AccountNumber = value; } 
+            get { return AccountNumber; }
+            set { MeterNumber = value; }
         }
         public string SetMeterNumber 
         {
-            get { return "no access"; }
-            set { MeterNumber = value; }
+            get { return MeterNumber; }
+            set { MeterNumber = value; } 
         }
         #endregion
 

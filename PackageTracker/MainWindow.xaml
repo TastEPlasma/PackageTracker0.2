@@ -205,7 +205,7 @@
 
         <Popup Name="Usage_Popup" Placement="Center" IsOpen="False">
             <StackPanel Background="WhiteSmoke"  Width="200" Height="200">
-
+                
             </StackPanel>
         </Popup>
 

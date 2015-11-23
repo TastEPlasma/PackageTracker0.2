@@ -37,6 +37,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CredentialsData.cs" />
     <Compile Include="Migrations\201510072153061_InitialCreate.cs" />
     <Compile Include="Migrations\201510072153061_InitialCreate.Designer.cs">
       <DependentUpon>201510072153061_InitialCreate.cs</DependentUpon>
@@ -75,6 +80,10 @@
     <Compile Include="Migrations\201510182011449_AddCustomNameToPackages.cs" />
     <Compile Include="Migrations\201510182011449_AddCustomNameToPackages.Designer.cs">
       <DependentUpon>201510182011449_AddCustomNameToPackages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511222246450_AddCredentials.cs" />
+    <Compile Include="Migrations\201511222246450_AddCredentials.Designer.cs">
+      <DependentUpon>201511222246450_AddCredentials.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TrackerData.cs" />
@@ -117,6 +126,9 @@
     <EmbeddedResource Include="Migrations\201510182011449_AddCustomNameToPackages.resx">
       <DependentUpon>201510182011449_AddCustomNameToPackages.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511222246450_AddCredentials.resx">
+      <DependentUpon>201511222246450_AddCredentials.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -148,6 +160,9 @@
       <Project>{bab21eb2-2a87-4076-a029-96abc7eece2f}</Project>
       <Name>USPSWebService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

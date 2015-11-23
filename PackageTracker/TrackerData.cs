@@ -105,6 +105,32 @@ namespace PackageTracker
         static BitmapImage Unknownbitmap;
         #endregion
 
+        #region Properties
+        public static BitmapImage FedEx
+        {
+            get { return FedExbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage UPS
+        {
+            get { return UPSbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage USPS
+        {
+            get { return USPSbitmap; }
+            set { /*Do Nothing*/ }
+        }
+
+        public static BitmapImage Unknown
+        {
+            get { return Unknownbitmap; }
+            set { /*Do Nothing*/ }
+        }
+        #endregion
+
         #region Constructors
         static ImageLoadingAndHolding()
         {
@@ -126,30 +152,6 @@ namespace PackageTracker
         }
         #endregion
 
-        #region Properties
-        public static BitmapImage FedEx
-        {
-            get { return FedExbitmap; }
-            set { /*Do Nothing*/ }
-        }
 
-        public static BitmapImage UPS 
-        {
-            get { return UPSbitmap; }
-            set { /*Do Nothing*/ }
-        }
-
-        public static BitmapImage USPS
-        {
-            get { return USPSbitmap; }
-            set { /*Do Nothing*/ }
-        }
-
-        public static BitmapImage Unknown
-        {
-            get { return Unknownbitmap; }
-            set { /*Do Nothing*/ }
-        }
-        #endregion
     }
 }

@@ -143,6 +143,32 @@ namespace PackageTracker
                 }
             }
         }
+        internal List<string> RetrieveDefaultCredentials(ParcelService Carrier)
+        {
+            List<string> DefaultCredentials = new List<string>();
+
+            if (Carrier == ParcelService.FedEx)
+            {
+                DefaultCredentials.Add(FedEx.SetUserKey);
+                DefaultCredentials.Add(FedEx.SetUserPassword);
+                DefaultCredentials.Add(FedEx.SetAccountNumber);
+                DefaultCredentials.Add(FedEx.SetMeterNumber);
+            }
+
+            if (Carrier == ParcelService.UPS)
+            {
+                DefaultCredentials.Add(UPS.SetUsername);
+                DefaultCredentials.Add(UPS.SetPassword);
+                DefaultCredentials.Add(UPS.SetLicenseNumber);
+            }
+
+            if (Carrier == ParcelService.USPS)
+            {
+                DefaultCredentials.Add(POSTAL.setUserID);
+            }
+
+            return DefaultCredentials;
+        }
         #endregion
 
         #region POSTAL Methods
@@ -446,5 +472,7 @@ namespace PackageTracker
             }
         }
         #endregion
+
+        
     }
 }

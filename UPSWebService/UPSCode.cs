@@ -17,17 +17,17 @@ namespace MAX.UPS
         #region Properties
         public string SetUsername 
         {
-            get { return "no access"; }
+            get { return username; }
             set { username = value; }
         }
         public string SetPassword 
         {
-            get { return "no access"; }
+            get { return password; }
             set { password = value; }
         }
         public string SetLicenseNumber 
         {
-            get { return "no access"; }
+            get { return accessLicenseNumber; }
             set { accessLicenseNumber = value; }
         }
         #endregion
