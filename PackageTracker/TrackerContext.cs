@@ -9,9 +9,12 @@ namespace PackageTracker
 {
     class TrackerContext : DbContext
     {
+        #region Data Sets
         public DbSet<TrackerData> Packages { get; set; }
         public DbSet<CredentialData> Credentials { get; set; }
+        #endregion
 
+        #region Database Configuration
         //exclude unnecessary data bits from being entered into database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -30,5 +33,6 @@ namespace PackageTracker
 
             base.OnModelCreating(modelBuilder);
         }
+        #endregion
     }
 }

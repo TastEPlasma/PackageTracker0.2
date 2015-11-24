@@ -89,16 +89,49 @@ namespace PackageTracker
             // similar to ToList but without creating a list. 
             // When used with Linq to Entities this method  
             // creates entity objects and adds them to the context.
-            _context.Packages.Load();
-            _context.Credentials.Load();
+            bool ContinueOperation = true;
+            try
+            {
+                _context.Packages.Load();
+                _context.Credentials.Load();
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine(exception);
+                //create pop notifying no DB condition
+                //on exiting pop-up, eith Quit or Create New DB
 
-            //This function is to insure that the credential entry is present,
-            //and create a default entry if one doesnt exist
-            CheckForCredentialExistance();
+                //Quit Popup
+                //ErrorMessageAndQuit(exception);
 
-            // After the data is loaded call the DbSet<T>.Local property  
-            // to use the DbSet<T> as a binding source. 
-            trackerDataViewSource.Source = _context.Packages.Local;
+                //Maybe output error to file?
+
+                //Instant Exit.  
+                //TODO: Need to find more graceful way to handle this.
+                System.Windows.Application.Current.Shutdown();
+            }
+            finally
+            {
+                ContinueOperation = false;
+            }
+            
+            if(ContinueOperation == true)
+            {
+                //This function is to insure that the credential entry is present,
+                //and create a default entry if one doesnt exist
+                CheckForCredentialExistance();
+
+                // After the data is loaded call the DbSet<T>.Local property  
+                // to use the DbSet<T> as a binding source. 
+                trackerDataViewSource.Source = _context.Packages.Local;
+            }
+        }
+
+        private void ErrorMessageAndQuit(Exception exception)
+        {
+            Error_Popup.IsOpen = true;
+
+            ErrorMessage_TextBlock.Text = exception.ToString();
         }
 
         private void CheckForCredentialExistance()
