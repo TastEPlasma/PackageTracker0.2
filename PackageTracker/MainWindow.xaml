@@ -210,9 +210,10 @@
         </Popup>
         
         <Popup Name="Error_Popup" Placement="Center" IsOpen="False">
-            <StackPanel Background="WhiteSmoke" Width="200" Height="200">
-                <TextBlock Name="ErrorMessage_TextBlock" Text="No Message Found!" Height="150" Background="White" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"/>
-                <Button Name="ErrorQuit_Button" Content="QUIT" Width="50" Margin="0,20,0,0" Click="Quit_Click"/>
+            <StackPanel Background="WhiteSmoke" Width="300" Height="300">
+                <TextBlock Text="FATAL ERROR ENCOUNTERED!" Background="AliceBlue" />
+                <TextBlock Name="ErrorMessage_TextBlock" Text="No Message Found!" Height="250" Background="White" TextWrapping="WrapWithOverflow"/>
+                <Button Name="ErrorQuit_Button" Content="QUIT" Width="50" Margin="0,0,0,0" Click="Quit_Click"/>
             </StackPanel>
         </Popup>
 

@@ -97,18 +97,8 @@ namespace PackageTracker
             }
             catch(Exception exception)
             {
-                Console.WriteLine(exception);
-                //create pop notifying no DB condition
-                //on exiting pop-up, eith Quit or Create New DB
-
                 //Quit Popup
-                //ErrorMessageAndQuit(exception);
-
-                //Maybe output error to file?
-
-                //Instant Exit.  
-                //TODO: Need to find more graceful way to handle this.
-                System.Windows.Application.Current.Shutdown();
+                ErrorMessageAndQuit(exception);
             }
             finally
             {
@@ -131,7 +121,7 @@ namespace PackageTracker
         {
             Error_Popup.IsOpen = true;
 
-            ErrorMessage_TextBlock.Text = exception.ToString();
+            ErrorMessage_TextBlock.Text = exception.Message + " Inner exception: " + exception.InnerException;
         }
 
         private void CheckForCredentialExistance()
