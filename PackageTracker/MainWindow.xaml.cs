@@ -20,7 +20,6 @@ using System.Windows.Forms;
 using System.Data.Entity;
 using System.ComponentModel;
 using FedExWebService;
-using BCrypt;
 
 namespace PackageTracker
 {
@@ -99,9 +98,7 @@ namespace PackageTracker
             {
                 //Quit Popup
                 ErrorMessageAndQuit(exception);
-            }
-            finally
-            {
+
                 ContinueOperation = false;
             }
             
@@ -222,22 +219,22 @@ namespace PackageTracker
             {
                 if(Service == ParcelService.FedEx)
                 {
-                    credentials.FedExCredentials.UserKey = NewCredentials[0];
-                    credentials.FedExCredentials.UserPassword = NewCredentials[1];
-                    credentials.FedExCredentials.AccountNumber = NewCredentials[2];
-                    credentials.FedExCredentials.MeterNumber = NewCredentials[3];
+                    credentials.FedExCredentials.UserKey = B64Encode(NewCredentials[0]);
+                    credentials.FedExCredentials.UserPassword = B64Encode(NewCredentials[1]);
+                    credentials.FedExCredentials.AccountNumber = B64Encode(NewCredentials[2]);
+                    credentials.FedExCredentials.MeterNumber = B64Encode(NewCredentials[3]);
                 }
 
                 if(Service == ParcelService.UPS)
                 {
-                    credentials.UPSCredentials.username = NewCredentials[0];
-                    credentials.UPSCredentials.password = NewCredentials[1];
-                    credentials.UPSCredentials.accessLicenseNumber = NewCredentials[2];
+                    credentials.UPSCredentials.username = B64Encode(NewCredentials[0]);
+                    credentials.UPSCredentials.password = B64Encode(NewCredentials[1]);
+                    credentials.UPSCredentials.accessLicenseNumber = B64Encode(NewCredentials[2]);
                 }
 
                 if (Service == ParcelService.USPS)
                 {
-                    credentials.POSTALCredentials._userid = NewCredentials[0];
+                    credentials.POSTALCredentials._userid = B64Encode(NewCredentials[0]);
                 }
             }
 
@@ -251,29 +248,43 @@ namespace PackageTracker
             foreach (CredentialData credentials in CurrentDBList)
             {
                 List<string> FedExCreds = new List<string>();
-                FedExCreds.Add(credentials.FedExCredentials.UserKey);
-                FedExCreds.Add(credentials.FedExCredentials.UserPassword);
-                FedExCreds.Add(credentials.FedExCredentials.AccountNumber);
-                FedExCreds.Add(credentials.FedExCredentials.MeterNumber);
+                FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserKey));
+                FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserPassword));
+                FedExCreds.Add(B64Decode(credentials.FedExCredentials.AccountNumber));
+                FedExCreds.Add(B64Decode(credentials.FedExCredentials.MeterNumber));
 
                 _control.UpdateCredentialInformation(FedExCreds, ParcelService.FedEx);
 
 
                 List<string> UPSCreds = new List<string>();
-                UPSCreds.Add(credentials.UPSCredentials.username);
-                UPSCreds.Add(credentials.UPSCredentials.password);
-                UPSCreds.Add(credentials.UPSCredentials.accessLicenseNumber);
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.username));
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.password));
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.accessLicenseNumber));
 
                 _control.UpdateCredentialInformation(UPSCreds, ParcelService.UPS);
 
 
                 List<string> POSTALCreds = new List<string>();
-                POSTALCreds.Add(credentials.POSTALCredentials._userid);
+                POSTALCreds.Add(B64Decode(credentials.POSTALCredentials._userid));
 
                 _control.UpdateCredentialInformation(POSTALCreds, ParcelService.USPS);
 
             }
         }
+
+        #region Support Methods For Credential DB
+        public static string B64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string B64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+        #endregion
 
         //DEBUG
         private void ReadFromDBAndDisplayCredentialsInConsole()

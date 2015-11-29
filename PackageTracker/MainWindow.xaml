@@ -101,49 +101,54 @@
                 <MenuItem Name="Usage_Menu" Header="Usage" Click="Quit_Click"/>
             </MenuItem>
         </Menu>
+        <Border Margin="0,0,8,8"  BorderBrush="Black">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" />
+            </Border.Effect>
+            <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center"
+               Width="300" Height="200" IsOpen="False" AllowsTransparency = "True">
+                <StackPanel Background="SteelBlue"   >
+                    <TextBlock Background="Peru" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For FedEx Web Services"/></TextBlock>
 
-        <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center"
-               Width="300" Height="200" IsOpen="False">
-            <StackPanel Background="Orange"  >
-                <TextBlock Background="RoyalBlue" Width="300" HorizontalAlignment="Center"><Run Text="      Enter Custom Credentials For FedEx Web Services"/></TextBlock>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
+                    <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RoyalBlue" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
-                <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
+                    <TextBox x:Name="FedExUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RoyalBlue" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
-                <TextBox x:Name="FedExUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Account: "/></TextBlock>
+                    <TextBox x:Name="FedExUserACCOUNTNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RoyalBlue" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Account: "/></TextBlock>
-                <TextBox x:Name="FedExUserACCOUNTNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: "/></TextBlock>
+                    <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RoyalBlue" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: "/></TextBlock>
-                <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Peru" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="FedExAccountUpdate_Click"/>
 
-                <Button Width="110" Height="25" Content="Update Credentials" Background="RoyalBlue" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="FedExAccountUpdate_Click"/>
-                
-                <CheckBox Name="UpdateFedExToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
+                    <CheckBox Name="UpdateFedExToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
 
-            </StackPanel>
-        </Popup>
+                </StackPanel>
+            </Popup>
+        </Border>
+        
 
 
         <Popup Name="UPSCredentialEntry_PopUp"  Placement="Center"
                Width="300" Height="180" IsOpen="False">
-            <StackPanel Background="BlanchedAlmond"  >
-                <TextBlock Background="RosyBrown" Width="300" HorizontalAlignment="Center"><Run Text="      Enter Custom Credentials For UPS Web Services"/></TextBlock>
+            <StackPanel Background="PaleGoldenrod">
+                <TextBlock Background="Tan" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For UPS Web Services"/></TextBlock>
 
-                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Name: "/></TextBlock>
+                <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Name: "/></TextBlock>
                 <TextBox x:Name="UPSUserNAME" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
+                <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
                 <TextBox x:Name="UPSUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <TextBlock Background="RosyBrown" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="License Number: "/></TextBlock>
+                <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="License Number: "/></TextBlock>
                 <TextBox x:Name="UPSUserLicenseNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <Button Width="110" Height="25" Content="Update Credentials" Background="RosyBrown" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UPSAccountUpdate_Click"/>
+                <Button Width="115" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Tan" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UPSAccountUpdate_Click"/>
 
-                <CheckBox Name="UpdateUPSToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
+                <CheckBox Name="UpdateUPSToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0" FontWeight="Bold"/>
 
             </StackPanel>
         </Popup>
@@ -151,15 +156,15 @@
 
         <Popup Name="USPSCredentialEntry_PopUp"  Placement="Center"
                Width="300" Height="120" IsOpen="False">
-            <StackPanel Background="LightBlue"  >
-                <TextBlock Background="Pink" Width="300" HorizontalAlignment="Center"><Run Text="      Enter Custom Credentials For USPS Web Services"/></TextBlock>
+            <StackPanel Background="DodgerBlue"  >
+                <TextBlock Background="IndianRed" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For USPS Web Services"/></TextBlock>
 
-                <TextBlock Background="Pink" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User ID: "/></TextBlock>
+                <TextBlock Background="IndianRed" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User ID: "/></TextBlock>
                 <TextBox x:Name="USPSUserID" Margin="80,-20,0,0" Width="150" Height="20"/>
 
-                <Button Width="110" Height="25" Content="Update Credentials" Background="Pink" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="USPSAccountUpdate_Click"/>
+                <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="IndianRed" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="USPSAccountUpdate_Click"/>
 
-                <CheckBox Name="UpdateUSPSToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
+                <CheckBox Name="UpdateUSPSToDefaults_CheckBox" Content="Reset all fields to default values" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
 
             </StackPanel>
         </Popup>
