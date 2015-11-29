@@ -101,6 +101,7 @@
                 <MenuItem Name="Usage_Menu" Header="Usage" Click="Quit_Click"/>
             </MenuItem>
         </Menu>
+        
         <Border Margin="0,0,8,8"  BorderBrush="Black">
             <Border.Effect>
                 <DropShadowEffect Color="Black" />
@@ -108,7 +109,11 @@
             <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center"
                Width="300" Height="200" IsOpen="False" AllowsTransparency = "True">
                 <StackPanel Background="SteelBlue"   >
-                    <TextBlock Background="Peru" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For FedEx Web Services"/></TextBlock>
+
+                    <TextBlock Background="Peru" Width="300" Height="auto" HorizontalAlignment="Center" FontWeight="Bold"><Run Text=" Enter Custom Credentials For FedEx Web Service"/>
+                        <InlineUIContainer>
+                			<Button Click="CloseFedExCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="0,0,0,-4" />
+                		</InlineUIContainer></TextBlock>
 
                     <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
                     <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
@@ -135,7 +140,10 @@
         <Popup Name="UPSCredentialEntry_PopUp"  Placement="Center"
                Width="300" Height="180" IsOpen="False">
             <StackPanel Background="PaleGoldenrod">
-                <TextBlock Background="Tan" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For UPS Web Services"/></TextBlock>
+                <TextBlock Background="Tan" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="  Enter Custom Credentials For UPS Web Services"/>
+                    <InlineUIContainer>
+                			<Button Click="CloseUPSCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="4,0,0,-4" />
+                	</InlineUIContainer></TextBlock>
 
                 <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Name: "/></TextBlock>
                 <TextBox x:Name="UPSUserNAME" Margin="80,-20,0,0" Width="150" Height="20"/>
@@ -157,7 +165,10 @@
         <Popup Name="USPSCredentialEntry_PopUp"  Placement="Center"
                Width="300" Height="120" IsOpen="False">
             <StackPanel Background="DodgerBlue"  >
-                <TextBlock Background="IndianRed" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="      Enter Custom Credentials For USPS Web Services"/></TextBlock>
+                <TextBlock Background="IndianRed" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="Enter Custom Credentials For USPS Web Services"/>
+                    <InlineUIContainer>
+                			<Button Click="CloseUSPSCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="4,0,0,-4" />
+                	</InlineUIContainer></TextBlock>
 
                 <TextBlock Background="IndianRed" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User ID: "/></TextBlock>
                 <TextBox x:Name="USPSUserID" Margin="80,-20,0,0" Width="150" Height="20"/>

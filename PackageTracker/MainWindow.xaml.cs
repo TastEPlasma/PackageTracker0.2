@@ -421,6 +421,17 @@ namespace PackageTracker
             FedExCredentialEntry_PopUp.IsOpen = true;
         }
 
+        private void CloseFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            //Clear entry fields
+            FedExUserKEY.Text = "";
+            FedExUserPASSWORD.Text = "";
+            FedExUserMETERNUMBER.Text = "";
+            FedExUserACCOUNTNUMBER.Text = "";
+
+            FedExCredentialEntry_PopUp.IsOpen = false;
+        }
+
         private void FedExAccountUpdate_Click(object sender, RoutedEventArgs e)
         {
             //show progress bar
@@ -481,6 +492,16 @@ namespace PackageTracker
         {
             UPSCredentialEntry_PopUp.IsOpen = true;
         }
+        
+        private void CloseUPSCredentialsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            //Clear entry fields
+            UPSUserLicenseNUMBER.Text = "";
+            UPSUserNAME.Text = "";
+            UPSUserPASSWORD.Text = "";
+
+            UPSCredentialEntry_PopUp.IsOpen = false;
+        }
 
         private void UPSAccountUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -538,6 +559,14 @@ namespace PackageTracker
         private void OpenUSPSCredentialsMenu_Click(object sender, RoutedEventArgs e)
         {
             USPSCredentialEntry_PopUp.IsOpen = true;
+        }
+
+        private void CloseUSPSCredentialsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            //blank entry fields
+            USPSUserID.Text = "";
+
+            USPSCredentialEntry_PopUp.IsOpen = false; 
         }
 
         private void USPSAccountUpdate_Click(object sender, RoutedEventArgs e)
