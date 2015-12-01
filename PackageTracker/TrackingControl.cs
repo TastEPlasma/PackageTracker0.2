@@ -1,22 +1,19 @@
-﻿using System;
+﻿using FedExWebService;
+using FedExWebService.FedExWebReference;
+using MAX.UPS;
+using MAX.USPS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Services;
-using FedExWebService.FedExWebReference;
-using FedExWebService;
 using System.Web.Services.Protocols;
-using MAX.UPS;
 using UPSWebService.UPSWebReference;
-using System.ServiceModel;
-using MAX.USPS;
 
 namespace PackageTracker
 {
     class TrackingControl
     {
         #region Declarations
+        //Web service interface managers
         USPSManager POSTAL; 
         FedExManager FedEx;
         UPSManager UPS;
@@ -57,7 +54,7 @@ namespace PackageTracker
                             SendRequestToFedExWebService(Entry);
                             //FedExNotSupported(Entry);
                         }
-
+                        //Default to check postal service
                         else
                         {
                             SendRequestToUSPSWebService(Entry);
@@ -314,7 +311,7 @@ namespace PackageTracker
         #endregion
 
         #region FedEx Methods
-        //Checks trackingnumber against the check digit to id FedEx number
+        //Checks trackingnumber against the check digit to identify FedEx number
         private bool CheckFedExNumber(string TrackingNumber)
         {
             long number;
@@ -372,7 +369,6 @@ namespace PackageTracker
             Entry.Location = "FedEx not supported";
         }
 
-        //Send request to FEDEX webservices, receive raw data
         private void SendRequestToFedExWebService(TrackerData Entry)
         {
             //open webservice, pass in tracking number
@@ -386,10 +382,6 @@ namespace PackageTracker
                 TrackReply reply = service.track(request);
                 if(reply.HighestSeverity != NotificationSeverityType.ERROR && reply.HighestSeverity != NotificationSeverityType.FAILURE)
                 {
-                    //For debugging purposes
-                    //Console.WriteLine(reply.HighestSeverity);
-                    //FedEx.ShowTrackReply(reply);
-
                     //Parse raw data here
                     ParseFedExRawDataIntoList(Entry, reply);
                 }
@@ -398,10 +390,6 @@ namespace PackageTracker
                     //error handling for blank and incomplete tracking numbers, or invalid requests due to faulty credentials
                     Entry.Location = "ERROR";
                     Entry.Status = PackageStatus.Other;
-
-                    //For debugging
-                    //Console.WriteLine(reply.HighestSeverity);
-                    //FedEx.ShowTrackReply(reply);
                 }
                 
             }
@@ -416,7 +404,6 @@ namespace PackageTracker
             
         }
         
-        //Process raw FEDEX data and update list
         private void ParseFedExRawDataIntoList(TrackerData Entry, TrackReply NewData)
         {
             foreach(CompletedTrackDetail completedTrackDetail in NewData.CompletedTrackDetails)

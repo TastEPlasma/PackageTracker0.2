@@ -1,0 +1,8 @@
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Release\UPSWebService.dll.config
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Release\UPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Release\UPSWebService.XmlSerializers.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\bin\Release\UPSWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Release\UPSWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Release\UPSWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Release\UPSWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\UPSWebService\obj\Release\UPSWebService.XmlSerializers.dll

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using UPSWebService.UPSWebReference;
-using System.ServiceModel;
 
 namespace MAX.UPS
 {

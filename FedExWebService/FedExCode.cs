@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Services.Protocols;
-using System.Diagnostics;
-using FedExWebService.FedExWebReference;
+﻿using FedExWebService.FedExWebReference;
+using System;
 
 namespace FedExWebService
 {

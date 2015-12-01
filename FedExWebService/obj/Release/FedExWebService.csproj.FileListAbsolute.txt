@@ -1,0 +1,8 @@
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Release\FedExWebService.dll.config
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Release\FedExWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Release\FedExWebService.XmlSerializers.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\bin\Release\FedExWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Release\FedExWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Release\FedExWebService.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Release\FedExWebService.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\FedExWebService\obj\Release\FedExWebService.XmlSerializers.dll

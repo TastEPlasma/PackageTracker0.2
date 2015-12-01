@@ -1,25 +1,12 @@
 ﻿using System;
-using System.Timers;
-using System.Data;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Data.Entity;
-using System.ComponentModel;
-using FedExWebService;
 
 namespace PackageTracker
 {
@@ -286,26 +273,6 @@ namespace PackageTracker
         }
         #endregion
 
-        //DEBUG
-        private void ReadFromDBAndDisplayCredentialsInConsole()
-        {
-            var CurrentDBList = _context.Credentials.ToList();
-
-            foreach (CredentialData credentials in CurrentDBList)
-            {
-                Console.WriteLine(credentials.FedExCredentials.UserKey);
-                Console.WriteLine(credentials.FedExCredentials.UserPassword);
-                Console.WriteLine(credentials.FedExCredentials.AccountNumber);
-                Console.WriteLine(credentials.FedExCredentials.MeterNumber);
-                Console.WriteLine();
-                Console.WriteLine(credentials.UPSCredentials.username);
-                Console.WriteLine(credentials.UPSCredentials.password);
-                Console.WriteLine(credentials.UPSCredentials.accessLicenseNumber);
-                Console.WriteLine();
-                Console.WriteLine(credentials.POSTALCredentials._userid);
-            }
-        }
-
         private void ResetCredentialsInDBToDefaults(ParcelService Service)
         {
             var CurrentDBList = _context.Credentials.ToList();
@@ -414,6 +381,11 @@ namespace PackageTracker
             About_Popup.IsOpen = false;
         }
 
+        private void CloseUsageMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Usage_Popup.IsOpen = false;
+        }
+
         #region Webservice specific methods
         //FEDEX
         private void OpenFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
@@ -432,7 +404,7 @@ namespace PackageTracker
             FedExCredentialEntry_PopUp.IsOpen = false;
         }
 
-        private void FedExAccountUpdate_Click(object sender, RoutedEventArgs e)
+        private void UpdateFedExAccount_Click(object sender, RoutedEventArgs e)
         {
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
@@ -481,9 +453,6 @@ namespace PackageTracker
                 FedExCredentialEntry_PopUp.IsOpen = false;
             }
 
-            //DEBUG
-            ReadFromDBAndDisplayCredentialsInConsole();
-
             ProgressBarVisibilityDelay();
         }
 
@@ -503,7 +472,7 @@ namespace PackageTracker
             UPSCredentialEntry_PopUp.IsOpen = false;
         }
 
-        private void UPSAccountUpdate_Click(object sender, RoutedEventArgs e)
+        private void UpdateUPSAccount_Click(object sender, RoutedEventArgs e)
         {
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
@@ -549,9 +518,6 @@ namespace PackageTracker
                 UPSCredentialEntry_PopUp.IsOpen = false;
             }
 
-            //DEBUG
-            ReadFromDBAndDisplayCredentialsInConsole();
-
             ProgressBarVisibilityDelay();
         }
 
@@ -569,7 +535,7 @@ namespace PackageTracker
             USPSCredentialEntry_PopUp.IsOpen = false; 
         }
 
-        private void USPSAccountUpdate_Click(object sender, RoutedEventArgs e)
+        private void UpdateUSPSAccount_Click(object sender, RoutedEventArgs e)
         {
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
@@ -608,9 +574,6 @@ namespace PackageTracker
 
                 USPSCredentialEntry_PopUp.IsOpen = false;
             }
-
-            //DEBUG
-            ReadFromDBAndDisplayCredentialsInConsole();
 
             ProgressBarVisibilityDelay();
             
