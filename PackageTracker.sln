@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedExWebService", "FedExWeb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UPSWebService", "UPSWebService\UPSWebService.csproj", "{FCB13DF0-57A6-45E3-9491-D2F76E77DAEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USPSWebService", "USPS_Web_Tools_Wrapper_src\USPSWebService.csproj", "{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USPSWebService", "USPSWebService\USPSWebService.csproj", "{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

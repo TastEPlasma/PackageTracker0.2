@@ -156,7 +156,7 @@
       <Project>{fcb13df0-57a6-45e3-9491-d2f76e77daea}</Project>
       <Name>UPSWebService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\USPS_Web_Tools_Wrapper_src\USPSWebService.csproj">
+    <ProjectReference Include="..\USPSWebService\USPSWebService.csproj">
       <Project>{bab21eb2-2a87-4076-a029-96abc7eece2f}</Project>
       <Name>USPSWebService</Name>
     </ProjectReference>
