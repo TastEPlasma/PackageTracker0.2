@@ -5,37 +5,21 @@ namespace MAX.UPS
 {
     public class UPSManager
     {
-        #region Private Members
-        private string username = "TastEPlasma";
-        private string password = "Firebolt5";
-        private string accessLicenseNumber = "4CFB51344FD8E476";
-        #endregion
-
-        #region Properties
-        public string SetUsername 
+        public UPSManager()
         {
-            get { return username; }
-            set { username = value; }
+            this.Username = "TastEPlasma";
+            this.Password = "Firebolt5";
+            this.AccessLicenseNumber = "4CFB51344FD8E476";
         }
-        public string SetPassword 
-        {
-            get { return password; }
-            set { password = value; }
-        }
-        public string SetLicenseNumber 
-        {
-            get { return accessLicenseNumber; }
-            set { accessLicenseNumber = value; }
-        }
-        #endregion
 
-        #region Constructors
-        //Using Default
-        #endregion
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string AccessLicenseNumber { get; set; }
 
-        #region Public Interface
+
         public TrackResponse GetTrackingInfo(string TrackingNumber)
         {
+            //The following code is from the WebAPI example
             //Construct objects
             TrackService track = new TrackService();
             TrackRequest tr = new TrackRequest();
@@ -43,11 +27,11 @@ namespace MAX.UPS
             UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
 
             //Assign parameters
-            upssSvcAccessToken.AccessLicenseNumber = accessLicenseNumber;
+            upssSvcAccessToken.AccessLicenseNumber = AccessLicenseNumber;
             upss.ServiceAccessToken = upssSvcAccessToken;
             UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
-            upssUsrNameToken.Username = username;
-            upssUsrNameToken.Password = password;
+            upssUsrNameToken.Username = Username;
+            upssUsrNameToken.Password = Password;
             upss.UsernameToken = upssUsrNameToken;
             track.UPSSecurityValue = upss;
             RequestType request = new RequestType();
@@ -71,74 +55,9 @@ namespace MAX.UPS
 
         public void ResetCredentialsToDefaultValues()
         {
-            username = "TastEPlasma";
-            password = "Firebolt5";
-            accessLicenseNumber = "4CFB51344FD8E476";
+            Username = "TastEPlasma";
+            Password = "Firebolt5";
+            AccessLicenseNumber = "4CFB51344FD8E476";
         }
-        #endregion
-
-        #region UPS Example Code
-        public static void TestCode()
-        {
-            try
-            {
-                TrackService track = new TrackService();
-                TrackRequest tr = new TrackRequest();
-                UPSSecurity upss = new UPSSecurity();
-                UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
-                upssSvcAccessToken.AccessLicenseNumber = "";
-                upss.ServiceAccessToken = upssSvcAccessToken;
-                UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
-                upssUsrNameToken.Username = "";
-                upssUsrNameToken.Password = "";
-                upss.UsernameToken = upssUsrNameToken;
-                track.UPSSecurityValue = upss;
-                RequestType request = new RequestType();
-                String[] requestOption = { "15" };
-                request.RequestOption = requestOption;
-                tr.Request = request;
-                tr.InquiryNumber = "";
-                System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
-                TrackResponse trackResponse = track.ProcessTrack(tr);
-                Console.WriteLine("The transaction was a " + trackResponse.Response.ResponseStatus.Description);
-                Console.WriteLine("Shipment Service " + trackResponse.Shipment[0].Service.Description);
-                Console.WriteLine("Location is " + trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.City);
-            }
-            catch (System.Web.Services.Protocols.SoapException ex)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("---------Track Web Service returns error----------------");
-                Console.WriteLine("---------\"Hard\" is user error \"Transient\" is system error----------------");
-                Console.WriteLine("SoapException Message= " + ex.Message);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException Category:Code:Message= " + ex.Detail.LastChild.InnerText);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException XML String for all= " + ex.Detail.LastChild.OuterXml);
-                Console.WriteLine("");
-                Console.WriteLine("SoapException StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("");
-            }
-            catch (System.ServiceModel.CommunicationException ex)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("--------------------");
-                Console.WriteLine("CommunicationException= " + ex.Message);
-                Console.WriteLine("CommunicationException-StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("");
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("-------------------------");
-                Console.WriteLine(" General Exception= " + ex.Message);
-                Console.WriteLine(" General Exception-StackTrace= " + ex.StackTrace);
-                Console.WriteLine("-------------------------");
-
-            }
-        }
-        #endregion
     }
 }

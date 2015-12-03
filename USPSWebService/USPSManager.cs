@@ -15,73 +15,26 @@ namespace MAX.USPS
 {
     public class USPSManager
     {
-        #region Private Members
-        private const string ProductionUrl = "http://production.shippingapis.com/ShippingAPI.dll";
-        private const string TestingUrl = "http://testing.shippingapis.com/ShippingAPITest.dll";
-        private WebClient web;
-        private string _userid = "857STUDE5322";
-
-        private bool _TestMode;
-        #endregion
-
-        #region Constructors
-        /// <summary>
-        /// Constructor that requires no arguments, uses default ID
-        /// </summary>
         public USPSManager()
         {
             web = new WebClient();
-            _TestMode = false;
+            this.userid = "857STUDE5322";
         }
 
-        /// <summary>
-        /// Creates a new USPS Manager instance
-        /// </summary>
-        /// <param name="USPSWebtoolUserID">The UserID required by the USPS Web Tools</param>
-        public USPSManager(string USPSWebtoolUserID)
-        {
-            web = new WebClient();
-            _userid = USPSWebtoolUserID;
-            _TestMode = false;
-            
-        }
-        /// <summary>
-        /// Creates a new USPS Manager instance
-        /// </summary>
-        /// <param name="USPSWebtoolUserID">The UserID required by the USPS Web Tools</param>
-        /// <param name="testmode">If True, then the USPS Test URL will be used.</param>
-        public USPSManager(string USPSWebtoolUserID, bool testmode)
-        {
-            _TestMode = testmode;
-            web = new WebClient();
-            _userid = USPSWebtoolUserID;
-        }
+        private const string ProductionUrl = "http://production.shippingapis.com/ShippingAPI.dll";
+        private const string TestingUrl = "http://testing.shippingapis.com/ShippingAPITest.dll";
+        private WebClient web;
 
-        #endregion
+        public string userid { get; set; }
 
-        #region Properties
-        public string setUserID 
-        {
-            get { return _userid; }
-            set { _userid = value; }
-        }
 
-        public bool TestMode
-        {
-            get { return _TestMode; }
-            set { _TestMode = value; }
-        }
-
-        #endregion
-
-        #region Tracking Methods
         public TrackingInfo GetTrackingInfo(string TrackingNumber)
         {
             try
             {
                 string trackurl = "?API=TrackV2&XML=<TrackRequest USERID=\"{0}\"><TrackID ID=\"{1}\"></TrackID></TrackRequest>";
-                string url = GetURL() + trackurl;
-                url = String.Format(url, _userid, TrackingNumber);
+                string url = ProductionUrl + trackurl;
+                url = String.Format(url, userid, TrackingNumber);
                 string xml = web.DownloadString(url);
                 if (xml.Contains("<Error>"))
                 {
@@ -101,11 +54,9 @@ namespace MAX.USPS
         }
         public void ResetResetCredentialsToDefaults()
         {
-            _userid = "857STUDE5322";
+            userid = "857STUDE5322";
         }
-        #endregion
 
-        #region TextConversions
         /// <summary>
         /// To convert a Byte Array of Unicode values (UTF-8 encoded) to a complete String.
         /// </summary>
@@ -129,16 +80,6 @@ namespace MAX.USPS
             Byte[] byteArray = encoding.GetBytes(pXmlString);
             return byteArray;
         }
-        #endregion
-
-        #region Private methods
-        private string GetURL()
-        {
-            string url = ProductionUrl;
-            if (TestMode)
-                url = TestingUrl;
-            return url;
-        }
-        #endregion
+        
     }
 }

@@ -12,23 +12,18 @@ namespace PackageTracker
 {
     class TrackingControl
     {
-        #region Declarations
         //Web service interface managers
         USPSManager POSTAL; 
         FedExManager FedEx;
         UPSManager UPS;
-        #endregion
 
-        #region Constructors
         public TrackingControl()
         {
             POSTAL = new USPSManager();
             UPS = new UPSManager();
             FedEx = new FedExManager();
         }
-        #endregion
 
-        #region Public Interface
         public void UpdateTrackingInformation(List<TrackerData> TrackingData)
         {
             //Take list of package data, parse out tracking numbers, run each through web service
@@ -81,19 +76,19 @@ namespace PackageTracker
                 {
                     if (NewCredentials[0] != "")
                     {
-                        FedEx.SetUserKey = NewCredentials[0];
+                        FedEx.UserKey = NewCredentials[0];
                     }
                     if (NewCredentials[1] != "")
                     {
-                        FedEx.SetUserPassword = NewCredentials[1];
+                        FedEx.UserPassword = NewCredentials[1];
                     }
                     if (NewCredentials[2] != "")
                     {
-                        FedEx.SetAccountNumber = NewCredentials[2];
+                        FedEx.AccountNumber = NewCredentials[2];
                     }
                     if (NewCredentials[3] != "")
                     {
-                        FedEx.SetMeterNumber = NewCredentials[3];
+                        FedEx.MeterNumber = NewCredentials[3];
                     }
                 }
                 else
@@ -108,15 +103,15 @@ namespace PackageTracker
                 {
                     if (NewCredentials[0] != "")
                     {
-                        UPS.SetUsername = NewCredentials[0];
+                        UPS.Username = NewCredentials[0];
                     }
                     if (NewCredentials[1] != "")
                     {
-                        UPS.SetPassword = NewCredentials[1];
+                        UPS.Password = NewCredentials[1];
                     }
                     if(NewCredentials[2] != "")
                     {
-                        UPS.SetLicenseNumber = NewCredentials[2];
+                        UPS.AccessLicenseNumber = NewCredentials[2];
                     }
                 }
                 else
@@ -131,7 +126,7 @@ namespace PackageTracker
                 {
                     if(NewCredentials[0] != "")
                     {
-                        POSTAL.setUserID = NewCredentials[0];
+                        POSTAL.userid = NewCredentials[0];
                     }
                 }
                 else
@@ -140,35 +135,35 @@ namespace PackageTracker
                 }
             }
         }
+
         internal List<string> RetrieveDefaultCredentials(ParcelService Carrier)
         {
             List<string> DefaultCredentials = new List<string>();
 
             if (Carrier == ParcelService.FedEx)
             {
-                DefaultCredentials.Add(FedEx.SetUserKey);
-                DefaultCredentials.Add(FedEx.SetUserPassword);
-                DefaultCredentials.Add(FedEx.SetAccountNumber);
-                DefaultCredentials.Add(FedEx.SetMeterNumber);
+                DefaultCredentials.Add(FedEx.UserKey);
+                DefaultCredentials.Add(FedEx.UserPassword);
+                DefaultCredentials.Add(FedEx.AccountNumber);
+                DefaultCredentials.Add(FedEx.MeterNumber);
             }
 
             if (Carrier == ParcelService.UPS)
             {
-                DefaultCredentials.Add(UPS.SetUsername);
-                DefaultCredentials.Add(UPS.SetPassword);
-                DefaultCredentials.Add(UPS.SetLicenseNumber);
+                DefaultCredentials.Add(UPS.Username);
+                DefaultCredentials.Add(UPS.Password);
+                DefaultCredentials.Add(UPS.AccessLicenseNumber);
             }
 
             if (Carrier == ParcelService.USPS)
             {
-                DefaultCredentials.Add(POSTAL.setUserID);
+                DefaultCredentials.Add(POSTAL.userid);
             }
 
             return DefaultCredentials;
         }
-        #endregion
 
-        #region POSTAL Methods
+
         private void SendRequestToUSPSWebService(TrackerData Entry)
         {
             try
@@ -230,7 +225,6 @@ namespace PackageTracker
             }  
         }
 
-        //USPS returns strings, only need a substring for address
         private string ExtractAddressFromString(string source)
         {
             //The return object
@@ -270,9 +264,8 @@ namespace PackageTracker
 
             return address;
         }
-        #endregion
 
-        #region UPS Methods
+
         private void SendRequestToUPSWebService(TrackerData Entry)
         {
             try
@@ -308,10 +301,8 @@ namespace PackageTracker
                 default: Entry.Status = PackageStatus.Other; break;
             }
         }
-        #endregion
 
-        #region FedEx Methods
-        //Checks trackingnumber against the check digit to identify FedEx number
+
         private bool CheckFedExNumber(string TrackingNumber)
         {
             long number;
@@ -361,7 +352,6 @@ namespace PackageTracker
             return false;
         }
 
-        //Method to return error state when a FedEx number is detected
         private void FedExNotSupported(TrackerData Entry)
         {
             Entry.Service = ParcelService.FedEx;
@@ -458,8 +448,6 @@ namespace PackageTracker
                 }
             }
         }
-        #endregion
 
-        
     }
 }

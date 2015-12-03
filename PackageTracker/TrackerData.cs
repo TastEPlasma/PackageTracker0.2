@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace PackageTracker
 {
-    #region Namespace Enumerations
+
     enum PackageStatus
     {
         NotFound,
@@ -24,11 +24,10 @@ namespace PackageTracker
         USPS,
         None
     }
-    #endregion
+
 
     class TrackerData
     {
-        #region Properties
         public int ID { get; set; }
         public string CustomName { get; set; }
         public string TrackingNumber { get; set; }
@@ -78,28 +77,23 @@ namespace PackageTracker
 
             }
         }
-        #endregion
 
-        #region Constructors
         public TrackerData()
         {
             DeleteMe = false;
             Service = ParcelService.None;
             Status = PackageStatus.NotFound;
         }
-        #endregion
     }
+
 
     static class ImageLoadingAndHolding
     {
-        #region Private Members
         static BitmapImage FedExbitmap;
         static BitmapImage UPSbitmap;
         static BitmapImage USPSbitmap;
         static BitmapImage Unknownbitmap;
-        #endregion
 
-        #region Properties
         public static BitmapImage FedEx
         {
             get { return FedExbitmap; }
@@ -123,9 +117,7 @@ namespace PackageTracker
             get { return Unknownbitmap; }
             set { /*Do Nothing*/ }
         }
-        #endregion
 
-        #region Constructors
         static ImageLoadingAndHolding()
         {
             var path = Path.Combine(Environment.CurrentDirectory, "FedExCarrier.GIF");
@@ -144,8 +136,5 @@ namespace PackageTracker
             uri = new Uri(path);
             Unknownbitmap = new BitmapImage(uri);
         }
-        #endregion
-
-
     }
 }

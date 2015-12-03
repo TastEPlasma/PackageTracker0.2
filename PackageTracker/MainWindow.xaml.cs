@@ -12,8 +12,6 @@ namespace PackageTracker
 {
     public partial class MainWindow : Window
     {
-        #region Private Members
-        //Required context for Entity Framework to build DB
         //In this case, the context is left open per session since it is accessing a local DB
         private TrackerContext _context = new TrackerContext();
 
@@ -23,9 +21,9 @@ namespace PackageTracker
         //Internal timer for Auto-Updates CheckBox
         private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
         private TimeSpan DelayTime = new TimeSpan(1, 0, 0);
-        #endregion
 
-        #region Properties
+
+        //Initializers
         public string DelayInHours
         {
             get { return DelayTime.Hours.ToString(); }
@@ -37,9 +35,7 @@ namespace PackageTracker
             get { return UpdateTimer.IsEnabled == true ? "ON" : "OFF"; }
             set { /* Do Nothing */ }
         }
-        #endregion
 
-        #region Constructors And Initializers
         public MainWindow()
         {
             InitializeComponent();
@@ -108,6 +104,8 @@ namespace PackageTracker
             ErrorMessage_TextBlock.Text = exception.Message + " Inner exception: " + exception.InnerException;
         }
 
+
+        //Database Methods
         private void CheckForCredentialExistance()
         {
             var CurrentDBList = _context.Credentials.ToList();
@@ -127,9 +125,7 @@ namespace PackageTracker
                 Console.WriteLine("ERROR: TOO MANY CREDENTIAL ENTRIES!!");
             }
         }
-        #endregion
 
-        #region Database Methods
         private void UpdateDatabase(object sender, EventArgs e)
         {
             //passing through this method was necessary due to the difference in args
@@ -259,7 +255,6 @@ namespace PackageTracker
             }
         }
 
-        #region Support Methods For Credential DB
         public static string B64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
@@ -271,7 +266,6 @@ namespace PackageTracker
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
-        #endregion
 
         private void ResetCredentialsInDBToDefaults(ParcelService Service)
         {
@@ -320,9 +314,9 @@ namespace PackageTracker
             //Commit changes to DB
             _context.SaveChanges();
         }
-        #endregion
 
-        #region GUI Methods
+
+        //GUI Methods
         private void Update_Click(object sender, RoutedEventArgs e)
         {
             UpdateDatabase();
@@ -386,7 +380,7 @@ namespace PackageTracker
             Usage_Popup.IsOpen = false;
         }
 
-        #region Webservice specific methods
+
         //FEDEX
         private void OpenFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -578,9 +572,6 @@ namespace PackageTracker
             ProgressBarVisibilityDelay();
             
         }
-        #endregion
-
-        #endregion
 
     }
 }
