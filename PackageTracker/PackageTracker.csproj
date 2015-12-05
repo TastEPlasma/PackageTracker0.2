@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201511222246450_AddCredentials.Designer.cs">
       <DependentUpon>201511222246450_AddCredentials.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512041459545_NameingConventions.cs" />
+    <Compile Include="Migrations\201512041459545_NameingConventions.Designer.cs">
+      <DependentUpon>201512041459545_NameingConventions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TrackerData.cs" />
     <Compile Include="TrackingControl.cs" />
@@ -128,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511222246450_AddCredentials.resx">
       <DependentUpon>201511222246450_AddCredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041459545_NameingConventions.resx">
+      <DependentUpon>201512041459545_NameingConventions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

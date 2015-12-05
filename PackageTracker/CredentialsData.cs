@@ -33,11 +33,11 @@ namespace PackageTracker
     class USPSCredentialsData
     {
 
-        public string _userid { get; set; }
+        public string UserID { get; set; }
 
         public USPSCredentialsData()
         {
-            _userid = "857STUDE5322";
+            UserID = "857STUDE5322";
         }
 
     }
@@ -45,15 +45,15 @@ namespace PackageTracker
     class UPSCredentialsData
     {
 
-        public string username { get; set; }
-        public string password { get; set; }
-        public string accessLicenseNumber { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string AccessLicenseNumber { get; set; }
 
         public UPSCredentialsData()
         {
-            username = "TastEPlasma";
-            password = "Firebolt5";
-            accessLicenseNumber = "4CFB51344FD8E476";
+            Username = "TastEPlasma";
+            Password = "Firebolt5";
+            AccessLicenseNumber = "4CFB51344FD8E476";
         }
 
     }

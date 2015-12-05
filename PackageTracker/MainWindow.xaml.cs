@@ -13,15 +13,14 @@ namespace PackageTracker
     public partial class MainWindow : Window
     {
         //In this case, the context is left open per session since it is accessing a local DB
-        private TrackerContext _context = new TrackerContext();
+        private TrackerContext DBContext = new TrackerContext();
 
         //Primary internal inteface to 3rd party web service providers
-        private TrackingControl _control = new TrackingControl();
+        private TrackingControl TrackingServiceControl = new TrackingControl();
 
         //Internal timer for Auto-Updates CheckBox
         private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
         private TimeSpan DelayTime = new TimeSpan(1, 0, 0);
-
 
         //Initializers
         public string DelayInHours
@@ -53,7 +52,7 @@ namespace PackageTracker
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            this._context.Dispose();
+            this.DBContext.Dispose();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -74,8 +73,8 @@ namespace PackageTracker
             bool ContinueOperation = true;
             try
             {
-                _context.Packages.Load();
-                _context.Credentials.Load();
+                DBContext.Packages.Load();
+                DBContext.Credentials.Load();
             }
             catch(Exception exception)
             {
@@ -93,7 +92,7 @@ namespace PackageTracker
 
                 // After the data is loaded call the DbSet<T>.Local property  
                 // to use the DbSet<T> as a binding source. 
-                trackerDataViewSource.Source = _context.Packages.Local;
+                trackerDataViewSource.Source = DBContext.Packages.Local;
             }
         }
 
@@ -108,7 +107,7 @@ namespace PackageTracker
         //Database Methods
         private void CheckForCredentialExistance()
         {
-            var CurrentDBList = _context.Credentials.ToList();
+            var CurrentDBList = DBContext.Credentials.ToList();
             
             if(CurrentDBList.Count() == 0)
             {
@@ -117,8 +116,8 @@ namespace PackageTracker
                 NewEntry.UPSCredentials = new UPSCredentialsData();
                 NewEntry.POSTALCredentials = new USPSCredentialsData();
 
-                _context.Credentials.Add(NewEntry);
-                _context.SaveChanges();
+                DBContext.Credentials.Add(NewEntry);
+                DBContext.SaveChanges();
             }
             else if(CurrentDBList.Count() > 1)
             {
@@ -179,24 +178,24 @@ namespace PackageTracker
         private void UpdateLocalDBWithUserInput()
         {
             //Create list from DB
-            var CurrentDBList = _context.Packages.ToList();
+            var CurrentDBList = DBContext.Packages.ToList();
 
             //Delete any entry via entity state whose box is checked
             foreach (TrackerData package in CurrentDBList)
             {
                 if (package.DeleteMe == true)
                 {
-                    _context.Entry(package).State = EntityState.Deleted;
+                    DBContext.Entry(package).State = EntityState.Deleted;
                 }
             }
 
             //save add/delete changes
-            _context.SaveChanges();
+            DBContext.SaveChanges();
         }
 
-        private void StoreAndUpdateCredentials(List<string> NewCredentials, ParcelService Service)
+        /*private void StoreAndUpdateCredentials(List<string> NewCredentials, ParcelService Service)
         {
-            var CurrentDBList = _context.Credentials.ToList();
+            var CurrentDBList = DBContext.Credentials.ToList();
 
             foreach(CredentialData credentials in CurrentDBList)
             {
@@ -210,47 +209,89 @@ namespace PackageTracker
 
                 if(Service == ParcelService.UPS)
                 {
-                    credentials.UPSCredentials.username = B64Encode(NewCredentials[0]);
-                    credentials.UPSCredentials.password = B64Encode(NewCredentials[1]);
-                    credentials.UPSCredentials.accessLicenseNumber = B64Encode(NewCredentials[2]);
+                    credentials.UPSCredentials.Username = B64Encode(NewCredentials[0]);
+                    credentials.UPSCredentials.Password = B64Encode(NewCredentials[1]);
+                    credentials.UPSCredentials.AccessLicenseNumber = B64Encode(NewCredentials[2]);
                 }
 
                 if (Service == ParcelService.USPS)
                 {
-                    credentials.POSTALCredentials._userid = B64Encode(NewCredentials[0]);
+                    credentials.POSTALCredentials.UserID = B64Encode(NewCredentials[0]);
                 }
             }
 
-            _context.SaveChanges();
+            DBContext.SaveChanges();
+        }*/
+
+        private void StoreAndUpdateCredentials(FedExCredentialsData NewFedExData)
+        {
+            var CurrentDBList = DBContext.Credentials.ToList();
+
+            foreach(CredentialData credentials in CurrentDBList)
+            {
+                credentials.FedExCredentials.UserKey = B64Encode(NewFedExData.UserKey);
+                credentials.FedExCredentials.UserPassword = B64Encode(NewFedExData.UserPassword);
+                credentials.FedExCredentials.AccountNumber = B64Encode(NewFedExData.AccountNumber);
+                credentials.FedExCredentials.MeterNumber = B64Encode(NewFedExData.MeterNumber);
+            }
+
+            DBContext.SaveChanges();
+        }
+
+        private void StoreAndUpdateCredentials(UPSCredentialsData NewUPSData)
+        {
+            var CurrentDBList = DBContext.Credentials.ToList();
+
+            foreach(CredentialData credentials in CurrentDBList)
+            {
+                credentials.UPSCredentials.Username = B64Encode(NewUPSData.Username);
+                credentials.UPSCredentials.Password = B64Encode(NewUPSData.Password);
+                credentials.UPSCredentials.AccessLicenseNumber = B64Encode(NewUPSData.AccessLicenseNumber);
+            }
+
+            DBContext.SaveChanges();
+        }
+
+        private void StoreAndUpdateCredentials(USPSCredentialsData NewUSPSData)
+        {
+            var CurrentDBList = DBContext.Credentials.ToList();
+
+            foreach(CredentialData credentials in CurrentDBList)
+            {
+                credentials.POSTALCredentials.UserID = B64Encode(NewUSPSData.UserID);
+            }
+
+            DBContext.SaveChanges();
         }
 
         private void RetrieveCredentialsOnLoad()
         {
-            var CurrentDBList = _context.Credentials.ToList();
+            var CurrentDBList = DBContext.Credentials.ToList();
 
             foreach (CredentialData credentials in CurrentDBList)
             {
+                //instead, instantiate a new Credentials data object, copy/decode, and pas to TrackingServiceControl
                 List<string> FedExCreds = new List<string>();
                 FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserKey));
                 FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserPassword));
                 FedExCreds.Add(B64Decode(credentials.FedExCredentials.AccountNumber));
                 FedExCreds.Add(B64Decode(credentials.FedExCredentials.MeterNumber));
 
-                _control.UpdateCredentialInformation(FedExCreds, ParcelService.FedEx);
+                TrackingServiceControl.UpdateCredentialInformation(FedExCreds, ParcelService.FedEx);
 
 
                 List<string> UPSCreds = new List<string>();
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.username));
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.password));
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.accessLicenseNumber));
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.Username));
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.Password));
+                UPSCreds.Add(B64Decode(credentials.UPSCredentials.AccessLicenseNumber));
 
-                _control.UpdateCredentialInformation(UPSCreds, ParcelService.UPS);
+                TrackingServiceControl.UpdateCredentialInformation(UPSCreds, ParcelService.UPS);
 
 
                 List<string> POSTALCreds = new List<string>();
-                POSTALCreds.Add(B64Decode(credentials.POSTALCredentials._userid));
+                POSTALCreds.Add(B64Decode(credentials.POSTALCredentials.UserID));
 
-                _control.UpdateCredentialInformation(POSTALCreds, ParcelService.USPS);
+                TrackingServiceControl.UpdateCredentialInformation(POSTALCreds, ParcelService.USPS);
 
             }
         }
@@ -269,50 +310,50 @@ namespace PackageTracker
 
         private void ResetCredentialsInDBToDefaults(ParcelService Service)
         {
-            var CurrentDBList = _context.Credentials.ToList();
+            var CurrentDBList = DBContext.Credentials.ToList();
 
             foreach (CredentialData credentials in CurrentDBList)
             {
                 if (Service == ParcelService.FedEx)
                 {
-                    var DefaultCredentials = _control.RetrieveDefaultCredentials(Service);
+                    var DefaultCredentials = new FedExCredentialsData();
 
-                    credentials.FedExCredentials.UserKey = DefaultCredentials[0];
-                    credentials.FedExCredentials.UserPassword = DefaultCredentials[1];
-                    credentials.FedExCredentials.AccountNumber = DefaultCredentials[2];
-                    credentials.FedExCredentials.MeterNumber = DefaultCredentials[3];
+                    credentials.FedExCredentials.UserKey = DefaultCredentials.UserKey;
+                    credentials.FedExCredentials.UserPassword = DefaultCredentials.UserPassword;
+                    credentials.FedExCredentials.AccountNumber = DefaultCredentials.AccountNumber;
+                    credentials.FedExCredentials.MeterNumber = DefaultCredentials.MeterNumber;
                 }
 
                 if (Service == ParcelService.UPS)
                 {
-                    var DefaultCredentials = _control.RetrieveDefaultCredentials(Service);
+                    var DefaultCredentials = new UPSCredentialsData();
 
-                    credentials.UPSCredentials.username = DefaultCredentials[0];
-                    credentials.UPSCredentials.password = DefaultCredentials[1];
-                    credentials.UPSCredentials.accessLicenseNumber = DefaultCredentials[2];
+                    credentials.UPSCredentials.Username = DefaultCredentials.Username;
+                    credentials.UPSCredentials.Password = DefaultCredentials.Password;
+                    credentials.UPSCredentials.AccessLicenseNumber = DefaultCredentials.AccessLicenseNumber;
                 }
 
                 if (Service == ParcelService.USPS)
                 {
-                    var DefaultCredentials = _control.RetrieveDefaultCredentials(Service);
+                    var DefaultCredentials = new USPSCredentialsData();
 
-                    credentials.POSTALCredentials._userid = DefaultCredentials[0];
+                    credentials.POSTALCredentials.UserID = DefaultCredentials.UserID;
                 }
             }
 
-            _context.SaveChanges();
+            DBContext.SaveChanges();
         }
 
         private void UpdateDBFromWebServices()
         {
             //Create list from DB
-            var CurrentDBList = _context.Packages.ToList();
+            var CurrentDBList = DBContext.Packages.ToList();
 
             //Pass in Tracking List to Tracking Control for Web Service updating
-            _control.UpdateTrackingInformation(CurrentDBList);
+            TrackingServiceControl.UpdateTrackingInformation(CurrentDBList);
 
             //Commit changes to DB
-            _context.SaveChanges();
+            DBContext.SaveChanges();
         }
 
 
@@ -403,20 +444,22 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
+            var NewFedExData = new FedExCredentialsData();
             List<string> UpdatedInfo = new List<string>();
             if(UpdateFedExToDefaults_CheckBox.IsChecked == false)
             {
+                
                 //Create list of user input values
-                UpdatedInfo.Add(FedExUserKEY.Text);
-                UpdatedInfo.Add(FedExUserPASSWORD.Text);
-                UpdatedInfo.Add(FedExUserACCOUNTNUMBER.Text);
-                UpdatedInfo.Add(FedExUserMETERNUMBER.Text);
+                NewFedExData.UserKey = FedExUserKEY.Text;
+                NewFedExData.UserPassword = FedExUserPASSWORD.Text;
+                NewFedExData.AccountNumber = FedExUserACCOUNTNUMBER.Text;
+                NewFedExData.MeterNumber = FedExUserMETERNUMBER.Text;
 
                 //Send new information to FedExManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
 
                 //Update the database with the new credentials
-                StoreAndUpdateCredentials(UpdatedInfo, ParcelService.FedEx);
+                StoreAndUpdateCredentials(NewFedExData);
 
                 //Clear entry fields
                 FedExUserKEY.Text = "";
@@ -432,7 +475,7 @@ namespace PackageTracker
                 UpdatedInfo.Add("ResetToDefaults");
 
                 //Send new information to FedExManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
 
                 //Blank fields on reset to defaults, and uncheck box
                 FedExUserKEY.Text = "";
@@ -471,19 +514,20 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
+            var NewUPSData = new UPSCredentialsData();
             List<string> UpdatedInfo = new List<string>();
             if (UpdateUPSToDefaults_CheckBox.IsChecked == false)
             {
                 //Create list of user input values
-                UpdatedInfo.Add(UPSUserNAME.Text);
-                UpdatedInfo.Add(UPSUserPASSWORD.Text);
-                UpdatedInfo.Add(UPSUserLicenseNUMBER.Text);
+                NewUPSData.Username = UPSUserNAME.Text;
+                NewUPSData.Password = UPSUserPASSWORD.Text;
+                NewUPSData.AccessLicenseNumber = UPSUserLicenseNUMBER.Text;
 
                 //Send new information to UPSManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
 
                 //Update the database with the new credentials
-                StoreAndUpdateCredentials(UpdatedInfo, ParcelService.UPS);
+                StoreAndUpdateCredentials(NewUPSData);
 
                 //Clear entry fields
                 UPSUserLicenseNUMBER.Text = "";
@@ -498,7 +542,7 @@ namespace PackageTracker
                 UpdatedInfo.Add("ResetToDefaults");
 
                 //Send new information to UPSManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
 
                 //Blank fields on reset to defaults, uncheck box
                 UPSUserLicenseNUMBER.Text = "";
@@ -534,17 +578,18 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
+            var NewUSPSData = new USPSCredentialsData();
             List<string> UpdatedInfo = new List<string>();
             if (UpdateUSPSToDefaults_CheckBox.IsChecked == false)
             {
                 //Create list of user input values
-                UpdatedInfo.Add(USPSUserID.Text);
+                NewUSPSData.UserID = USPSUserID.Text;
 
                 //Send new information to UPSManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
 
                 //Update the database with the new credentials
-                StoreAndUpdateCredentials(UpdatedInfo, ParcelService.USPS);
+                StoreAndUpdateCredentials(NewUSPSData);
 
                 //blank entry fields
                 USPSUserID.Text = "";
@@ -557,7 +602,7 @@ namespace PackageTracker
                 UpdatedInfo.Add("ResetToDefaults");
 
                 //Send new information to UPSManager via TrackingControl
-                _control.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
+                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
 
                 //Blank fields on reset to defaults, uncheck box
                 USPSUserID.Text = "";

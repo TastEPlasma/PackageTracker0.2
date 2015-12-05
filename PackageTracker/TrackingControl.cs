@@ -136,6 +136,45 @@ namespace PackageTracker
             }
         }
 
+        public void UpdateCredentialInformation(FedExCredentialsData NewFedExData, bool ResetToDefaults)
+        {
+            
+            if (ResetToDefaults)
+            {
+                FedEx.ResetCredentialsToDefaults();
+            }
+            else
+            {
+                if (!NewFedExData.UserKey.E)
+                {
+                    FedEx.UserKey = NewCredentials[0];
+                }
+                if (NewCredentials[1] != "")
+                {
+                    FedEx.UserPassword = NewCredentials[1];
+                }
+                if (NewCredentials[2] != "")
+                {
+                    FedEx.AccountNumber = NewCredentials[2];
+                }
+                if (NewCredentials[3] != "")
+                {
+                    FedEx.MeterNumber = NewCredentials[3];
+                }
+            }
+            
+        }
+
+        public void UpdateCredentialInformation(UPSCredentialsData NewUPSData, bool ResetToDefaults)
+        {
+
+        }
+
+        public void UpdateCredentialInformation(USPSCredentialsData NewUSPSData, bool ResetToDefaults)
+        {
+
+        }
+
         internal List<string> RetrieveDefaultCredentials(ParcelService Carrier)
         {
             List<string> DefaultCredentials = new List<string>();

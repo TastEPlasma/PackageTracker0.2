@@ -3,3 +3,8 @@ D:\Work\APIs\USPS\USPS_Web_Tools_Wrapper_src\bin\Debug\MAX.USPS.pdb
 D:\Work\APIs\USPS\USPS_Web_Tools_Wrapper_src\obj\Debug\USPSWebService.csprojResolveAssemblyReference.cache
 D:\Work\APIs\USPS\USPS_Web_Tools_Wrapper_src\obj\Debug\MAX.USPS.dll
 D:\Work\APIs\USPS\USPS_Web_Tools_Wrapper_src\obj\Debug\MAX.USPS.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\bin\Debug\MAX.USPS.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\bin\Debug\MAX.USPS.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\USPSWebService.csprojResolveAssemblyReference.cache
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\MAX.USPS.dll
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\USPSWebService\obj\Debug\MAX.USPS.pdb
