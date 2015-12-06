@@ -261,7 +261,6 @@ namespace PackageTracker
                 NewUSPSData.UserID = (B64Decode(credentials.POSTALCredentials.UserID));
 
                 TrackingServiceControl.UpdateCredentialInformation(NewUSPSData);
-
             }
         }
 

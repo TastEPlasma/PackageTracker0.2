@@ -53,7 +53,7 @@ namespace MAX.UPS
             }    
         }
 
-        public void ResetCredentialsToDefaultValues()
+        public void ResetCredentialsToDefaults()
         {
             Username = "TastEPlasma";
             Password = "Firebolt5";

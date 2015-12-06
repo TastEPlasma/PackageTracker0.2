@@ -22,7 +22,6 @@ namespace MAX.USPS
         }
 
         private const string ProductionUrl = "http://production.shippingapis.com/ShippingAPI.dll";
-        private const string TestingUrl = "http://testing.shippingapis.com/ShippingAPITest.dll";
         private WebClient web;
 
         public string UserID { get; set; }
@@ -52,7 +51,7 @@ namespace MAX.USPS
                 throw new USPSManagerException(ex);
             }
         }
-        public void ResetResetCredentialsToDefaults()
+        public void ResetCredentialsToDefaults()
         {
             UserID = "857STUDE5322";
         }

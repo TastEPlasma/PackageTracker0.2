@@ -64,77 +64,6 @@ namespace PackageTracker
                 }
             }
         }
-        /*public void UpdateCredentialInformation(List<string> NewCredentials, ParcelService Carrier)
-        {
-            //due to differences in each web service, 
-            //a seperate methodology was applied for changing the credentials
-
-            //Array out of bounds should not happen, since this is being called from a single function
-            if(Carrier == ParcelService.FedEx)
-            {
-                if(NewCredentials[0] != "ResetToDefaults")
-                {
-                    if (NewCredentials[0] != "")
-                    {
-                        FedEx.UserKey = NewCredentials[0];
-                    }
-                    if (NewCredentials[1] != "")
-                    {
-                        FedEx.UserPassword = NewCredentials[1];
-                    }
-                    if (NewCredentials[2] != "")
-                    {
-                        FedEx.AccountNumber = NewCredentials[2];
-                    }
-                    if (NewCredentials[3] != "")
-                    {
-                        FedEx.MeterNumber = NewCredentials[3];
-                    }
-                }
-                else
-                {
-                    FedEx.ResetCredentialsToDefaults();
-                }    
-            }
-
-            if(Carrier == ParcelService.UPS)
-            {
-                if(NewCredentials[0] != "ResetToDefaults")
-                {
-                    if (NewCredentials[0] != "")
-                    {
-                        UPS.Username = NewCredentials[0];
-                    }
-                    if (NewCredentials[1] != "")
-                    {
-                        UPS.Password = NewCredentials[1];
-                    }
-                    if(NewCredentials[2] != "")
-                    {
-                        UPS.AccessLicenseNumber = NewCredentials[2];
-                    }
-                }
-                else
-                {
-                    UPS.ResetCredentialsToDefaultValues();
-                }
-            }
-
-            if(Carrier == ParcelService.USPS)
-            {
-                if(NewCredentials[0] != "ResetToDefaults")
-                {
-                    if(NewCredentials[0] != "")
-                    {
-                        POSTAL.UserID = NewCredentials[0];
-                    }
-                }
-                else
-                {
-                    POSTAL.ResetResetCredentialsToDefaults();
-                }
-            }
-        }*/
 
         public void UpdateCredentialInformation(FedExCredentialsData NewFedExData)
         {
@@ -190,42 +119,14 @@ namespace PackageTracker
                     } break;
                 case ParcelService.UPS:
                     {
-                        UPS.ResetCredentialsToDefaultValues();
+                        UPS.ResetCredentialsToDefaults();
                     } break;
                 case ParcelService.USPS:
                     {
-                        POSTAL.ResetResetCredentialsToDefaults();
+                        POSTAL.ResetCredentialsToDefaults();
                     } break;
                 default: ; break;
             }
-        }
-
-        //TODO: CHANGE THIS TO RETURN AN OBJECT CONTAINING VALUES INSTEAD OF LIST
-        internal List<string> RetrieveDefaultCredentials(ParcelService Carrier)
-        {
-            List<string> DefaultCredentials = new List<string>();
-
-            if (Carrier == ParcelService.FedEx)
-            {
-                DefaultCredentials.Add(FedEx.UserKey);
-                DefaultCredentials.Add(FedEx.UserPassword);
-                DefaultCredentials.Add(FedEx.AccountNumber);
-                DefaultCredentials.Add(FedEx.MeterNumber);
-            }
-
-            if (Carrier == ParcelService.UPS)
-            {
-                DefaultCredentials.Add(UPS.Username);
-                DefaultCredentials.Add(UPS.Password);
-                DefaultCredentials.Add(UPS.AccessLicenseNumber);
-            }
-
-            if (Carrier == ParcelService.USPS)
-            {
-                DefaultCredentials.Add(POSTAL.UserID);
-            }
-
-            return DefaultCredentials;
         }
 
 
