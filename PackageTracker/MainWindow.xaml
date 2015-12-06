@@ -2,59 +2,58 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PackageTracker" mc:Ignorable="d" x:Class="PackageTracker.MainWindow"
-        Title="Package Tracker" Height="390" Width="650" Loaded="Window_Loaded"
-        >
+        Title="Package Tracker" Height="390" Width="650" Loaded="Window_Loaded">
     <Window.Resources>
-        <CollectionViewSource x:Key="trackerContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerContext}, CreateList=True}"/>
-        <CollectionViewSource x:Key="trackerContextPackagesViewSource" Source="{Binding Packages, Source={StaticResource trackerContextViewSource}}"/>
-        <CollectionViewSource x:Key="trackerDataViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerData}, CreateList=True}"/>
+        <CollectionViewSource x:Key="trackerContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerContext}, CreateList=True}" />
+        <CollectionViewSource x:Key="trackerContextPackagesViewSource" Source="{Binding Packages, Source={StaticResource trackerContextViewSource}}" />
+        <CollectionViewSource x:Key="trackerDataViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TrackerData}, CreateList=True}" />
         <ResourceDictionary x:Key="BackgroundColors">
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="CustomResourceDictionary.xaml"/>
+                <ResourceDictionary Source="CustomResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Grid DataContext="{StaticResource trackerContextPackagesViewSource}" Margin="-4,0,-40,0" HorizontalAlignment="Center" Width="763">
 
-        <Button x:Name="Update" Content="Update" HorizontalAlignment="Center" Margin="323,0,364,40" VerticalAlignment="Bottom" Width="76" Click="Update_Click" Height="20" RenderTransformOrigin="0.227,-0.9"/>
+        <Button x:Name="Update" Content="Update" HorizontalAlignment="Center" Margin="323,0,364,40" VerticalAlignment="Bottom" Width="76" Click="Update_Click" Height="20" RenderTransformOrigin="0.227,-0.9" />
         <DataGrid x:Name="trackerDataDataGrid"  AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource trackerDataViewSource}}" Margin="44,16,81,81" RowDetailsVisibilityMode="Visible"  Background="White" HorizontalAlignment="Center" Width="auto">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" Resources="{StaticResource BackgroundColors}">
-                    <Setter Property="Background" Value="{StaticResource Other}"/>
+                    <Setter Property="Background" Value="{StaticResource Other}" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Status}" Value="Delivered" >
-                            <Setter Property="Background" Value="{StaticResource Delivered}"/>
+                        <DataTrigger Binding="{Binding Status}" Value="Delivered">
+                            <Setter Property="Background" Value="{StaticResource Delivered}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="NotFound">
-                            <Setter Property="Background" Value="{StaticResource NotFound}"/>
+                            <Setter Property="Background" Value="{StaticResource NotFound}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="NotShipped">
-                            <Setter Property="Background" Value="{StaticResource NotShipped}"/>
+                            <Setter Property="Background" Value="{StaticResource NotShipped}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="Other">
-                            <Setter Property="Background" Value="{StaticResource Other}"/>
+                            <Setter Property="Background" Value="{StaticResource Other}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="OutForDelivery">
-                            <Setter Property="Background" Value="{StaticResource OutForDelivery}"/>
+                            <Setter Property="Background" Value="{StaticResource OutForDelivery}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="Returned">
-                            <Setter Property="Background" Value="{StaticResource Returned}"/>
+                            <Setter Property="Background" Value="{StaticResource Returned}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="Shipped">
-                            <Setter Property="Background" Value="{StaticResource Shipped}"/>
+                            <Setter Property="Background" Value="{StaticResource Shipped}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="PickUp">
-                            <Setter Property="Background" Value="{StaticResource PickUp}"/>
+                            <Setter Property="Background" Value="{StaticResource PickUp}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn x:Name="deleteme" Binding="{Binding DeleteMe}" Header="Delete" Width="45"/>
-                <DataGridTextColumn x:Name="customNameColumn" Binding="{Binding CustomName}" Header="Custom Name" Width="130"/>
-                <DataGridTextColumn x:Name="trackingNumberColumn" Binding="{Binding TrackingNumber}" Header="Tracking Number" Width="130"/>
-                <DataGridTextColumn x:Name="locationColumn" Binding="{Binding Location}" Header="Location" Width="180" IsReadOnly="True"/>
-                <DataGridTextColumn x:Name="packageStatusColumn" Binding="{Binding StatusOfPackage}" Header="Status" Width="100" IsReadOnly="True"/>
+                <DataGridCheckBoxColumn x:Name="deleteme" Binding="{Binding DeleteMe}" Header="Delete" Width="45" />
+                <DataGridTextColumn x:Name="customNameColumn" Binding="{Binding CustomName}" Header="Custom Name" Width="130" />
+                <DataGridTextColumn x:Name="trackingNumberColumn" Binding="{Binding TrackingNumber}" Header="Tracking Number" Width="130" />
+                <DataGridTextColumn x:Name="locationColumn" Binding="{Binding Location}" Header="Location" Width="180" IsReadOnly="True" />
+                <DataGridTextColumn x:Name="packageStatusColumn" Binding="{Binding StatusOfPackage}" Header="Status" Width="100" IsReadOnly="True" />
                 <DataGridTemplateColumn x:Name="carrierCodeColumn" Header="Carrier" Width="45" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -65,23 +64,21 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-
         </DataGrid>
-        <ProgressBar Name ="Progress" Visibility="Hidden"  IsIndeterminate="True" HorizontalAlignment="Center" Height="10" Margin="310,0,353,65" VerticalAlignment="Bottom" Width="100"/>
-        <TextBlock Text="Auto-updates is " Height="20" Width="auto" HorizontalAlignment="Left" Margin="222,0,0,0" 
+        <ProgressBar Name ="Progress" Visibility="Hidden"  IsIndeterminate="True" HorizontalAlignment="Center" Height="10" Margin="310,0,353,65" VerticalAlignment="Bottom" Width="100" />
+        <TextBlock Text="Auto-updates is " Height="20" Width="auto" HorizontalAlignment="Left" Margin="222,0,0,0"
                  VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Name="displayUpdateToggle"  Text="OFF" Height="20" Width="auto" HorizontalAlignment="Left" Margin="323,0,0,0" 
+        <TextBlock Name="displayUpdateToggle"  Text="OFF" Height="20" Width="auto" HorizontalAlignment="Left" Margin="323,0,0,0"
                  VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Text="and is set to every " Height="20" Width="auto" HorizontalAlignment="Left" Margin="355,0,0,0" 
+        <TextBlock Text="and is set to every " Height="20" Width="auto" HorizontalAlignment="Left" Margin="355,0,0,0"
                  VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Name="delayLength" Text="1" Height="20" Width="auto" HorizontalAlignment="Left" Margin="460,0,0,0" 
+        <TextBlock Name="delayLength" Text="1" Height="20" Width="auto" HorizontalAlignment="Left" Margin="460,0,0,0"
                  VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Text=" hours. " Height="20" Width="auto" HorizontalAlignment="Left" Margin="471,0,0,0" 
+        <TextBlock Text=" hours. " Height="20" Width="auto" HorizontalAlignment="Left" Margin="471,0,0,0"
                  VerticalAlignment="Bottom"></TextBlock>
-
 
         <Menu HorizontalAlignment="Left" Height="18" Margin="44,0,0,0" VerticalAlignment="Top" Width="638">
-            <MenuItem Header="File" Visibility="Visible" Name="menuFile" >
+            <MenuItem Header="File" Visibility="Visible" Name="menuFile">
                 <MenuItem Header="Update" Click="Update_Click"></MenuItem>
                 <MenuItem Header="Quit" Click="Quit_Click"></MenuItem>
             </MenuItem>
@@ -97,116 +94,106 @@
                 <MenuItem Header="Set Auto-Update Delay" Click="Delay_Click"></MenuItem>
             </MenuItem>
             <MenuItem Name="Info_Menu" Header="Info">
-                <MenuItem Name="About_Menu" Header="About" Click="OpenAboutPopup_Click"/>
-                
+                <MenuItem Name="About_Menu" Header="About" Click="OpenAboutPopup_Click" />
             </MenuItem>
         </Menu>
-        
-        
-        <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center" 
+
+        <Popup Name="FedExCredentialEntry_PopUp"  Placement="Center"
             Width="310" Height="210" IsOpen="False" AllowsTransparency = "True">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
-                <StackPanel Background="SteelBlue"   >
+                <StackPanel Background="SteelBlue">
 
-                    <TextBlock Background="Peru" Width="300" Height="auto" HorizontalAlignment="Center" FontWeight="Bold"><Run Text=" Enter Custom Credentials For FedEx Web Service"/>
+                    <TextBlock Background="Peru" Width="300" Height="auto" HorizontalAlignment="Center" FontWeight="Bold"><Run Text=" Enter Custom Credentials For FedEx Web Service" />
                         <InlineUIContainer>
                 			<Button Click="CloseFedExCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="0,0,0,-4" />
                 		</InlineUIContainer></TextBlock>
 
-                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: "/></TextBlock>
-                    <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Key: " /></TextBlock>
+                    <TextBox x:Name="FedExUserKEY" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
-                    <TextBox x:Name="FedExUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: " /></TextBlock>
+                    <TextBox x:Name="FedExUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Account: "/></TextBlock>
-                    <TextBox x:Name="FedExUserACCOUNTNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Account: " /></TextBlock>
+                    <TextBox x:Name="FedExUserACCOUNTNUMBER" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: "/></TextBlock>
-                    <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Peru" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Meter: " /></TextBlock>
+                    <TextBox x:Name="FedExUserMETERNUMBER" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Peru" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateFedExAccount_Click"/>
+                    <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Peru" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateFedExAccount_Click" />
 
-                    <CheckBox Name="UpdateFedExToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
-
+                    <CheckBox Name="UpdateFedExToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0" />
                 </StackPanel>
             </Border>
         </Popup>
-        
-        
-
 
         <Popup Name="UPSCredentialEntry_PopUp"  Placement="Center"
                Width="310" Height="190" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
                 <StackPanel Background="PaleGoldenrod">
-                    <TextBlock Background="Tan" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="  Enter Custom Credentials For UPS Web Services"/>
+                    <TextBlock Background="Tan" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="  Enter Custom Credentials For UPS Web Services" />
                         <InlineUIContainer>
                 			    <Button Click="CloseUPSCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="4,0,0,-4" />
                 	    </InlineUIContainer></TextBlock>
 
-                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Name: "/></TextBlock>
-                    <TextBox x:Name="UPSUserNAME" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Name: " /></TextBlock>
+                    <TextBox x:Name="UPSUserNAME" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: "/></TextBlock>
-                    <TextBox x:Name="UPSUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User Password: " /></TextBlock>
+                    <TextBox x:Name="UPSUserPASSWORD" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="License Number: "/></TextBlock>
-                    <TextBox x:Name="UPSUserLicenseNUMBER" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="Tan" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="License Number: " /></TextBlock>
+                    <TextBox x:Name="UPSUserLicenseNUMBER" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <Button Width="115" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Tan" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateUPSAccount_Click"/>
+                    <Button Width="115" Height="25" Content="Update Credentials" FontWeight="Bold" Background="Tan" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateUPSAccount_Click" />
 
-                    <CheckBox Name="UpdateUPSToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0" FontWeight="Bold"/>
-
+                    <CheckBox Name="UpdateUPSToDefaults_CheckBox" Content="Reset all fields to default values" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0" FontWeight="Bold" />
                 </StackPanel>
             </Border>
         </Popup>
 
-
         <Popup Name="USPSCredentialEntry_PopUp"  Placement="Center"
                Width="310" Height="130" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
-                <StackPanel Background="DodgerBlue"  >
-                    <TextBlock Background="IndianRed" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="Enter Custom Credentials For USPS Web Services"/>
+                <StackPanel Background="DodgerBlue">
+                    <TextBlock Background="IndianRed" Width="300" HorizontalAlignment="Center" FontWeight="Bold"><Run Text="Enter Custom Credentials For USPS Web Services" />
                         <InlineUIContainer>
                 			    <Button Click="CloseUSPSCredentialsMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="4,0,0,-4" />
                 	    </InlineUIContainer></TextBlock>
 
-                    <TextBlock Background="IndianRed" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User ID: "/></TextBlock>
-                    <TextBox x:Name="USPSUserID" Margin="80,-20,0,0" Width="150" Height="20"/>
+                    <TextBlock Background="IndianRed" Width="100" Height="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0"><Run Text="User ID: " /></TextBlock>
+                    <TextBox x:Name="USPSUserID" Margin="80,-20,0,0" Width="150" Height="20" />
 
-                    <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="IndianRed" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateUSPSAccount_Click"/>
+                    <Button Width="120" Height="25" Content="Update Credentials" FontWeight="Bold" Background="IndianRed" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="130,10,0,0" Click="UpdateUSPSAccount_Click" />
 
-                    <CheckBox Name="UpdateUSPSToDefaults_CheckBox" Content="Reset all fields to default values" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0"/>
-
+                    <CheckBox Name="UpdateUSPSToDefaults_CheckBox" Content="Reset all fields to default values" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,10,0,0" />
                 </StackPanel>
             </Border>
         </Popup>
 
-
         <Popup Name="DelayAdjuster" Placement="Center"
             Width="120" Height="120" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
                 <StackPanel>
                     <StackPanel.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0.191"/>
-                            <GradientStop Color="White" Offset="1"/>
+                            <GradientStop Color="Black" Offset="0.191" />
+                            <GradientStop Color="White" Offset="1" />
                         </LinearGradientBrush>
                     </StackPanel.Background>
-                    <TextBlock x:Name="delayHeader" Background="#FFD8D8D8" Width="110" HorizontalAlignment="Center"><Run Text="     Delay In Hours"/></TextBlock>
+                    <TextBlock x:Name="delayHeader" Background="#FFD8D8D8" Width="110" HorizontalAlignment="Center"><Run Text="     Delay In Hours" /></TextBlock>
                     <Slider x:Name="delaySlider" Width="100" Value="1" Orientation="Horizontal" HorizontalAlignment="Center"
             		IsSnapToTickEnabled="True" Minimum="1" Maximum="24" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight"
             		TickPlacement="BottomRight" TickFrequency="1" Margin="0,5" />
@@ -214,9 +201,9 @@
                 </StackPanel>
             </Border>
         </Popup>
-        
+
         <Popup Name="About_Popup" Placement="Center" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
@@ -224,49 +211,45 @@
                     <TextBlock Background="AntiqueWhite">About Multi-Package Tracker by Erick R. Webster</TextBlock>
                     <Separator></Separator>
                     <TextBlock TextWrapping="Wrap">
-                    <Run Text="   This program was written with the small package distrubtor in mind, such as an EBay or Etsy seller.  It was designed to allow them to check the status of their shipments at just a glace."/>
+                    <Run Text="   This program was written with the small package distrubtor in mind, such as an EBay or Etsy seller.  It was designed to allow them to check the status of their shipments at just a glace." />
                     </TextBlock>
                     <TextBlock TextWrapping="Wrap">
-                    <Run Text="   It was not designed for the end user who occasionally receives a package, although it can certainly be used in that manner."/>
+                    <Run Text="   It was not designed for the end user who occasionally receives a package, although it can certainly be used in that manner." />
                     </TextBlock>
                     <TextBlock TextWrapping="Wrap">
-                    <Run Text="   This program was constructed in Visual Studio 2013 Pro in C#, and utilizes Enitity Framework 6.0 to store data in a local SQL database.  It also utilizes WPF/XAML for the GUI."/>
+                    <Run Text="   This program was constructed in Visual Studio 2013 Pro in C#, and utilizes Enitity Framework 6.0 to store data in a local SQL database.  It also utilizes WPF/XAML for the GUI." />
                     </TextBlock>
                     <TextBlock TextWrapping="Wrap">
-                    <Run Text="   This program was constructed for a work portfolio, but is free to use for any reason, commercial or private.  Where noted internal code is the property of the original author or company.  All other rights reserved."/>
+                    <Run Text="   This program was constructed for a work portfolio, but is free to use for any reason, commercial or private.  Where noted internal code is the property of the original author or company.  All other rights reserved." />
                     </TextBlock>
 
-                    <Button Content="OK" Height="20" Width="70" Background="White" Click="CloseAboutPopup_Click" Margin="0,0,0,0"/>
+                    <Button Content="OK" Height="20" Width="70" Background="White" Click="CloseAboutPopup_Click" Margin="0,0,0,0" />
                 </StackPanel>
             </Border>
         </Popup>
 
         <Popup Name="Usage_Popup" Placement="Center" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
                 <StackPanel Background="WhiteSmoke"  Width="200" Height="200">
                     <Button Click="CloseUsageMenu_Click"  Background="Red" Content="X" FontWeight="ExtraBold" Width="20" Margin="180,0,0,-4" />
-
                 </StackPanel>
             </Border>
         </Popup>
-        
+
         <Popup Name="Error_Popup" Placement="Center" IsOpen="False">
-            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1" >
+            <Border Margin="0,0,8,8"  BorderBrush="Black" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" />
                 </Border.Effect>
                 <StackPanel Background="WhiteSmoke" Width="300" Height="300">
                     <TextBlock Text="FATAL ERROR ENCOUNTERED!" Background="AliceBlue" />
-                    <TextBlock Name="ErrorMessage_TextBlock" Text="No Message Found!" Height="250" Background="White" TextWrapping="WrapWithOverflow"/>
-                    <Button Name="ErrorQuit_Button" Content="QUIT" Width="50" Margin="0,0,0,0" Click="Quit_Click"/>
+                    <TextBlock Name="ErrorMessage_TextBlock" Text="No Message Found!" Height="250" Background="White" TextWrapping="WrapWithOverflow" />
+                    <Button Name="ErrorQuit_Button" Content="QUIT" Width="50" Margin="0,0,0,0" Click="Quit_Click" />
                 </StackPanel>
             </Border>
         </Popup>
-
-
     </Grid>
-
 </Window>

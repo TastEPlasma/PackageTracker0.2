@@ -1,8 +1,7 @@
 namespace PackageTracker.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddCredentials : DbMigration
     {
         public override void Up()
@@ -22,9 +21,8 @@ namespace PackageTracker.Migrations
                         POSTALCredentials__userid = c.String(),
                     })
                 .PrimaryKey(t => t.ID);
-            
         }
-        
+
         public override void Down()
         {
             DropTable("dbo.CredentialDatas");

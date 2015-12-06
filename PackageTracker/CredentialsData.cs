@@ -1,20 +1,16 @@
-﻿
-namespace PackageTracker
+﻿namespace PackageTracker
 {
-    class CredentialData
+    internal class CredentialData
     {
-
         public int ID { get; set; }
 
         public FedExCredentialsData FedExCredentials { get; set; }
         public UPSCredentialsData UPSCredentials { get; set; }
         public USPSCredentialsData POSTALCredentials { get; set; }
-
     }
 
-    class FedExCredentialsData
+    internal class FedExCredentialsData
     {
-
         public string UserKey { get; set; }
         public string UserPassword { get; set; }
         public string AccountNumber { get; set; }
@@ -27,24 +23,20 @@ namespace PackageTracker
             AccountNumber = "510087186";
             MeterNumber = "118691686";
         }
-
     }
 
-    class USPSCredentialsData
+    internal class USPSCredentialsData
     {
-
         public string UserID { get; set; }
 
         public USPSCredentialsData()
         {
             UserID = "857STUDE5322";
         }
-
     }
 
-    class UPSCredentialsData
+    internal class UPSCredentialsData
     {
-
         public string Username { get; set; }
         public string Password { get; set; }
         public string AccessLicenseNumber { get; set; }
@@ -55,6 +47,5 @@ namespace PackageTracker
             Password = "Firebolt5";
             AccessLicenseNumber = "4CFB51344FD8E476";
         }
-
     }
 }

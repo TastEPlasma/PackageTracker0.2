@@ -5,9 +5,7 @@
 ///You are free to use this software as you see fit.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MAX.USPS
 {
@@ -19,6 +17,7 @@ namespace MAX.USPS
         }
 
         private string _TrackingNumber;
+
         /// <summary>
         /// The tracking number for the package
         /// </summary>
@@ -29,6 +28,7 @@ namespace MAX.USPS
         }
 
         private string _Summary;
+
         /// <summary>
         /// Summary information for the package
         /// </summary>
@@ -39,6 +39,7 @@ namespace MAX.USPS
         }
 
         private List<string> _Details;
+
         /// <summary>
         /// Tracking Details
         /// </summary>
@@ -53,7 +54,7 @@ namespace MAX.USPS
             int idx1 = 0;
             int idx2 = 0;
             TrackingInfo t = new TrackingInfo();
-            if(xml.Contains("<TrackSummary>"))
+            if (xml.Contains("<TrackSummary>"))
             {
                 idx1 = xml.IndexOf("<TrackSummary>") + 14;
                 idx2 = xml.IndexOf("</TrackSummary>");
@@ -69,7 +70,5 @@ namespace MAX.USPS
             }
             return t;
         }
-
-
     }
 }

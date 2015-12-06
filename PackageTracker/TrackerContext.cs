@@ -2,22 +2,21 @@
 
 namespace PackageTracker
 {
-    class TrackerContext : DbContext
+    internal class TrackerContext : DbContext
     {
-
         public DbSet<TrackerData> Packages { get; set; }
         public DbSet<CredentialData> Credentials { get; set; }
 
         //exclude unnecessary data bits from being entered into database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //This allows EF to ignore the "DeleteMe", "StatusOfPackage" and "CarrierCode" 
+            //This allows EF to ignore the "DeleteMe", "StatusOfPackage" and "CarrierCode"
             //property regardless of where it is found, and to never include it in its data model
             //or push it in updates
 
             //This syntax enables context-wide ability to ignore specific properties or values
             /*modelBuilder.Types().
-                Configure(c => c.Ignore("DeleteMe"));*/  
+                Configure(c => c.Ignore("DeleteMe"));*/
 
             //This syntax enables ignoring values from a specific DBSet
             modelBuilder.Entity<TrackerData>().Ignore(p => p.DeleteMe);
@@ -26,6 +25,5 @@ namespace PackageTracker
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

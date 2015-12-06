@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Threading;
 
 namespace PackageTracker
@@ -20,6 +18,7 @@ namespace PackageTracker
 
         //Internal timer for Auto-Updates CheckBox
         private System.Windows.Threading.DispatcherTimer UpdateTimer = new DispatcherTimer();
+
         private TimeSpan DelayTime = new TimeSpan(1, 0, 0);
 
         //Initializers
@@ -57,18 +56,17 @@ namespace PackageTracker
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
             System.Windows.Data.CollectionViewSource trackerDataViewSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("trackerDataViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // trackerDataViewSource.Source = [generic data source]
 
             // *This comment block from the msdn tutorial on WPF/EF Data Binding*
-            // Load is an extension method on IQueryable,  
-            // defined in the System.Data.Entity namespace. 
-            // This method enumerates the results of the query,  
-            // similar to ToList but without creating a list. 
-            // When used with Linq to Entities this method  
+            // Load is an extension method on IQueryable,
+            // defined in the System.Data.Entity namespace.
+            // This method enumerates the results of the query,
+            // similar to ToList but without creating a list.
+            // When used with Linq to Entities this method
             // creates entity objects and adds them to the context.
             bool ContinueOperation = true;
             try
@@ -76,22 +74,22 @@ namespace PackageTracker
                 DBContext.Packages.Load();
                 DBContext.Credentials.Load();
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 //Quit Popup
                 ErrorMessageAndQuit(exception);
 
                 ContinueOperation = false;
             }
-            
-            if(ContinueOperation == true)
+
+            if (ContinueOperation == true)
             {
                 //This function is to insure that the credential entry is present,
                 //and create a default entry if one doesnt exist
                 CheckForCredentialExistance();
 
-                // After the data is loaded call the DbSet<T>.Local property  
-                // to use the DbSet<T> as a binding source. 
+                // After the data is loaded call the DbSet<T>.Local property
+                // to use the DbSet<T> as a binding source.
                 trackerDataViewSource.Source = DBContext.Packages.Local;
             }
         }
@@ -103,13 +101,12 @@ namespace PackageTracker
             ErrorMessage_TextBlock.Text = exception.Message + " Inner exception: " + exception.InnerException;
         }
 
-
         //Database Methods
         private void CheckForCredentialExistance()
         {
             var CurrentDBList = DBContext.Credentials.ToList();
-            
-            if(CurrentDBList.Count() == 0)
+
+            if (CurrentDBList.Count() == 0)
             {
                 CredentialData NewEntry = new CredentialData();
                 NewEntry.FedExCredentials = new FedExCredentialsData();
@@ -119,7 +116,7 @@ namespace PackageTracker
                 DBContext.Credentials.Add(NewEntry);
                 DBContext.SaveChanges();
             }
-            else if(CurrentDBList.Count() > 1)
+            else if (CurrentDBList.Count() > 1)
             {
                 Console.WriteLine("ERROR: TOO MANY CREDENTIAL ENTRIES!!");
             }
@@ -154,7 +151,6 @@ namespace PackageTracker
             {
                 //Checks tracking numbers via web service, updates local DB
                 UpdateDBFromWebServices();
-
             });
 
             //what to do when worker is done
@@ -197,7 +193,7 @@ namespace PackageTracker
         {
             var CurrentDBList = DBContext.Credentials.ToList();
 
-            foreach(CredentialData credentials in CurrentDBList)
+            foreach (CredentialData credentials in CurrentDBList)
             {
                 credentials.FedExCredentials.UserKey = B64Encode(NewFedExData.UserKey);
                 credentials.FedExCredentials.UserPassword = B64Encode(NewFedExData.UserPassword);
@@ -212,7 +208,7 @@ namespace PackageTracker
         {
             var CurrentDBList = DBContext.Credentials.ToList();
 
-            foreach(CredentialData credentials in CurrentDBList)
+            foreach (CredentialData credentials in CurrentDBList)
             {
                 credentials.UPSCredentials.Username = B64Encode(NewUPSData.Username);
                 credentials.UPSCredentials.Password = B64Encode(NewUPSData.Password);
@@ -226,7 +222,7 @@ namespace PackageTracker
         {
             var CurrentDBList = DBContext.Credentials.ToList();
 
-            foreach(CredentialData credentials in CurrentDBList)
+            foreach (CredentialData credentials in CurrentDBList)
             {
                 credentials.POSTALCredentials.UserID = B64Encode(NewUSPSData.UserID);
             }
@@ -248,14 +244,12 @@ namespace PackageTracker
 
                 TrackingServiceControl.UpdateCredentialInformation(NewFedExData);
 
-
                 UPSCredentialsData NewUPSData = new UPSCredentialsData();
                 NewUPSData.Username = (B64Decode(credentials.UPSCredentials.Username));
                 NewUPSData.Password = (B64Decode(credentials.UPSCredentials.Password));
                 NewUPSData.AccessLicenseNumber = (B64Decode(credentials.UPSCredentials.AccessLicenseNumber));
 
                 TrackingServiceControl.UpdateCredentialInformation(NewUPSData);
-
 
                 USPSCredentialsData NewUSPSData = new USPSCredentialsData();
                 NewUSPSData.UserID = (B64Decode(credentials.POSTALCredentials.UserID));
@@ -324,7 +318,6 @@ namespace PackageTracker
             DBContext.SaveChanges();
         }
 
-
         //GUI Methods
         private void Update_Click(object sender, RoutedEventArgs e)
         {
@@ -342,7 +335,7 @@ namespace PackageTracker
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(HourlyUpdatesBox.IsChecked == true)
+            if (HourlyUpdatesBox.IsChecked == true)
             {
                 UpdateTimer.IsEnabled = true;
                 displayUpdateToggle.Text = "ON";
@@ -389,7 +382,6 @@ namespace PackageTracker
             Usage_Popup.IsOpen = false;
         }
 
-
         //FEDEX
         private void OpenFedExCredentialsMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -412,7 +404,7 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
-            if(UpdateFedExToDefaults_CheckBox.IsChecked == false)
+            if (UpdateFedExToDefaults_CheckBox.IsChecked == false)
             {
                 var NewFedExData = new FedExCredentialsData();
 
@@ -447,7 +439,7 @@ namespace PackageTracker
                 FedExUserPASSWORD.Text = "";
                 FedExUserMETERNUMBER.Text = "";
                 FedExUserACCOUNTNUMBER.Text = "";
-                UpdateFedExToDefaults_CheckBox.IsChecked = false;    
+                UpdateFedExToDefaults_CheckBox.IsChecked = false;
             }
 
             FedExCredentialEntry_PopUp.IsOpen = false;
@@ -459,7 +451,7 @@ namespace PackageTracker
         {
             UPSCredentialEntry_PopUp.IsOpen = true;
         }
-        
+
         private void CloseUPSCredentialsMenu_Click(object sender, RoutedEventArgs e)
         {
             //Clear entry fields
@@ -474,7 +466,7 @@ namespace PackageTracker
         {
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
- 
+
             if (UpdateUPSToDefaults_CheckBox.IsChecked == false)
             {
                 var NewUPSData = new UPSCredentialsData();
@@ -525,7 +517,7 @@ namespace PackageTracker
             //blank entry fields
             USPSUserID.Text = "";
 
-            USPSCredentialEntry_PopUp.IsOpen = false; 
+            USPSCredentialEntry_PopUp.IsOpen = false;
         }
 
         private void UpdateUSPSAccount_Click(object sender, RoutedEventArgs e)
@@ -547,7 +539,7 @@ namespace PackageTracker
                 StoreAndUpdateCredentials(NewUSPSData);
 
                 //blank entry fields
-                USPSUserID.Text = "";    
+                USPSUserID.Text = "";
             }
             else
             {

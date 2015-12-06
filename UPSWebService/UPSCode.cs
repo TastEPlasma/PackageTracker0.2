@@ -16,7 +16,6 @@ namespace MAX.UPS
         public string Password { get; set; }
         public string AccessLicenseNumber { get; set; }
 
-
         public TrackResponse GetTrackingInfo(string TrackingNumber)
         {
             //The following code is from the WebAPI example
@@ -47,10 +46,10 @@ namespace MAX.UPS
                 TrackResponse Results = track.ProcessTrack(tr);
                 return Results;
             }
-            catch(System.Web.Services.Protocols.SoapException ex)
+            catch (System.Web.Services.Protocols.SoapException ex)
             {
                 throw new Exception(ex.Message);
-            }    
+            }
         }
 
         public void ResetCredentialsToDefaults()

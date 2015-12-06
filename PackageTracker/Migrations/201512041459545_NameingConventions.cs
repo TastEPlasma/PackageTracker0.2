@@ -1,8 +1,7 @@
 namespace PackageTracker.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class NameingConventions : DbMigration
     {
         public override void Up()
@@ -12,7 +11,7 @@ namespace PackageTracker.Migrations
             //AddColumn("dbo.CredentialDatas", "POSTALCredentials_UserID", c => c.String());
             //DropColumn("dbo.CredentialDatas", "POSTALCredentials__userid");
         }
-        
+
         public override void Down()
         {
             RenameColumn("dbo.CredentialDatas", "POSTALCredentials_UserID", "POSTALCredentials__userid");

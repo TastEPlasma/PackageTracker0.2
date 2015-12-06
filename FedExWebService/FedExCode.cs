@@ -21,7 +21,6 @@ namespace FedExWebService
         public string TransactionID { get; set; }
         public string TrackingNumber { get; set; }
 
-
         public TrackRequest CreateTrackRequest(string TrackNumber)
         {
             //create credentials object
@@ -76,4 +75,3 @@ namespace FedExWebService
         }
     }
 }
-

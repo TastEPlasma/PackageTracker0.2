@@ -6,8 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MAX.USPS
 {
@@ -77,8 +75,5 @@ namespace MAX.USPS
                 _Exception.HelpLink = value;
             }
         }
-
-
-
     }
 }

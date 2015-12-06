@@ -1,12 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="Delivered" Color="#FFC9FBF7"/>
-    <SolidColorBrush x:Key="NotFound" Color="#FFFDA8A8"/>
-    <SolidColorBrush x:Key="NotShipped" Color="#FFFFE3AE"/>
-    <SolidColorBrush x:Key="Other" Color="#FFF7D1FF"/>
-    <SolidColorBrush x:Key="OutForDelivery" Color="#FFBFFFBF"/>
-    <SolidColorBrush x:Key="Returned" Color="Gray"/>
-    <SolidColorBrush x:Key="Shipped" Color="#FFFFFFAB"/>
-    <SolidColorBrush x:Key="PickUp" Color="#FFA0C2FF"/>
-
+    <SolidColorBrush x:Key="Delivered" Color="#FFC9FBF7" />
+    <SolidColorBrush x:Key="NotFound" Color="#FFFDA8A8" />
+    <SolidColorBrush x:Key="NotShipped" Color="#FFFFE3AE" />
+    <SolidColorBrush x:Key="Other" Color="#FFF7D1FF" />
+    <SolidColorBrush x:Key="OutForDelivery" Color="#FFBFFFBF" />
+    <SolidColorBrush x:Key="Returned" Color="Gray" />
+    <SolidColorBrush x:Key="Shipped" Color="#FFFFFFAB" />
+    <SolidColorBrush x:Key="PickUp" Color="#FFA0C2FF" />
 </ResourceDictionary>

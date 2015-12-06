@@ -10,16 +10,16 @@ using UPSWebService.UPSWebReference;
 
 namespace PackageTracker
 {
-    class TrackingControl
+    internal class TrackingControl
     {
         //Web service interface managers
-        USPSManager POSTAL; 
-        FedExManager FedEx;
-        UPSManager UPS;
+        private USPSManager USPS;
+        private FedExManager FedEx;
+        private UPSManager UPS;
 
         public TrackingControl()
         {
-            POSTAL = new USPSManager();
+            USPS = new USPSManager();
             UPS = new UPSManager();
             FedEx = new FedExManager();
         }
@@ -27,9 +27,9 @@ namespace PackageTracker
         public void UpdateTrackingInformation(List<TrackerData> TrackingData)
         {
             //Take list of package data, parse out tracking numbers, run each through web service
-            foreach(TrackerData Entry in TrackingData)
+            foreach (TrackerData Entry in TrackingData)
             {
-                if(Entry.TrackingNumber != "")
+                if (Entry.TrackingNumber != "")
                 {
                     //Check for reasonable length tracking number
                     int TNlength = Entry.TrackingNumber.Length;
@@ -82,11 +82,11 @@ namespace PackageTracker
             if (!String.IsNullOrWhiteSpace(NewFedExData.MeterNumber))
             {
                 FedEx.MeterNumber = NewFedExData.MeterNumber;
-            }  
+            }
         }
 
         public void UpdateCredentialInformation(UPSCredentialsData NewUPSData)
-        {    
+        {
             if (!String.IsNullOrWhiteSpace(NewUPSData.Username))
             {
                 UPS.Username = NewUPSData.Username;
@@ -103,9 +103,9 @@ namespace PackageTracker
 
         public void UpdateCredentialInformation(USPSCredentialsData NewUSPSData)
         {
-            if(!String.IsNullOrWhiteSpace(NewUSPSData.UserID))
+            if (!String.IsNullOrWhiteSpace(NewUSPSData.UserID))
             {
-                POSTAL.UserID = NewUSPSData.UserID;
+                USPS.UserID = NewUSPSData.UserID;
             }
         }
 
@@ -123,7 +123,7 @@ namespace PackageTracker
                     } break;
                 case ParcelService.USPS:
                     {
-                        POSTAL.ResetCredentialsToDefaults();
+                        USPS.ResetCredentialsToDefaults();
                     } break;
                 default: ; break;
             }
@@ -134,12 +134,12 @@ namespace PackageTracker
         {
             try
             {
-                TrackingInfo Reply = POSTAL.GetTrackingInfo(Entry.TrackingNumber);
+                TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
                 ParseUSPSRawDataIntoList(Entry, Reply);
             }
-            catch(USPSManagerException ex)
+            catch (USPSManagerException ex)
             {
-                if(ex.Message == "Unable to connect to remote server")
+                if (ex.Message == "Unable to connect to remote server")
                 {
                     Entry.Location = "ERROR: No Connection";
                     Entry.Status = PackageStatus.Other;
@@ -149,7 +149,7 @@ namespace PackageTracker
                     Entry.Location = "ERROR";
                     Entry.Status = PackageStatus.Other;
                 }
-            }   
+            }
         }
 
         private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
@@ -188,7 +188,7 @@ namespace PackageTracker
             {
                 Entry.Status = PackageStatus.Other;
                 Entry.Location = "Error";
-            }  
+            }
         }
 
         private string ExtractAddressFromString(string source)
@@ -206,9 +206,9 @@ namespace PackageTracker
             for (int i = sourceSize - 1; i > 0; i--)
             {
                 //looking for commas as markers of useful data
-                if(addressArray[i] == ',')
+                if (addressArray[i] == ',')
                 {
-                    if(Range[1] == 0)
+                    if (Range[1] == 0)
                     {
                         //The extra 4 characters will contain a space and the state abbreviation
                         Range[1] = i + 4;
@@ -239,9 +239,9 @@ namespace PackageTracker
                 TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
                 ParseRawUPSDataIntoList(Entry, Response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                if(ex.Message == "An exception has been raised as a result of client data.")
+                if (ex.Message == "An exception has been raised as a result of client data.")
                 {
                     Entry.Location = "ERROR: Bad Credentials";
                     Entry.Status = PackageStatus.Other;
@@ -307,7 +307,6 @@ namespace PackageTracker
                 {
                     return true;
                 }
-
             }
             else
             {
@@ -329,14 +328,14 @@ namespace PackageTracker
         {
             //open webservice, pass in tracking number
             FedExWebService.FedExWebReference.TrackRequest request = FedEx.CreateTrackRequest(Entry.TrackingNumber);
-            
+
             FedExWebService.FedExWebReference.TrackService service = new FedExWebService.FedExWebReference.TrackService();
 
             try
             {
                 // Call the Track web service passing in a TrackRequest and returning a TrackReply
                 TrackReply reply = service.track(request);
-                if(reply.HighestSeverity != NotificationSeverityType.ERROR && reply.HighestSeverity != NotificationSeverityType.FAILURE)
+                if (reply.HighestSeverity != NotificationSeverityType.ERROR && reply.HighestSeverity != NotificationSeverityType.FAILURE)
                 {
                     //Parse raw data here
                     ParseFedExRawDataIntoList(Entry, reply);
@@ -347,7 +346,6 @@ namespace PackageTracker
                     Entry.Location = "ERROR";
                     Entry.Status = PackageStatus.Other;
                 }
-                
             }
             catch (SoapException e)
             {
@@ -357,17 +355,16 @@ namespace PackageTracker
             {
                 Console.WriteLine(e.Message);
             }
-            
         }
-        
+
         private void ParseFedExRawDataIntoList(TrackerData Entry, TrackReply NewData)
         {
-            foreach(CompletedTrackDetail completedTrackDetail in NewData.CompletedTrackDetails)
+            foreach (CompletedTrackDetail completedTrackDetail in NewData.CompletedTrackDetails)
             {
-                foreach(TrackDetail trackDetail in completedTrackDetail.TrackDetails)
+                foreach (TrackDetail trackDetail in completedTrackDetail.TrackDetails)
                 {
                     //Check for error, likely from invalid tracking number
-                    if(trackDetail.Notification.Severity == NotificationSeverityType.ERROR)
+                    if (trackDetail.Notification.Severity == NotificationSeverityType.ERROR)
                     {
                         Entry.Location = "INVALID TRACKING NUMBER";
                         Entry.Status = PackageStatus.NotFound;
@@ -385,11 +382,10 @@ namespace PackageTracker
                         {
                             Entry.Location = "NO CURRENT LOCATION FOUND";
                         }
-                        
 
                         Entry.Service = ParcelService.FedEx;
                         //check for error-less state of no record found by web service
-                        if(trackDetail.StatusDetail != null)
+                        if (trackDetail.StatusDetail != null)
                         {
                             //a small sample of the package status codes, mapped to PackageStatus ENUM
                             switch (trackDetail.StatusDetail.Code)
@@ -410,10 +406,9 @@ namespace PackageTracker
                         {
                             Entry.Status = PackageStatus.NotFound;
                         }
-                    }  
+                    }
                 }
             }
         }
-
     }
 }

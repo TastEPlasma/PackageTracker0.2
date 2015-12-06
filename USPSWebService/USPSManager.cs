@@ -5,11 +5,9 @@
 ///You are free to use this software as you see fit.
 //////////////////////////////////////////////////////////////////////////
 
-
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
+using System.Text;
 
 namespace MAX.USPS
 {
@@ -25,7 +23,6 @@ namespace MAX.USPS
         private WebClient web;
 
         public string UserID { get; set; }
-
 
         public TrackingInfo GetTrackingInfo(string TrackingNumber)
         {
@@ -51,6 +48,7 @@ namespace MAX.USPS
                 throw new USPSManagerException(ex);
             }
         }
+
         public void ResetCredentialsToDefaults()
         {
             UserID = "857STUDE5322";
@@ -79,6 +77,5 @@ namespace MAX.USPS
             Byte[] byteArray = encoding.GetBytes(pXmlString);
             return byteArray;
         }
-        
     }
 }
