@@ -193,36 +193,6 @@ namespace PackageTracker
             DBContext.SaveChanges();
         }
 
-        /*private void StoreAndUpdateCredentials(List<string> NewCredentials, ParcelService Service)
-        {
-            var CurrentDBList = DBContext.Credentials.ToList();
-
-            foreach(CredentialData credentials in CurrentDBList)
-            {
-                if(Service == ParcelService.FedEx)
-                {
-                    credentials.FedExCredentials.UserKey = B64Encode(NewCredentials[0]);
-                    credentials.FedExCredentials.UserPassword = B64Encode(NewCredentials[1]);
-                    credentials.FedExCredentials.AccountNumber = B64Encode(NewCredentials[2]);
-                    credentials.FedExCredentials.MeterNumber = B64Encode(NewCredentials[3]);
-                }
-
-                if(Service == ParcelService.UPS)
-                {
-                    credentials.UPSCredentials.Username = B64Encode(NewCredentials[0]);
-                    credentials.UPSCredentials.Password = B64Encode(NewCredentials[1]);
-                    credentials.UPSCredentials.AccessLicenseNumber = B64Encode(NewCredentials[2]);
-                }
-
-                if (Service == ParcelService.USPS)
-                {
-                    credentials.POSTALCredentials.UserID = B64Encode(NewCredentials[0]);
-                }
-            }
-
-            DBContext.SaveChanges();
-        }*/
-
         private void StoreAndUpdateCredentials(FedExCredentialsData NewFedExData)
         {
             var CurrentDBList = DBContext.Credentials.ToList();
@@ -270,28 +240,27 @@ namespace PackageTracker
 
             foreach (CredentialData credentials in CurrentDBList)
             {
-                //instead, instantiate a new Credentials data object, copy/decode, and pas to TrackingServiceControl
-                List<string> FedExCreds = new List<string>();
-                FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserKey));
-                FedExCreds.Add(B64Decode(credentials.FedExCredentials.UserPassword));
-                FedExCreds.Add(B64Decode(credentials.FedExCredentials.AccountNumber));
-                FedExCreds.Add(B64Decode(credentials.FedExCredentials.MeterNumber));
+                FedExCredentialsData NewFedExData = new FedExCredentialsData();
+                NewFedExData.UserKey = (B64Decode(credentials.FedExCredentials.UserKey));
+                NewFedExData.UserPassword = (B64Decode(credentials.FedExCredentials.UserPassword));
+                NewFedExData.AccountNumber = (B64Decode(credentials.FedExCredentials.AccountNumber));
+                NewFedExData.MeterNumber = (B64Decode(credentials.FedExCredentials.MeterNumber));
 
-                TrackingServiceControl.UpdateCredentialInformation(FedExCreds, ParcelService.FedEx);
-
-
-                List<string> UPSCreds = new List<string>();
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.Username));
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.Password));
-                UPSCreds.Add(B64Decode(credentials.UPSCredentials.AccessLicenseNumber));
-
-                TrackingServiceControl.UpdateCredentialInformation(UPSCreds, ParcelService.UPS);
+                TrackingServiceControl.UpdateCredentialInformation(NewFedExData);
 
 
-                List<string> POSTALCreds = new List<string>();
-                POSTALCreds.Add(B64Decode(credentials.POSTALCredentials.UserID));
+                UPSCredentialsData NewUPSData = new UPSCredentialsData();
+                NewUPSData.Username = (B64Decode(credentials.UPSCredentials.Username));
+                NewUPSData.Password = (B64Decode(credentials.UPSCredentials.Password));
+                NewUPSData.AccessLicenseNumber = (B64Decode(credentials.UPSCredentials.AccessLicenseNumber));
 
-                TrackingServiceControl.UpdateCredentialInformation(POSTALCreds, ParcelService.USPS);
+                TrackingServiceControl.UpdateCredentialInformation(NewUPSData);
+
+
+                USPSCredentialsData NewUSPSData = new USPSCredentialsData();
+                NewUSPSData.UserID = (B64Decode(credentials.POSTALCredentials.UserID));
+
+                TrackingServiceControl.UpdateCredentialInformation(NewUSPSData);
 
             }
         }
@@ -444,19 +413,18 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
-            var NewFedExData = new FedExCredentialsData();
-            List<string> UpdatedInfo = new List<string>();
             if(UpdateFedExToDefaults_CheckBox.IsChecked == false)
             {
-                
-                //Create list of user input values
+                var NewFedExData = new FedExCredentialsData();
+
+                //Populate object with updated values
                 NewFedExData.UserKey = FedExUserKEY.Text;
                 NewFedExData.UserPassword = FedExUserPASSWORD.Text;
                 NewFedExData.AccountNumber = FedExUserACCOUNTNUMBER.Text;
                 NewFedExData.MeterNumber = FedExUserMETERNUMBER.Text;
 
                 //Send new information to FedExManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+                TrackingServiceControl.UpdateCredentialInformation(NewFedExData);
 
                 //Update the database with the new credentials
                 StoreAndUpdateCredentials(NewFedExData);
@@ -466,30 +434,24 @@ namespace PackageTracker
                 FedExUserPASSWORD.Text = "";
                 FedExUserMETERNUMBER.Text = "";
                 FedExUserACCOUNTNUMBER.Text = "";
-
-                FedExCredentialEntry_PopUp.IsOpen = false; 
             }
             else
             {
-                //Having this value in the first field of the array tells the FedExManager to reset the credentials
-                UpdatedInfo.Add("ResetToDefaults");
+                //Trigger a reset credentials to default in memory
+                TrackingServiceControl.ResetCredentialsToDefaults(ParcelService.FedEx);
 
-                //Send new information to FedExManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.FedEx);
+                //Trigger a reset to defaults in database
+                ResetCredentialsInDBToDefaults(ParcelService.FedEx);
 
                 //Blank fields on reset to defaults, and uncheck box
                 FedExUserKEY.Text = "";
                 FedExUserPASSWORD.Text = "";
                 FedExUserMETERNUMBER.Text = "";
                 FedExUserACCOUNTNUMBER.Text = "";
-                UpdateFedExToDefaults_CheckBox.IsChecked = false;
-
-                //Update DB with new information
-                ResetCredentialsInDBToDefaults(ParcelService.FedEx);
-
-                FedExCredentialEntry_PopUp.IsOpen = false;
+                UpdateFedExToDefaults_CheckBox.IsChecked = false;    
             }
 
+            FedExCredentialEntry_PopUp.IsOpen = false;
             ProgressBarVisibilityDelay();
         }
 
@@ -513,18 +475,18 @@ namespace PackageTracker
         {
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
-
-            var NewUPSData = new UPSCredentialsData();
-            List<string> UpdatedInfo = new List<string>();
+ 
             if (UpdateUPSToDefaults_CheckBox.IsChecked == false)
             {
-                //Create list of user input values
+                var NewUPSData = new UPSCredentialsData();
+
+                //Populate object with updated values
                 NewUPSData.Username = UPSUserNAME.Text;
                 NewUPSData.Password = UPSUserPASSWORD.Text;
                 NewUPSData.AccessLicenseNumber = UPSUserLicenseNUMBER.Text;
 
                 //Send new information to UPSManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
+                TrackingServiceControl.UpdateCredentialInformation(NewUPSData);
 
                 //Update the database with the new credentials
                 StoreAndUpdateCredentials(NewUPSData);
@@ -533,29 +495,23 @@ namespace PackageTracker
                 UPSUserLicenseNUMBER.Text = "";
                 UPSUserNAME.Text = "";
                 UPSUserPASSWORD.Text = "";
-
-                UPSCredentialEntry_PopUp.IsOpen = false;
             }
             else
             {
-                //Having this value in the first field of the array tells the UPSManager to reset the credentials
-                UpdatedInfo.Add("ResetToDefaults");
+                //Trigger reset to defaults in memory
+                TrackingServiceControl.ResetCredentialsToDefaults(ParcelService.UPS);
 
-                //Send new information to UPSManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.UPS);
+                //Trigger reset to defaults in database
+                ResetCredentialsInDBToDefaults(ParcelService.UPS);
 
                 //Blank fields on reset to defaults, uncheck box
                 UPSUserLicenseNUMBER.Text = "";
                 UPSUserNAME.Text = "";
                 UPSUserPASSWORD.Text = "";
                 UpdateUPSToDefaults_CheckBox.IsChecked = false;
-
-                //Update DB with new information
-                ResetCredentialsInDBToDefaults(ParcelService.UPS);
-
-                UPSCredentialEntry_PopUp.IsOpen = false;
             }
 
+            UPSCredentialEntry_PopUp.IsOpen = false;
             ProgressBarVisibilityDelay();
         }
 
@@ -578,45 +534,37 @@ namespace PackageTracker
             //show progress bar
             Progress.Visibility = System.Windows.Visibility.Visible;
 
-            var NewUSPSData = new USPSCredentialsData();
-            List<string> UpdatedInfo = new List<string>();
             if (UpdateUSPSToDefaults_CheckBox.IsChecked == false)
             {
-                //Create list of user input values
+                var NewUSPSData = new USPSCredentialsData();
+
+                //Populate object with updated values
                 NewUSPSData.UserID = USPSUserID.Text;
 
                 //Send new information to UPSManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
+                TrackingServiceControl.UpdateCredentialInformation(NewUSPSData);
 
                 //Update the database with the new credentials
                 StoreAndUpdateCredentials(NewUSPSData);
 
                 //blank entry fields
-                USPSUserID.Text = "";
-
-                USPSCredentialEntry_PopUp.IsOpen = false;  
+                USPSUserID.Text = "";    
             }
             else
             {
-                //Having this value in the first field of the array tells the UPSManager to reset the credentials
-                UpdatedInfo.Add("ResetToDefaults");
+                //Trigger a reset to defaults in memory
+                TrackingServiceControl.ResetCredentialsToDefaults(ParcelService.USPS);
 
-                //Send new information to UPSManager via TrackingControl
-                TrackingServiceControl.UpdateCredentialInformation(UpdatedInfo, ParcelService.USPS);
+                //Trigger a reset to defaults in database
+                ResetCredentialsInDBToDefaults(ParcelService.USPS);
 
                 //Blank fields on reset to defaults, uncheck box
                 USPSUserID.Text = "";
                 UpdateUSPSToDefaults_CheckBox.IsChecked = true;
-
-                //Update DB with new information
-                ResetCredentialsInDBToDefaults(ParcelService.USPS);
-
-                USPSCredentialEntry_PopUp.IsOpen = false;
             }
 
+            USPSCredentialEntry_PopUp.IsOpen = false;
             ProgressBarVisibilityDelay();
-            
         }
-
     }
 }

@@ -18,14 +18,14 @@ namespace MAX.USPS
         public USPSManager()
         {
             web = new WebClient();
-            this.userid = "857STUDE5322";
+            this.UserID = "857STUDE5322";
         }
 
         private const string ProductionUrl = "http://production.shippingapis.com/ShippingAPI.dll";
         private const string TestingUrl = "http://testing.shippingapis.com/ShippingAPITest.dll";
         private WebClient web;
 
-        public string userid { get; set; }
+        public string UserID { get; set; }
 
 
         public TrackingInfo GetTrackingInfo(string TrackingNumber)
@@ -34,7 +34,7 @@ namespace MAX.USPS
             {
                 string trackurl = "?API=TrackV2&XML=<TrackRequest USERID=\"{0}\"><TrackID ID=\"{1}\"></TrackID></TrackRequest>";
                 string url = ProductionUrl + trackurl;
-                url = String.Format(url, userid, TrackingNumber);
+                url = String.Format(url, UserID, TrackingNumber);
                 string xml = web.DownloadString(url);
                 if (xml.Contains("<Error>"))
                 {
@@ -54,7 +54,7 @@ namespace MAX.USPS
         }
         public void ResetResetCredentialsToDefaults()
         {
-            userid = "857STUDE5322";
+            UserID = "857STUDE5322";
         }
 
         /// <summary>
