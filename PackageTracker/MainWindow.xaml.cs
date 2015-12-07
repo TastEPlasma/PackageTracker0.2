@@ -58,16 +58,8 @@ namespace PackageTracker
         {
             System.Windows.Data.CollectionViewSource trackerDataViewSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("trackerDataViewSource")));
-            // Load data by setting the CollectionViewSource.Source property:
-            // trackerDataViewSource.Source = [generic data source]
-
-            // *This comment block from the msdn tutorial on WPF/EF Data Binding*
-            // Load is an extension method on IQueryable,
-            // defined in the System.Data.Entity namespace.
-            // This method enumerates the results of the query,
-            // similar to ToList but without creating a list.
-            // When used with Linq to Entities this method
-            // creates entity objects and adds them to the context.
+            
+            //try/catch to handle exceptions on database errors, usually DB not found variants
             bool ContinueOperation = true;
             try
             {
@@ -76,7 +68,8 @@ namespace PackageTracker
             }
             catch (Exception exception)
             {
-                //Quit Popup
+                LockDownMenus();
+
                 ErrorMessageAndQuit(exception);
 
                 ContinueOperation = false;
@@ -99,6 +92,15 @@ namespace PackageTracker
             Error_Popup.IsOpen = true;
 
             ErrorMessage_TextBlock.Text = exception.Message + " Inner exception: " + exception.InnerException;
+        }
+
+        private void LockDownMenus()
+        {
+            trackerDataDataGrid.IsEnabled = false;
+            File_Menu.IsEnabled = false;
+            Options_Menu.IsEnabled = false;
+            Info_Menu.IsEnabled = false;
+            Update_Button.IsEnabled = false;
         }
 
         //Database Methods

@@ -13,9 +13,9 @@ namespace PackageTracker
     internal class TrackingControl
     {
         //Web service interface managers
-        private USPSManager USPS;
         private FedExManager FedEx;
         private UPSManager UPS;
+        private USPSManager USPS;
 
         public TrackingControl()
         {
@@ -129,146 +129,7 @@ namespace PackageTracker
             }
         }
 
-
-        private void SendRequestToUSPSWebService(TrackerData Entry)
-        {
-            try
-            {
-                TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
-                ParseUSPSRawDataIntoList(Entry, Reply);
-            }
-            catch (USPSManagerException ex)
-            {
-                if (ex.Message == "Unable to connect to remote server")
-                {
-                    Entry.Location = "ERROR: No Connection";
-                    Entry.Status = PackageStatus.Other;
-                }
-                else
-                {
-                    Entry.Location = "ERROR";
-                    Entry.Status = PackageStatus.Other;
-                }
-            }
-        }
-
-        private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
-        {
-            //Only need the information in Reply.Summary
-            if (Reply.Summary.Contains("delivered"))
-            {
-                Entry.Status = PackageStatus.Delivered;
-                Entry.Location = ExtractAddressFromString(Reply.Summary);
-                Entry.Service = ParcelService.USPS;
-            }
-            else if (Reply.Summary.Contains("departed"))
-            {
-                Entry.Status = PackageStatus.Shipped;
-                Entry.Location = ExtractAddressFromString(Reply.Summary);
-                Entry.Service = ParcelService.USPS;
-            }
-            else if (Reply.Summary.Contains("picked up"))
-            {
-                Entry.Status = PackageStatus.Shipped;
-                Entry.Location = ExtractAddressFromString(Reply.Summary);
-                Entry.Service = ParcelService.USPS;
-            }
-            else if (Reply.Summary.Contains("arrived"))
-            {
-                Entry.Status = PackageStatus.Shipped;
-                Entry.Location = ExtractAddressFromString(Reply.Summary);
-                Entry.Service = ParcelService.USPS;
-            }
-            else if (Reply.Summary.Contains("error"))
-            {
-                Entry.Status = PackageStatus.NotFound;
-                Entry.Location = "Not Found";
-            }
-            else
-            {
-                Entry.Status = PackageStatus.Other;
-                Entry.Location = "Error";
-            }
-        }
-
-        private string ExtractAddressFromString(string source)
-        {
-            //The return object
-            string address = "";
-
-            //the char coordinates inside the stirng of the address
-            int[] Range = new int[2];
-            Range[0] = 0; Range[1] = 0;
-
-            //reverse loop to traverse array from back to front
-            char[] addressArray = source.ToCharArray();
-            int sourceSize = addressArray.Length;
-            for (int i = sourceSize - 1; i > 0; i--)
-            {
-                //looking for commas as markers of useful data
-                if (addressArray[i] == ',')
-                {
-                    if (Range[1] == 0)
-                    {
-                        //The extra 4 characters will contain a space and the state abbreviation
-                        Range[1] = i + 4;
-                    }
-                    else
-                    {
-                        //the plus ten here is to not capture the comma, year, or spaces
-                        Range[0] = i + 10;
-
-                        //escape the for loop
-                        i = -1;
-                    }
-                }
-            }
-
-            //calculate length of found address, extract
-            int sizeOfActualAddress = Range[1] - Range[0];
-            address = source.Substring(Range[0], sizeOfActualAddress);
-
-            return address;
-        }
-
-
-        private void SendRequestToUPSWebService(TrackerData Entry)
-        {
-            try
-            {
-                TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
-                ParseRawUPSDataIntoList(Entry, Response);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "An exception has been raised as a result of client data.")
-                {
-                    Entry.Location = "ERROR: Bad Credentials";
-                    Entry.Status = PackageStatus.Other;
-                }
-                else
-                {
-                    Entry.Location = "ERROR";
-                    Entry.Status = PackageStatus.Other;
-                }
-            }
-        }
-
-        private void ParseRawUPSDataIntoList(TrackerData Entry, TrackResponse trackResponse)
-        {
-            Entry.Location = (trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.City + ", " + trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.StateProvinceCode);
-            Entry.Service = ParcelService.UPS;
-            switch (trackResponse.Shipment[0].Package[0].Activity[0].Status.Code)
-            {
-                case "I": Entry.Status = PackageStatus.Shipped; break;
-                case "D": Entry.Status = PackageStatus.Delivered; break;
-                case "X": Entry.Status = PackageStatus.Other; break;
-                case "P": Entry.Status = PackageStatus.PickUp; break;
-                default: Entry.Status = PackageStatus.Other; break;
-            }
-        }
-
-
+        //FedEx
         private bool CheckFedExNumber(string TrackingNumber)
         {
             long number;
@@ -409,6 +270,145 @@ namespace PackageTracker
                     }
                 }
             }
+        }
+
+        //UPS
+        private void SendRequestToUPSWebService(TrackerData Entry)
+        {
+            try
+            {
+                TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
+                ParseRawUPSDataIntoList(Entry, Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "An exception has been raised as a result of client data.")
+                {
+                    Entry.Location = "ERROR: Bad Credentials";
+                    Entry.Status = PackageStatus.Other;
+                }
+                else
+                {
+                    Entry.Location = "ERROR";
+                    Entry.Status = PackageStatus.Other;
+                }
+            }
+        }
+
+        private void ParseRawUPSDataIntoList(TrackerData Entry, TrackResponse trackResponse)
+        {
+            Entry.Location = (trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.City + ", " + trackResponse.Shipment[0].Package[0].Activity[0].ActivityLocation.Address.StateProvinceCode);
+            Entry.Service = ParcelService.UPS;
+            switch (trackResponse.Shipment[0].Package[0].Activity[0].Status.Code)
+            {
+                case "I": Entry.Status = PackageStatus.Shipped; break;
+                case "D": Entry.Status = PackageStatus.Delivered; break;
+                case "X": Entry.Status = PackageStatus.Other; break;
+                case "P": Entry.Status = PackageStatus.PickUp; break;
+                default: Entry.Status = PackageStatus.Other; break;
+            }
+        }
+
+        //USPS
+        private void SendRequestToUSPSWebService(TrackerData Entry)
+        {
+            try
+            {
+                TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
+                ParseUSPSRawDataIntoList(Entry, Reply);
+            }
+            catch (USPSManagerException ex)
+            {
+                if (ex.Message == "Unable to connect to remote server")
+                {
+                    Entry.Location = "ERROR: No Connection";
+                    Entry.Status = PackageStatus.Other;
+                }
+                else
+                {
+                    Entry.Location = "ERROR";
+                    Entry.Status = PackageStatus.Other;
+                }
+            }
+        }
+
+        private void ParseUSPSRawDataIntoList(TrackerData Entry, TrackingInfo Reply)
+        {
+            //Only need the information in Reply.Summary
+            if (Reply.Summary.Contains("delivered"))
+            {
+                Entry.Status = PackageStatus.Delivered;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("departed"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("picked up"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("arrived"))
+            {
+                Entry.Status = PackageStatus.Shipped;
+                Entry.Location = ExtractAddressFromString(Reply.Summary);
+                Entry.Service = ParcelService.USPS;
+            }
+            else if (Reply.Summary.Contains("error"))
+            {
+                Entry.Status = PackageStatus.NotFound;
+                Entry.Location = "Not Found";
+            }
+            else
+            {
+                Entry.Status = PackageStatus.Other;
+                Entry.Location = "Error";
+            }
+        }
+
+        private string ExtractAddressFromString(string source)
+        {
+            //The return object
+            string address = "";
+
+            //the char coordinates inside the stirng of the address
+            int[] Range = new int[2];
+            Range[0] = 0; Range[1] = 0;
+
+            //reverse loop to traverse array from back to front
+            char[] addressArray = source.ToCharArray();
+            int sourceSize = addressArray.Length;
+            for (int i = sourceSize - 1; i > 0; i--)
+            {
+                //looking for commas as markers of useful data
+                if (addressArray[i] == ',')
+                {
+                    if (Range[1] == 0)
+                    {
+                        //The extra 4 characters will contain a space and the state abbreviation
+                        Range[1] = i + 4;
+                    }
+                    else
+                    {
+                        //the plus ten here is to not capture the comma, year, or spaces
+                        Range[0] = i + 10;
+
+                        //escape the for loop
+                        i = -1;
+                    }
+                }
+            }
+
+            //calculate length of found address, extract
+            int sizeOfActualAddress = Range[1] - Range[0];
+            address = source.Substring(Range[0], sizeOfActualAddress);
+
+            return address;
         }
     }
 }
