@@ -1,7 +1,6 @@
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\PackageTracker.exe.config
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\PackageTracker.exe
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\PackageTracker.pdb
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\BCrypt.Net.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\EntityFramework.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\EntityFramework.SqlServer.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\FedExWebService.dll
@@ -10,8 +9,6 @@ C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\FedExWebService.pdb
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\UPSWebService.pdb
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\MAX.USPS.pdb
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\BCrypt.Net.pdb
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\BCrypt.Net.xml
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\EntityFramework.xml
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Release\FedExWebService.XmlSerializers.dll
@@ -31,3 +28,4 @@ C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Release\PackageTracker.csproj.GenerateResource.Cache
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Release\PackageTracker.exe
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Release\PackageTracker.pdb
+C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Release\PackageTracker.Migrations.NameingConventions.resources

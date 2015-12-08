@@ -1,7 +1,7 @@
 ﻿PackageTracker
 
 
-exe
+winexe
 C#
 .cs
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Release\
@@ -12,8 +12,8 @@ TRACE
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\App.xaml
 2-515460671
 
-16-1365338291
-22892264972
+18-959727300
+211803579288
 CustomResourceDictionary.xaml;MainWindow.xaml;
 
 False

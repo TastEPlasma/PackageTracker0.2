@@ -25,8 +25,5 @@ C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTr
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker.Migrations.AddCustomNameToPackages.resources
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\MAX.USPS.dll
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\MAX.USPS.pdb
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\BCrypt.Net.dll
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\BCrypt.Net.pdb
-C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\bin\Debug\BCrypt.Net.xml
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker.Migrations.AddCredentials.resources
 C:\Users\JohnSnow\documents\visual studio 2013\Projects\PackageTracker\PackageTracker\obj\Debug\PackageTracker.Migrations.NameingConventions.resources

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UPSWebService", "UPSWebServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USPSWebService", "USPSWebService\USPSWebService.csproj", "{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PackageTrackerSetup", "PackageTrackerSetup\PackageTrackerSetup.vdproj", "{9514A07D-FC3F-4842-BF47-6DF980E39532}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,8 @@ Global
 		{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAB21EB2-2A87-4076-A029-96ABC7EECE2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9514A07D-FC3F-4842-BF47-6DF980E39532}.Debug|Any CPU.ActiveCfg = Debug
+		{9514A07D-FC3F-4842-BF47-6DF980E39532}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
