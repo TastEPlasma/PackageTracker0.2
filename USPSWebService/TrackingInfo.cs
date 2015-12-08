@@ -1,14 +1,7 @@
-//////////////////////////////////////////////////////////////////////////
-///This software is provided to you as-is and with not warranties!!!
-///Use this software at your own risk.
-///This software is Copyright by Scott Smith 2006
-///You are free to use this software as you see fit.
-//////////////////////////////////////////////////////////////////////////
-
-using System.Collections.Generic;
-
 namespace MAX.USPS
 {
+    using System.Collections.Generic;
+
     public class TrackingInfo
     {
         public TrackingInfo()
@@ -18,9 +11,6 @@ namespace MAX.USPS
 
         private string _TrackingNumber;
 
-        /// <summary>
-        /// The tracking number for the package
-        /// </summary>
         public string TrackingNumber
         {
             get { return _TrackingNumber; }
@@ -29,9 +19,6 @@ namespace MAX.USPS
 
         private string _Summary;
 
-        /// <summary>
-        /// Summary information for the package
-        /// </summary>
         public string Summary
         {
             get { return _Summary; }
@@ -40,9 +27,6 @@ namespace MAX.USPS
 
         private List<string> _Details;
 
-        /// <summary>
-        /// Tracking Details
-        /// </summary>
         public List<string> Details
         {
             get { return _Details; }

@@ -1,19 +1,20 @@
-﻿using FedExWebService;
-using FedExWebService.FedExWebReference;
-using MAX.UPS;
-using MAX.USPS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Services.Protocols;
-using UPSWebService.UPSWebReference;
-
-namespace PackageTracker
+﻿namespace PackageTracker
 {
+    using FedExWebService;
+    using FedExWebService.FedExWebReference;
+    using MAX.UPS;
+    using MAX.USPS;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Services.Protocols;
+    using UPSWebService.UPSWebReference;
+
     internal class TrackingControl
     {
         //Web service interface managers
         private FedExManager FedEx;
+
         private UPSManager UPS;
         private USPSManager USPS;
 
@@ -178,24 +179,17 @@ namespace PackageTracker
             return false;
         }
 
-        private void FedExNotSupported(TrackerData Entry)
-        {
-            Entry.Service = ParcelService.FedEx;
-            Entry.Status = PackageStatus.Other;
-            Entry.Location = "FedEx not supported";
-        }
-
         private void SendRequestToFedExWebService(TrackerData Entry)
         {
             //open webservice, pass in tracking number
-            FedExWebService.FedExWebReference.TrackRequest request = FedEx.CreateTrackRequest(Entry.TrackingNumber);
+            var request = FedEx.CreateTrackRequest(Entry.TrackingNumber);
 
-            FedExWebService.FedExWebReference.TrackService service = new FedExWebService.FedExWebReference.TrackService();
+            var service = new FedExWebService.FedExWebReference.TrackService();
 
             try
             {
                 // Call the Track web service passing in a TrackRequest and returning a TrackReply
-                TrackReply reply = service.track(request);
+                var reply = service.track(request);
                 if (reply.HighestSeverity != NotificationSeverityType.ERROR && reply.HighestSeverity != NotificationSeverityType.FAILURE)
                 {
                     //Parse raw data here
@@ -277,7 +271,7 @@ namespace PackageTracker
         {
             try
             {
-                TrackResponse Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
+                var Response = UPS.GetTrackingInfo(Entry.TrackingNumber);
                 ParseRawUPSDataIntoList(Entry, Response);
             }
             catch (Exception ex)
@@ -314,7 +308,7 @@ namespace PackageTracker
         {
             try
             {
-                TrackingInfo Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
+                var Reply = USPS.GetTrackingInfo(Entry.TrackingNumber);
                 ParseUSPSRawDataIntoList(Entry, Reply);
             }
             catch (USPSManagerException ex)

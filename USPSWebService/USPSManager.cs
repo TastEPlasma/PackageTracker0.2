@@ -1,16 +1,9 @@
-//////////////////////////////////////////////////////////////////////////
-///This software is provided to you as-is and with not warranties!!!
-///Use this software at your own risk.
-///This software is Copyright by Scott Smith 2006
-///You are free to use this software as you see fit.
-//////////////////////////////////////////////////////////////////////////
-
-using System;
-using System.Net;
-using System.Text;
-
 namespace MAX.USPS
 {
+    using System;
+    using System.Net;
+    using System.Text;
+
     public class USPSManager
     {
         public USPSManager()

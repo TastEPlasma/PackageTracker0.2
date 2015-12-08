@@ -1,8 +1,8 @@
-﻿using FedExWebService.FedExWebReference;
-using System;
-
-namespace FedExWebService
+﻿namespace FedExWebService
 {
+    using FedExWebService.FedExWebReference;
+    using System;
+
     public class FedExManager
     {
         public FedExManager()
@@ -19,13 +19,9 @@ namespace FedExWebService
         public string AccountNumber { get; set; }
         public string MeterNumber { get; set; }
         public string TransactionID { get; set; }
-        public string TrackingNumber { get; set; }
 
         public TrackRequest CreateTrackRequest(string TrackNumber)
         {
-            //create credentials object
-            TrackingNumber = TrackNumber;
-
             //The following code is almost entirely based on WebAPI example
             // Build the TrackRequest
             TrackRequest request = new TrackRequest();
@@ -48,7 +44,7 @@ namespace FedExWebService
             // Tracking information
             request.SelectionDetails = new TrackSelectionDetail[1] { new TrackSelectionDetail() };
             request.SelectionDetails[0].PackageIdentifier = new TrackPackageIdentifier();
-            request.SelectionDetails[0].PackageIdentifier.Value = TrackingNumber; // Replace "XXX" with tracking number or door tag
+            request.SelectionDetails[0].PackageIdentifier.Value = TrackNumber; // Replace "XXX" with tracking number or door tag
             request.SelectionDetails[0].PackageIdentifier.Type = TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG;
             //
             // Date range is optional.

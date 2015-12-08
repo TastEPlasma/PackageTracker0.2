@@ -1,7 +1,7 @@
-﻿using System.Data.Entity;
-
-namespace PackageTracker
+﻿namespace PackageTracker
 {
+    using System.Data.Entity;
+
     internal class TrackerContext : DbContext
     {
         public DbSet<TrackerData> Packages { get; set; }
@@ -10,7 +10,7 @@ namespace PackageTracker
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //This syntax enables context-wide ability to ignore specific properties or values
-            //modelBuilder.Types().Configure(c => c.Ignore("DeleteMe"));  
+            //modelBuilder.Types().Configure(c => c.Ignore("DeleteMe"));
 
             //This syntax enables ignoring values from a specific DBSet
             modelBuilder.Entity<TrackerData>().Ignore(p => p.DeleteMe);

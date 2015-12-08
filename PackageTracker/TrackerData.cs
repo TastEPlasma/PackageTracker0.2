@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows.Media.Imaging;
-
-namespace PackageTracker
+﻿namespace PackageTracker
 {
+    using System;
+    using System.IO;
+    using System.Windows.Media.Imaging;
+
     internal enum PackageStatus
     {
         NotFound,
@@ -62,11 +62,11 @@ namespace PackageTracker
             {
                 switch (Service)
                 {
-                    case ParcelService.FedEx: return ImageLoadingAndHolding.FedEx;
-                    case ParcelService.UPS: return ImageLoadingAndHolding.UPS;
-                    case ParcelService.USPS: return ImageLoadingAndHolding.USPS;
-                    case ParcelService.None: return ImageLoadingAndHolding.Unknown;
-                    default: return ImageLoadingAndHolding.Unknown;
+                    case ParcelService.FedEx: return ImageLoadingAndHolding.FedExbitmap;
+                    case ParcelService.UPS: return ImageLoadingAndHolding.UPSbitmap;
+                    case ParcelService.USPS: return ImageLoadingAndHolding.USPSbitmap;
+                    case ParcelService.None: return ImageLoadingAndHolding.Unknownbitmap;
+                    default: return ImageLoadingAndHolding.Unknownbitmap;
                 }
             }
             set
@@ -84,34 +84,13 @@ namespace PackageTracker
 
     internal static class ImageLoadingAndHolding
     {
-        private static BitmapImage FedExbitmap;
-        private static BitmapImage UPSbitmap;
-        private static BitmapImage USPSbitmap;
-        private static BitmapImage Unknownbitmap;
+        public static BitmapImage FedExbitmap { get; set; }
 
-        public static BitmapImage FedEx
-        {
-            get { return FedExbitmap; }
-            set { /*Do Nothing*/ }
-        }
+        public static BitmapImage UPSbitmap { get; set; }
 
-        public static BitmapImage UPS
-        {
-            get { return UPSbitmap; }
-            set { /*Do Nothing*/ }
-        }
+        public static BitmapImage USPSbitmap { get; set; }
 
-        public static BitmapImage USPS
-        {
-            get { return USPSbitmap; }
-            set { /*Do Nothing*/ }
-        }
-
-        public static BitmapImage Unknown
-        {
-            get { return Unknownbitmap; }
-            set { /*Do Nothing*/ }
-        }
+        public static BitmapImage Unknownbitmap { get; set; }
 
         static ImageLoadingAndHolding()
         {

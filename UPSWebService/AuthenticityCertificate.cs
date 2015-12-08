@@ -1,7 +1,7 @@
-﻿using System.Net;
-
-namespace MAX
+﻿namespace MAX
 {
+    using System.Net;
+
     public class TrustAllCertificatePolicy : System.Net.ICertificatePolicy
     {
         public TrustAllCertificatePolicy()

@@ -1,13 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
-
-namespace PackageTracker
+﻿namespace PackageTracker
 {
+    using System;
+    using System.ComponentModel;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Threading;
+
     public partial class MainWindow : Window
     {
         //In this case, the context is left open per session since it is accessing a local DB
@@ -58,7 +58,7 @@ namespace PackageTracker
         {
             System.Windows.Data.CollectionViewSource trackerDataViewSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("trackerDataViewSource")));
-            
+
             //try/catch to handle exceptions on database errors, usually DB not found variants
             bool ContinueOperation = true;
             try
@@ -110,7 +110,7 @@ namespace PackageTracker
 
             if (CurrentDBList.Count() == 0)
             {
-                CredentialData NewEntry = new CredentialData();
+                var NewEntry = new CredentialData();
                 NewEntry.FedExCredentials = new FedExCredentialsData();
                 NewEntry.UPSCredentials = new UPSCredentialsData();
                 NewEntry.POSTALCredentials = new USPSCredentialsData();
@@ -143,7 +143,7 @@ namespace PackageTracker
             UpdateLocalDBWithUserInput();
 
             //Spawn a background thread for DB work so that the GUI thread can continue to update
-            BackgroundWorker DBUpdater = new BackgroundWorker();
+            var DBUpdater = new BackgroundWorker();
 
             //allow worker to report progress during work
             DBUpdater.WorkerReportsProgress = true;

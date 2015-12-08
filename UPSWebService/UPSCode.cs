@@ -1,8 +1,8 @@
-﻿using System;
-using UPSWebService.UPSWebReference;
-
-namespace MAX.UPS
+﻿namespace MAX.UPS
 {
+    using System;
+    using UPSWebService.UPSWebReference;
+
     public class UPSManager
     {
         public UPSManager()
@@ -20,30 +20,30 @@ namespace MAX.UPS
         {
             //The following code is from the WebAPI example
             //Construct objects
-            TrackService track = new TrackService();
-            TrackRequest tr = new TrackRequest();
-            UPSSecurity upss = new UPSSecurity();
-            UPSSecurityServiceAccessToken upssSvcAccessToken = new UPSSecurityServiceAccessToken();
+            var TrackService = new TrackService();
+            var TrackRequest = new TrackRequest();
+            var UPSSecurityObject = new UPSSecurity();
+            var upssSvcAccessToken = new UPSSecurityServiceAccessToken();
 
             //Assign parameters
             upssSvcAccessToken.AccessLicenseNumber = AccessLicenseNumber;
-            upss.ServiceAccessToken = upssSvcAccessToken;
-            UPSSecurityUsernameToken upssUsrNameToken = new UPSSecurityUsernameToken();
+            UPSSecurityObject.ServiceAccessToken = upssSvcAccessToken;
+            var upssUsrNameToken = new UPSSecurityUsernameToken();
             upssUsrNameToken.Username = Username;
             upssUsrNameToken.Password = Password;
-            upss.UsernameToken = upssUsrNameToken;
-            track.UPSSecurityValue = upss;
+            UPSSecurityObject.UsernameToken = upssUsrNameToken;
+            TrackService.UPSSecurityValue = UPSSecurityObject;
             RequestType request = new RequestType();
             String[] requestOption = { "15" };
             request.RequestOption = requestOption;
-            tr.Request = request;
-            tr.InquiryNumber = TrackingNumber;
+            TrackRequest.Request = request;
+            TrackRequest.InquiryNumber = TrackingNumber;
             System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
 
             //Send request and receive results
             try
             {
-                TrackResponse Results = track.ProcessTrack(tr);
+                TrackResponse Results = TrackService.ProcessTrack(TrackRequest);
                 return Results;
             }
             catch (System.Web.Services.Protocols.SoapException ex)
