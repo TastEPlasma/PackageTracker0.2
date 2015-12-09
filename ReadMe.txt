@@ -1,3 +1,6 @@
+Version 1.0
+Working Installer located at PackageTracker\PackageTrackerSetup\Release
+
 //Introduction
 This program is called Package Tracker.
 It was written by Erick R. Webster.

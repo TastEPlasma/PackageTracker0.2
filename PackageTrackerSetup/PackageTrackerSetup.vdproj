@@ -69,6 +69,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B8C666B0410146208E55B34CB3C49A6B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BBC302CFE65F4019BFAA548D6DC0C9D1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,6 +100,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_621CC593491E45B3B13AB774952B2C3A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C04E818C17DF068F0D41000951B046CF"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -106,18 +118,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FC6C68DC699D822D54C20E37891EC4F7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_621CC593491E45B3B13AB774952B2C3A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5A601D3D5B3E380C84B04B279EABC803"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -125,6 +125,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_91D9F522B0AC2D1D4C3CE9662D87634A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FC6C68DC699D822D54C20E37891EC4F7"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -145,6 +151,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -161,6 +175,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -363,6 +393,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B8C666B0410146208E55B34CB3C49A6B"
+            {
+            "SourcePath" = "8:D:\\Work\\SqlLocalDB(64).msi"
+            "TargetName" = "8:SqlLocalDB(64).msi"
+            "Tag" = "8:"
+            "Folder" = "8:_569FFBCC7C254D05B754F60AE1A2DA5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BBC302CFE65F4019BFAA548D6DC0C9D1"
             {
             "SourcePath" = "8:..\\PackageTracker\\bin\\Debug\\UnknownCarrier.gif"
@@ -486,12 +536,23 @@
             "{1525181F-901A-416C-8A58-119130FE478E}:_A3FE33BCB8FC43D0B78A0E866F4674F5"
             {
             "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_6BDF137CBC2749328627021E66480A19"
+                    {
+                    "Name" = "8:Multi Package Tracker"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_42A70A4232A9426C8DAD6331BEC0505F"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_C97526AF42CE43148F00ACABA86DBFBE"
@@ -522,7 +583,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MultiPackageTracker"
         "ProductCode" = "8:{0633BAD8-3877-4189-8087-9367D48BA0E9}"
-        "PackageCode" = "8:{CAFD11BD-DC70-4826-AE7D-C780CF407639}"
+        "PackageCode" = "8:{404D0E06-86EC-404C-85EC-594FE61902E2}"
         "UpgradeCode" = "8:{1178D1E7-5782-443B-A5E6-5BD98177CAB2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -642,6 +703,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B5B826C670EC43D99D7E70FE71ED4726"
+            {
+            "Name" = "8:Service Installer - Run Me First"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B8C666B0410146208E55B34CB3C49A6B"
+            "Folder" = "8:_6BDF137CBC2749328627021E66480A19"
+            "WorkingFolder" = "8:_569FFBCC7C254D05B754F60AE1A2DA5E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E552EF9FC6F444719A54AD2CA83A2FAC"
+            {
+            "Name" = "8:Multi Package Tracker"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_621CC593491E45B3B13AB774952B2C3A"
+            "Folder" = "8:_6BDF137CBC2749328627021E66480A19"
+            "WorkingFolder" = "8:_569FFBCC7C254D05B754F60AE1A2DA5E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
