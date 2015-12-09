@@ -1,0 +1,3 @@
+After the program is installed, there will be a shortcut in the start menu directory that needs to be run first.  This is a microsoft installer, and installs the 64-bit version of their SQL server localDB.  This is a service that is required for Multi Package Tracker to work.  It only needs to be ran once per machine.
+
+Please note that as per the read me, Fed Ex is not supported out of the box without adding custom credentials from a personal FedEx account.  This is due to the way that FedEx requires businesses with credit cards for full access to the web API server.
